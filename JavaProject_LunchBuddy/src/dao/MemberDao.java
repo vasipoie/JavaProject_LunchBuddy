@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.List;
 import java.util.Map;
 
 import util.JDBCUtil;
@@ -24,5 +25,10 @@ public class MemberDao {
 		Map<String,Object> mem = jdbc.selectOne(sql);
 		return mem;
 	}
+
+	public void join(List<Object> param) {
+		String sql = "";
+	}
+
 
 }

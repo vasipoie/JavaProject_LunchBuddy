@@ -14,9 +14,10 @@ public class Controller extends Print {
 	static public Map<String, Object> sessionStorage = new HashMap<>();
 	static public Map<Integer, View> pageHistory = new HashMap<>();
 	
+	
 	Service service = Service.getInstance();
 	MemberService memberService = new MemberService();
-	
+	MemberController memberController = new MemberController();
 	
 	
 	public static void main(String[] args) {
@@ -53,54 +54,11 @@ public class Controller extends Print {
 				view = member();
 				break;
 			case JOIN:
-				view = join();
+				view = memberController.join();
 				break;
 			}
 		}
 	}
-
-	private View join() {
-		print_join();
-		
-		String id;
-		while(true) {
-			id = ScanUtil.nextLine("id :");
-			if(memberService.idcheck(id)) break;
-			else {
-				System.out.println("1. 재시도   0. 뒤로가기");
-				int select = ScanUtil.nextInt("선택 >> ");
-				switch (select) {
-				case 0:
-					return goBack();
-				default:
-					break;
-				}
-			}
-		}
-		
-
-		String pw;
-		while(true) {
-			pw = ScanUtil.nextLine("pw :");
-			if(memberService.pwcheck(pw)) break;
-			else {
-				System.out.println("1. 재시도   0. 뒤로가기");
-				int select = ScanUtil.nextInt("선택 >> ");
-				switch (select) {
-				case 0:
-					return goBack();
-				default:
-					break;
-				}
-			}
-		}
-		
-		
-		
-		
-		return null;
-	}
-
 	private View member() {
 		print_member();
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
@@ -143,7 +101,7 @@ public class Controller extends Print {
 		pageHistory.put(page+1, view);
 	}
 	
-	private View goBack() {
+	public static View goBack() {
 		int page = pageHistory.size();
 		if(page ==1) return View.HOME;
 		pageHistory.remove(page);
