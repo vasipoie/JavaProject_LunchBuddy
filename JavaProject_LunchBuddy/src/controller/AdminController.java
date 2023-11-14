@@ -14,31 +14,62 @@ import vo.AdminVo;
 public class AdminController extends AdminPrint {
 	static public Map<String, Object> sessionStorage = new HashMap<>();
 	
-	AdminController ac = new AdminController();
-	
 	AdminService adminService = AdminService.getInstance();
 	
 	public static void main(String[] args) {
-		new AdminController().start();
+		
 	}
 	
 	void start() {
 		View view = View.HOME;
 		while (true) {
 			switch (view) {
-			case HOME:
-				view = home();
-				break;
 			case ADMIN_LOGIN:
-				view = admin_login();
+				view = adminLogin();
+				break;
+			case ADMIN_HOME:
+				view = adminHome();
+				break;
+			case ADMIN_REVIEW_CHECK:
+				view = adminHome();
+				break;
+			case ADMIN_MEMBER_MANAGE:
+				view = adminHome();
+				break;
+			case ADMIN_RES_MANAGE:
+				view = adminHome();
 				break;
 			}
 		}
 	}
 
-	 View admin_login() {
-		String id = ScanUtil.nextLine("ID >> ");
-		String pass = ScanUtil.nextLine("PASS >> ");
+	View adminHome() {
+		printAdminHome();
+		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		switch (select) {
+		case 1:
+			return View.ADMIN_REVIEW_CHECK;
+		case 2:
+			return View.ADMIN_MEMBER_MANAGE;
+		case 3:
+			return View.ADMIN_RES_MANAGE;
+		case 0:
+			return View.HOME;
+		default :
+			return View.ADMIN_HOME;
+		}
+	}
+
+	View adminLogin() {
+//		AdminVo adLog = (AdminVo) sessionStorage.get("admin");
+//		if(adLog==null) {
+//			sessionStorage.put("view", View.ADMIN_LOGIN);
+//			return View.ADMIN_LOGIN;
+//		}
+//		String id = ScanUtil.nextLine("ID >> ");
+//		String pass = ScanUtil.nextLine("PASS >> ");
+		String id = "nahye";
+		String pass = "lunch";
 			
 		List<Object> param = new ArrayList<Object>();
 		param.add(id);
@@ -47,36 +78,10 @@ public class AdminController extends AdminPrint {
 		if(chk) {
 			AdminVo ad = (AdminVo) sessionStorage.get("admin");
 			System.out.println(ad.getAdm_name()+" 관리자님 환영합니다.\n");
-			return View.HOME;
+			return View.ADMIN_HOME;
 		}else {
 			System.out.println("해당 아이디가 없습니다.");
 			return View.ADMIN_LOGIN;
 		}
-		
 	}
-
-	View home() {
-		printHome();
-		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
-		switch (select) {
-		case 1:
-			return View.SEARCH;
-		case 2:
-			return View.SEE_REVIEW;
-		case 3:
-			return View.ADD;
-		case 4:
-			return View.RECOMMAND_MENU;
-		case 5:
-			return View.MEMBER;
-		case 99:
-			return View.ADMIN_LOGIN;
-		default :
-			return View.HOME;
-		}
-	}
-	
-	
-	
-	
 }

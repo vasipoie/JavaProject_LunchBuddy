@@ -21,4 +21,16 @@ public class AdminPrint {
 		printLn(1);
 		printBar();
 	}
+	
+	public void printAdminHome() {
+		System.out.println("Admin Home");
+		printBar();
+		System.out.println("1. 리뷰 관리");
+		System.out.println("2. 회원 관리");
+		System.out.println("3. 식당 관리");
+		System.out.println("0. 로그아웃");
+		printLn(2);
+		printBar();
+		
+	}
 }

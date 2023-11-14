@@ -59,7 +59,7 @@ public class JDBCUtil {
 	}
 	
 	 String url = "jdbc:oracle:thin:@192.168.143.34:1521:xe";
-	 String user = "pc02_java";
+	 String user = "pc02_team";
 	 String password = "java";
 	
 	 Connection conn = null;

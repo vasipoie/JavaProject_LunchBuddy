@@ -28,7 +28,4 @@ public class AdminDao {
 		AdminVo ad = ConvertUtils.convertToVo(map, AdminVo.class);
 		return ad;
 	}
-	
-	
-	
 }

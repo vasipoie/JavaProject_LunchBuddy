@@ -21,7 +21,6 @@ public class AdminService {
 		}
 		return singleTon;
 	}
-
 	
 	AdminDao adminDao = AdminDao.getInstance();
 
