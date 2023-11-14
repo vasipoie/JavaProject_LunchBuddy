@@ -12,4 +12,5 @@ public class MemberVo {
 	 private String mem_nick;
 	 private String mem_idque;
 	 private String mem_idans;
+	 private String mem_delyn;
 }
