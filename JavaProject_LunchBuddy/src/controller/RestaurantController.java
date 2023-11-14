@@ -59,6 +59,10 @@ public class RestaurantController extends RestaurantPrint{
 		List<Object> param = new ArrayList<Object>();
 		param.add(ScanUtil.nextLine("식당 이름을 검색하세요 : "));
 		List<RestaurantVo> rsrn = resService.resSearchResName(param);
+		if(rsrn == null) {
+			System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
+			return View.RES_SEARCH_RESNAME;
+		}
 		printResList(rsrn);
 		return null;
 	}

@@ -37,9 +37,21 @@ public class RestaurantDao {
 		return ConvertUtils.convertToList(resList, RestaurantVo.class);
 	}
 
+	//'%'||?||'%'"
 	public List<RestaurantVo> resSearchResName(List<Object> param) {
-		String sql = "";
-		return null;
+		String sql = "with data as\r\n" + 
+				"(select re.*, r.rev_star \r\n" + 
+				"from review r right outer join restaurant re\r\n" + 
+				"on r.res_no = re.res_no)\r\n" + 
+				"select data.res_name, data.res_walk, data.res_bookyn,\r\n" + 
+				"data.rev_star,\r\n" + 
+				"menu.menu_name, menu.menu_price\r\n" + 
+				"from data, menu\r\n" + 
+				"where data.res_no = menu.res_no\r\n" + 
+				"and menu.menu_no like '%001'\r\n" + 
+				"and res_name like '%'||?||'%'";
+		List<Map<String, Object>> list = jdbc.selectList(sql,param);
+		return ConvertUtils.convertToList(list, RestaurantVo.class);
 	}
 	
 	
