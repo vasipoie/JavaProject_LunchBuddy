@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 
 import dao.MemberDao;
+import vo.MemberVo;
 
 public class MemberService {
 	
@@ -75,6 +76,50 @@ public class MemberService {
 		
 		dao.join(param);
 		
+	}
+
+	public MemberVo log_in(List<Object> param) {
+		return dao.log_in(param);
+	}
+
+	public void update_pw(String pw, String mem_no) {
+		dao.update_pw(pw,mem_no);
+	}
+
+	public void update_name(String name, String mem_no) {
+		dao.update_name(name,mem_no);
+	}
+
+	public void update_phone(String phone, String mem_no) {
+		dao.update_phone(phone,mem_no);
+	}
+
+	public void update_nick(String nick, String mem_no) {
+		dao.update_nick(nick,mem_no);
+	}
+
+	public void update_idque(String idque, String mem_no) {
+		dao.update_idque(idque,mem_no);
+	}
+
+	public void update_idans(String idans, String mem_no) {
+		dao.update_idans(idans,mem_no);
+	}
+
+	public void byebye(MemberVo member) {
+		dao.byebye(member.getMem_no());
+	}
+
+	public MemberVo update(String mem_no) {
+		return dao.update(mem_no);
+	}
+
+	public MemberVo find(List<Object> param) {
+		return dao.find(param);
+	}
+
+	public MemberVo find_pw(String id) {
+		return dao.find_pw(id);
 	}
 	
 	

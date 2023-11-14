@@ -24,15 +24,5 @@ public class Print {
 		printBar();
 	}
 	
-	public void print_member() {
-		System.out.println("로그인");
-		printBar();
-		System.out.println("1. 로그인");
-		System.out.println("2. 회원가입");
-		System.out.println("3. 아이디, 비밀번호 찾기");
-		System.out.println("0. 뒤로 가기");
-		printLn(2);
-		printBar();
-	}
 	
 }

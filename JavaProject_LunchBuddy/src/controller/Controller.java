@@ -47,32 +47,10 @@ public class Controller extends Print {
 			case RECOMMAND_MENU:
 //				view = recommand_menu();
 				break;
-			case MY_PAGE:
-//				view = my_page();
-				break;
 			case MEMBER:
-				view = member();
-				break;
-			case JOIN:
-				view = memberController.join();
+				view = memberController.memberController(view);
 				break;
 			}
-		}
-	}
-	private View member() {
-		print_member();
-		int select = ScanUtil.nextInt("메뉴 선택 >> ");
-		switch (select) {
-		case 1:
-			return View.LOG_IN;
-		case 2:
-			return View.JOIN;
-		case 3:
-			return View.FIND_PW;
-		case 0:
-			return goBack();
-		default:
-			return View.MEMBER;
 		}
 	}
 
@@ -95,7 +73,7 @@ public class Controller extends Print {
 		}
 	}
 	
-	private void newPage(View view) {
+	static void newPage(View view) {
 		int page = pageHistory.size();
 		if(pageHistory.get(page)==view) return;
 		pageHistory.put(page+1, view);
@@ -106,6 +84,10 @@ public class Controller extends Print {
 		if(page ==1) return View.HOME;
 		pageHistory.remove(page);
 		return pageHistory.get(page-1);
+	}
+	
+	public static void removeHistory() {
+		pageHistory.remove(Controller.pageHistory.size());
 	}
 	
 }
