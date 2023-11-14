@@ -14,10 +14,13 @@ public class Controller extends Print {
 	static public Map<String, Object> sessionStorage = new HashMap<>();
 	static public Map<Integer, View> pageHistory = new HashMap<>();
 	
+	AdminController ac = new AdminController();
+	MemberController memberController = new MemberController();
+	ReviewController revc = new ReviewController();
+	RestaurantController resc = new RestaurantController();
 	
 	Service service = Service.getInstance();
 	MemberService memberService = new MemberService();
-	MemberController memberController = new MemberController();
 	
 	
 	public static void main(String[] args) {
@@ -31,6 +34,24 @@ public class Controller extends Print {
 			switch (view) {
 			case HOME:
 				view = home();
+				break;
+			case ADMIN_LOGIN:
+				view = ac.adminLogin();
+				break;
+			case ADMIN_HOME:
+				view = ac.adminHome();
+				break;
+			case RES_SEARCH_SELECT:	//식당 검색 전 선택
+				view = resc.resSearchSelect();
+				break;
+			case RES_SEARCH_RESNAME://식당 이름으로 검색
+				view = resc.resSearchResName();
+				break;
+			case RES_SEARCH_CATEGORY://메뉴 카테고리로 검색
+				view = resc.resList();
+				break;
+			case RES_LIST:			//식당 리스트
+				view = resc.resList();
 				break;
 			case SEARCH:
 //				view = search();
@@ -59,7 +80,7 @@ public class Controller extends Print {
 		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
 		switch (select) {
 		case 1:
-			return View.SEARCH;
+			return View.RES_SEARCH_SELECT;
 		case 2:
 			return View.SEE_REVIEW;
 		case 3:
@@ -68,6 +89,8 @@ public class Controller extends Print {
 			return View.RECOMMAND_MENU;
 		case 5:
 			return View.MEMBER;
+		case 99:
+			return View.ADMIN_LOGIN;
 		default :
 			return View.HOME;
 		}
