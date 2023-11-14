@@ -50,7 +50,7 @@ public class Controller extends Print {
 			case RES_SEARCH_CATEGORY://메뉴 카테고리로 검색
 				view = resc.resList();
 				break;
-			case RES_LIST:		//식당 리스트
+			case RES_LIST:			//식당 리스트
 				view = resc.resList();
 				break;
 			case SEARCH:
