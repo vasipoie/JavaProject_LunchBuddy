@@ -32,8 +32,8 @@ public class Controller extends Print {
 			case HOME:
 				view = home();
 				break;
-			case SERCH:
-//				view = serch();
+			case SEARCH:
+//				view = search();
 				break;
 			case SEE_REVIEW:
 //				view = see_review();
@@ -81,7 +81,7 @@ public class Controller extends Print {
 		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
 		switch (select) {
 		case 1:
-			return View.SERCH;
+			return View.SEARCH;
 		case 2:
 			return View.SEE_REVIEW;
 		case 3:
