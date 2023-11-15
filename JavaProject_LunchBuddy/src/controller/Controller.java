@@ -109,7 +109,12 @@ public class Controller extends Print {
 	 * @param view 상세보기 눌렀을 때 이동할 뷰
 	 */
 	public static void init_page(int num, int line, String type, View view) {
-		sessionStorage.put("pageSize_for_paging", num);
+		if(sessionStorage.get("pageSize_for_paging")==null) {
+			sessionStorage.put("pageSize_for_paging", num);
+		}else {
+			sessionStorage.replace("pageSize_for_paging", num);
+		}
+		
 		sessionStorage.put("object_size_for_paging", line);
 		sessionStorage.put("type_for_paging", type);
 		sessionStorage.put("after_page", view);
@@ -153,11 +158,11 @@ public class Controller extends Print {
 			printBar();
 
 			if (page == 1) {
-				System.out.println("            2." + type + " 상세   3.다음페이지");
+				System.out.println("            2." + type + "   3.다음페이지");
 			} else if ((page * page_size) >= lastNo) {
-				System.out.println("1.이전페이지     2." + type + " 상세   3.다음페이지");
+				System.out.println("1.이전페이지     2." + type + "   3.다음페이지");
 			} else {
-				System.out.println("1.이전페이지     2." + type + " 상세");
+				System.out.println("1.이전페이지     2." + type );
 			}
 			System.out.println("9.홈              0.뒤로가기");
 			printBar();
