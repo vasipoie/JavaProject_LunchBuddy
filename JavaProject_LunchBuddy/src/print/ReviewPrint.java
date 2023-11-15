@@ -2,6 +2,7 @@ package print;
 
 import java.util.List;
 
+import controller.Controller;
 import vo.MenuReviewVo;
 import vo.ReviewVo;
 
@@ -62,6 +63,10 @@ public class ReviewPrint extends Print {
 		System.out.println("1.식당 정보 보기   2.작성자 리뷰 더보기  3. 메뉴 리뷰 더보기");
 		System.out.println("9.홈  0.뒤로가기");
 		printBar();
+	}
+	
+	public void print_menu_review() {
+		
 	}
 
 }
