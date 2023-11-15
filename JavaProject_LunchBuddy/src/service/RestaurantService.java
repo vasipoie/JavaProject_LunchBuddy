@@ -33,8 +33,8 @@ public class RestaurantService {
 		return resDao.resSearchCategory(category);
 	}
 
-	public RestaurantVo resAdd(List<Object> restAdd) {
-		return resDao.resAdd(restAdd);
+	public void resAdd(List<Object> restAdd) {
+		resDao.resAdd(restAdd);
 	}
 
 	

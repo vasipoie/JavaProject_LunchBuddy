@@ -3,6 +3,7 @@ package print;
 import java.util.List;
 import java.util.Map;
 
+import controller.Controller;
 import vo.RestaurantVo;
 
 public class RestaurantPrint {
@@ -65,7 +66,7 @@ public class RestaurantPrint {
 	
 	
 	public void printResAdd(RestaurantVo resAdd) {
-		System.out.println("등록한 식당");
+		System.out.println(Controller.sessionStorage.get("")+"등록한 식당");
 		printBar();
 		System.out.print("[식당이름] \t"+resAdd.getRes_name());
 		System.out.print("예약여부 \t"+resAdd.getRes_bookyn());
@@ -74,6 +75,15 @@ public class RestaurantPrint {
 		printBar();
 	}
 	
+	
+	public void printResAddOne(RestaurantVo restAdd, RestaurantVo menuPrice) {
+		printBar();
+		System.out.println("[ " + restAdd.getRes_name() + " ] " + restAdd.getRes_bookyn());
+		printBar();
+		System.out.println("1. 등록요청");
+		System.out.println("2. 수정");
+		System.out.println("3. 등록취소");
+	}
 	
 //	public void printCateList(List<Map<String, Object>> cateList) {
 //		printBar();

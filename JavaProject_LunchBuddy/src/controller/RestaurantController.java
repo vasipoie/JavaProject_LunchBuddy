@@ -34,11 +34,13 @@ public class RestaurantController extends RestaurantPrint{
 				view = resList();
 				break;
 			case RES_DETAIL:	//식당 상세보기
-//				view = resDetail();
+				view = resDetail();
 				break;
 			case RES_ADD:		//식당 등록
 				view = resAdd();
 				break;
+			case RES_ADD_ONE:
+				view = resAddOne();	//식당 등록요청 전에 사용자가 요청한 등록 출력
 //			case ADMIN_RES_MANAGE:
 //				view = adminHome();
 //				break;
@@ -46,6 +48,24 @@ public class RestaurantController extends RestaurantPrint{
 		}
 	}
 	
+	
+
+	//식당 상세보기
+	public View resDetail() {
+		
+		return null;
+	}
+	
+	//식당 등록요청 전에 사용자가 요청한 등록 출력
+	public View resAddOne() {
+		MemberVo mb = (MemberVo) sessionStorage.get("log_in_member");
+		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
+		RestaurantVo restAdd = (RestaurantVo) sessionStorage.get("restAdd");
+		RestaurantVo menuPrice = (RestaurantVo) sessionStorage.get("menuPrice");
+		printResAddOne(restAdd, menuPrice);
+		return null;
+	}
+
 	//식당 등록
 	public View resAdd() {
 		//로그인확인
@@ -62,37 +82,103 @@ public class RestaurantController extends RestaurantPrint{
 //		Controller.pageHistory.remove(Controller.pageHistory.size());
 		printBar();
 		List<Object> restAdd = new ArrayList<Object>();
+		List<Object> menuPrice = new ArrayList<Object>();
 		System.out.println("카테고리 종류 : 1.한식/2.양식/3.아시아음식/4.일식/5.중식/6.분식/7.카페/8.뷔페/9.기타");
-		String cate = ScanUtil.nextLine("카테고리 번호 : ");
+		int cate = ScanUtil.nextInt("카테고리 번호 : ");
+		String cateNo;
+		switch(cate) {
+		case 1 : cateNo = "01";	break;
+		case 2 : cateNo = "02";	break;
+		case 3 : cateNo = "03";	break;
+		case 4 : cateNo = "04";	break;
+		case 5 : cateNo = "05";	break;
+		case 6 : cateNo = "06";	break;
+		case 7 : cateNo = "07";	break;
+		case 8 : cateNo = "08";	break;
+		case 9 : cateNo = "09";	break;
+		default : 
+			System.out.println("잘못 입력했습니다. 다시 입력해주세요");
+			return View.RES_ADD;
+		}
 		String resName = ScanUtil.nextLine("식당 이름 : ");
 		String address = ScanUtil.nextLine("주소 : ");
 		String phone = ScanUtil.nextLine("전화번호 : ");
-		String bookyn = ScanUtil.nextLine("예약가능여부 : ");
-		restAdd.add(cate);
-		restAdd.add(cate);
+		String bookyn = ScanUtil.nextLine("예약가능여부(Y/N) : ");
+		String sigMenu = ScanUtil.nextLine("대표메뉴 : ");
+		int price = ScanUtil.nextInt("가격 : ");
+		
+		if(resName==null) {
+			System.out.println("식당 이름을 입력해주세요");
+			resName = ScanUtil.nextLine("식당 이름 : ");
+		}
+		if(address==null) {
+			System.out.println("주소를 입력해주세요");
+			address = ScanUtil.nextLine("주소 : ");
+		}
+		if(phone==null) {
+			System.out.println("전화번호를 입력해주세요");
+			phone = ScanUtil.nextLine("전화번호 : ");
+		}
+		if(phone.contains("-")||phone.contains(".")) {
+			phone = phone.replaceAll("[-.]", "");
+		}
+		if(bookyn==null) {
+			System.out.println("예약가능여부를 입력해주세요");
+			bookyn = ScanUtil.nextLine("예약가능여부(Y/N) : ");
+		}
+		switch(bookyn) {
+		case "y":case"가능":case"네":case"ㅇ":case"ㅇㅇ":case"o":
+			bookyn = "Y";
+			break;
+		case "n":case"불가능":case"아니":case"ㄴ":case"ㄴㄴ":case"x":
+			bookyn = "N";
+			break;
+		default :
+			System.out.println("예약가능여부를 Y 또는 N으로 입력해주세요");
+			bookyn = ScanUtil.nextLine("예약가능여부(Y/N) : ");
+		}		
+		restAdd.add(cateNo);
+		restAdd.add(cateNo);
 		restAdd.add(resName);
 		restAdd.add(address);
 		restAdd.add(phone);
 		restAdd.add(bookyn);
-		restAdd.add(cate);
-		RestaurantVo resAdd = resService.resAdd(restAdd);
-		System.out.println(resAdd);
-		printResAdd(resAdd);
-		//대표메뉴, 가격 추가하기
-		//메뉴추가, 등록요청
-		return null;
+		restAdd.add(cateNo);
+		resService.resAdd(restAdd);
+		Controller.sessionStorage.put("restAdd", restAdd);
+		
+		menuPrice.add(sigMenu);
+		menuPrice.add(price);
+		Controller.sessionStorage.put("menuPrice",menuPrice);
+		
+		return View.RES_ADD_ONE; //다음 뷰로 이동해서 등록요청
 	}
 
 	//메뉴 카테고리로 검색
 	public View resSearchCategory() {
 		printCategory();
 		int category = ScanUtil.nextInt("검색 하고싶은 카테고리의 숫자를 입력하세요: ");
+		switch(category) {
+		case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:
+			break;
+		default :
+			System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
+			return View.RES_SEARCH_CATEGORY;
+		}
 		List<Map<String, Object>> cateList = resService.resSearchCategory(category);
 		if(cateList==null) {
 			System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
 			return View.RES_SEARCH_CATEGORY;
 		}
-		printResList(cateList);
+		printResList(cateList); //Vo에 평점,대표메뉴,가격 넣고 print에서 출력
+		//이전페이지 식당상세보기 다음페이지 뒤로가기 홈 넣기
+		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		switch(select) {
+		case 1:
+			break;
+		case 2:
+			return View.RES_DETAIL;
+		}
 		return null;
 	}
 
