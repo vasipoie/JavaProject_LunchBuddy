@@ -38,12 +38,14 @@ public class RestaurantDao {
 	}
 
 	//'%'||?||'%'"
-	public List<RestaurantVo> resSearchResName(List<Object> param) {
+	public List<Map<String, Object>> resSearchResName(List<Object> param) {
 		String sql = "with data as\r\n" + 
-				"(select re.*, r.rev_star \r\n" + 
+				"(select re.*, round(nvl(avg(r.rev_star),0)) rev_star\r\n" + 
 				"from review r right outer join restaurant re\r\n" + 
-				"on r.res_no = re.res_no)\r\n" + 
-				"select data.res_name, data.res_walk, data.res_bookyn,\r\n" + 
+				"on r.res_no = re.res_no\r\n" + 
+				"group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn, \r\n" + 
+				"re.res_walk, re.res_postyn, re.cat_no, re.column1, re.column2)\r\n" + 
+				"select rownum, data.res_name, data.res_walk, data.res_bookyn,\r\n" + 
 				"data.rev_star,\r\n" + 
 				"menu.menu_name, menu.menu_price\r\n" + 
 				"from data, menu\r\n" + 
@@ -51,8 +53,37 @@ public class RestaurantDao {
 				"and menu.menu_no like '%001'\r\n" + 
 				"and res_name like '%'||?||'%'";
 		List<Map<String, Object>> list = jdbc.selectList(sql,param);
-		return ConvertUtils.convertToList(list, RestaurantVo.class);
+		return list;
 	}
+
+	public List<Map<String, Object>> resSearchCategory(int category) {
+		String sql = "with data as\r\n" + 
+						"(select re.*, round(nvl(avg(r.rev_star),0)) rev_star\r\n" + 
+						"from review r right outer join restaurant re\r\n" + 
+						"on r.res_no = re.res_no\r\n" + 
+						"group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn, \r\n" + 
+						"re.res_walk, re.res_postyn, re.cat_no, re.column1, re.column2)\r\n" + 
+					"select rownum, data.res_name, data.res_walk, data.res_bookyn,\r\n" + 
+					"data.rev_star,\r\n" + 
+					"menu.menu_name, menu.menu_price\r\n" + 
+					"from data, menu\r\n" + 
+					"where data.res_no = menu.res_no\r\n" + 
+					"and menu.menu_no like '%001'\r\n" + 
+					"and cat_no = 0"+category;
+		List<Map<String, Object>> list = jdbc.selectList(sql);
+		return list;
+	}
+
+	public Map<String, Object> resAdd(List<Object> restAdd) {
+		String sql = "insert into restaurant (res_no, res_name, res_add, res_phone, res_bookyn, cat_no)\r\n" + 
+					"values(0? || lpad( (select nvl(max(no),0)+1 from\r\n" + 
+					"(select substr(res_no,3) no from restaurant where cat_no = 0?)\r\n" + 
+					"),3,'0')\r\n" + 
+					",?,?,?,?,0?)";
+		Map<String, Object> map = jdbc.selectOne(sql, restAdd);
+		return map;
+	}
+
 	
 	
 }

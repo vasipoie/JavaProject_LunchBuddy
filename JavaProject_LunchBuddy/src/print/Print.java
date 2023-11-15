@@ -2,6 +2,8 @@ package print;
 
 import java.util.List;
 
+import util.ScanUtil;
+
 public class Print {
 	
 	public void printBar() {
@@ -21,6 +23,13 @@ public class Print {
 		System.out.println("4. 점메추");
 		System.out.println("5. 마이 페이지");
 		printLn(1);
+		printBar();
+	}
+	
+	public void printAdd() {
+		printBar();
+		System.out.println("1. 리뷰 등록");
+		System.out.println("2. 식당 등록");
 		printBar();
 	}
 	
