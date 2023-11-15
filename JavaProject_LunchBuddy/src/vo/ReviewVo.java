@@ -14,5 +14,24 @@ public class ReviewVo {
 	 private String res_name;
 	 private String mem_nick;	 
 	 private String res_no;	 
-	 private String mem_no;	 
+	 private String mem_no;
+	 
+	@Override
+	public String toString() {
+		return "[" + res_name + "]  " + stars(rev_star) + " (" + rev_star + ")\n" +
+				mem_nick + ")  " + rev_cont;
+	}	 
+	 
+
+	public String stars(int num) {
+		String stars = "";
+		for (int i = 0; i < 10; i++) {
+			if (i < num)
+				stars += "★";
+			else
+				stars += "☆";
+		}
+		return stars;
+	}
+	 
 }

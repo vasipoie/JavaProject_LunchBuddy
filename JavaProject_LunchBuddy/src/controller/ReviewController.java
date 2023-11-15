@@ -28,6 +28,12 @@ public class ReviewController extends ReviewPrint{
 			case REVIEW_DETAIL:
 				view = review_detail();
 				break;
+			case REVIEW_LIST:
+//				view = review_list();
+				break;
+			case SEE_MENU_REVIEW:
+				view = see_menu_review();
+				break;
 			default:
 				Controller.removeHistory();
 				return view;
@@ -35,15 +41,35 @@ public class ReviewController extends ReviewPrint{
 		}
 	}
 
+	private View see_menu_review() {
+		
+		return null;
+	}
+
 	private View review_detail() {
-		ReviewVo review = (ReviewVo) Controller.sessionStorage.get("selected_review");
+		ReviewVo review = (ReviewVo) Controller.sessionStorage.get("selected_object");
 		print_review_detail(review);
 		List<MenuReviewVo> menuReviewList = menuReviewService.getMenuReview(review.getRes_no(),review.getMem_no());
 		print_menuReview_for_reviewDetail(menuReviewList);
 		print_select_for_reviewDetail();
 		int select = ScanUtil.nextInt("선택 >> ");
-		
-		return null;
+		switch (select) {
+		case 1 :
+			Controller.sessionStorage.put("selected_res_no", review.getRes_no());
+			return View.RES_DETAIL;
+		case 2 :
+			List<ReviewVo> reviewList = reviewService.get_review_list_by_writer(review.getMem_no());
+			Controller.sessionStorage.put("selected_review_list", reviewList);
+			return View.REVIEW_LIST;
+		case 3 : 
+			Controller.sessionStorage.put("menu_review", menuReviewList);
+			return View.SEE_MENU_REVIEW;
+		case 9 : return View.HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.REVIEW_DETAIL;
+		}
 	}
 
 	//리뷰 등록
@@ -85,98 +111,17 @@ public class ReviewController extends ReviewPrint{
 	 */
 	public View recent_review() {
 		List<ReviewVo> review_recent = reviewService.recent_review();
-		ReviewVo review = view_review_list(review_recent);
-		Controller.sessionStorage.put("selected_review", review);
-		return View.REVIEW_DETAIL;
+//		Controller.sessionStorage.put("selected_review_list", review_recent);
+		Controller.sessionStorage.put("list_for_paging", review_recent);
+		Controller.sessionStorage.put("type_for_paging", "리뷰");
+		Controller.sessionStorage.put("pageSize_for_paging", 5);
+		Controller.sessionStorage.put("object_size_for_paging", 2);
+		Controller.sessionStorage.put("pageno", 1);
+		Controller.sessionStorage.put("after_page", View.REVIEW_DETAIL);
+//		Controller.sessionStorage.put("selected_review", review);
+		return new Controller().list_paging();
 	}
 	
-	private ReviewVo view_review_list(List<ReviewVo> reviewList) {
-		int page = 1;
-		int lastNo = reviewList.size();
-		while(true) {
-			System.out.println(page + "페이지");
-			printBar();
-			int topNo = (page-1)*5;
-			int bottomNo = page*5;
-			int no = topNo+1;
-			for(int i = topNo; i<bottomNo; i++) {
-				if(i<lastNo) {
-					ReviewVo review = reviewList.get(i);
-					System.out.print(no + ".");
-					print_review_for_list(review);
-					no++;
-				}else {
-					System.out.println();
-					System.out.println();
-				}
-			}
-			printBar();
-			if(page == 1) {
-				System.out.println("         2. 리뷰 선택  3. 다음 페이지 \n9. 홈      0. 뒤로가기");
-				printBar();
-				int select = ScanUtil.nextInt(" 선택 >> ");
-				switch (select) {
-				case 2:
-					int selected_no = ScanUtil.nextInt(" 번호 >> ")-1;
-					ReviewVo selected_review = reviewList.get(selected_no);
-					return selected_review;
-				case 3 :
-					page++;
-					break;
-				case 9 : 
-					reviewController(View.HOME);
-				case 0 :
-					reviewController(Controller.goBack());
-				default:
-					break;
-				}
-			}else if( (page*5) >= lastNo) {
-				System.out.println("1. 이전 페이지    2. 리뷰 선택 \n9. 홈      0. 뒤로가기");
-				printBar();
-				int select = ScanUtil.nextInt(" 선택 >> ");
-				switch (select) {
-				case 1 :
-					page--;
-					break;
-				case 2:
-					int selected_no = ScanUtil.nextInt(" 번호 >> ")-1;
-					ReviewVo selected_review = reviewList.get(selected_no);
-					return selected_review;
-				case 9 : 
-					reviewController(View.HOME);
-				case 0 :
-					reviewController(Controller.goBack());
-
-				default:
-					break;
-				}
-				
-			}else {
-				System.out.println("1. 이전 페이지    2. 리뷰 선택   3. 다음 페이지");
-				System.out.println("9. 홈               0. 뒤로가기");
-				printBar();
-				int select = ScanUtil.nextInt(" 선택 >> ");
-				switch (select) {
-				case 1:
-					page--;
-					break;
-				case 2:
-					int selected_no = ScanUtil.nextInt(" 번호 >> ")-1;
-					ReviewVo selected_review = reviewList.get(selected_no);
-					return selected_review;
-				case 3 :
-					page++;
-					break;
-				case 9 : 
-					reviewController(View.HOME);
-				case 0 :
-					reviewController(Controller.goBack());
-				default:
-					break;
-				}
-			}
-		}
-	}
 	
 	
 	
