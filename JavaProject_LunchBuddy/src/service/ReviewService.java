@@ -24,4 +24,8 @@ public class ReviewService {
 		// TODO Auto-generated method stub
 		return dao.recent_review();
 	}
+
+	public List<ReviewVo> get_review_list_by_writer(String mem_no) {
+		return dao.get_review_list_by_writer(mem_no);
+	}
 }
