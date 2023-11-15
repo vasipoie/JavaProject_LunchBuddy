@@ -25,13 +25,27 @@ public class Print {
 		printLn(1);
 		printBar();
 	}
-	
+
 	public void printAdd() {
 		printBar();
 		System.out.println("1. 리뷰 등록");
 		System.out.println("2. 식당 등록");
 		printBar();
 	}
+
+	public void print_wrong_input() {
+		printBar();
+		System.out.println("잘못된 입력입니다.");
+		printBar();
+	}
 	
+	public void print_wrong_acess() {
+		System.out.println("잘못된 접근입니다.");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

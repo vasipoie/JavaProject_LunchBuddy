@@ -27,6 +27,7 @@ public class RestaurantPrint {
 	}
 	
 	public void printResSearchSelect() {
+		System.out.println("식당 검색");
 		printBar();
 		System.out.println("1. 식당 이름으로 검색");
 		System.out.println("2. 식당 카테고리로 검색");
@@ -34,6 +35,7 @@ public class RestaurantPrint {
 	}
 	
 	public void printResList(List<Map<String, Object>> rsrn) {
+		System.out.println("식당 리스트");
 		printBar();
 		System.out.println("No\t식당이름\t거리\t예약여부\t평점\t대표메뉴\t가격");
 		for(Map<String, Object> reslist : rsrn) {
@@ -60,6 +62,18 @@ public class RestaurantPrint {
 		System.out.println("9. 기타");
 		printBar();
 	}
+	
+	
+	public void printResAdd(RestaurantVo resAdd) {
+		System.out.println("등록한 식당");
+		printBar();
+		System.out.print("[식당이름] \t"+resAdd.getRes_name());
+		System.out.print("예약여부 \t"+resAdd.getRes_bookyn());
+		System.out.println("전화번호 \t"+resAdd.getRes_phone());
+		System.out.println("주소 \t"+resAdd.getRes_add());
+		printBar();
+	}
+	
 	
 //	public void printCateList(List<Map<String, Object>> cateList) {
 //		printBar();

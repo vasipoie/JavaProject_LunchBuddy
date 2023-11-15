@@ -56,8 +56,8 @@ public class Controller extends Print {
 			case SEARCH:
 //				view = search();
 				break;
-			case SEE_REVIEW:
-//				view = see_review();
+			case RECENT_REVIEW:
+				view = revc.reviewController(view);
 				break;
 			case ADD:
 				view = add();
@@ -73,6 +73,9 @@ public class Controller extends Print {
 				break;
 			case MEMBER:
 				view = memberController.memberController(view);
+				break;
+			case LOG_IN:
+				view = memberController.log_in();
 				break;
 			}
 		}
@@ -101,7 +104,7 @@ public class Controller extends Print {
 		case 1:
 			return View.RES_SEARCH_SELECT;
 		case 2:
-			return View.SEE_REVIEW;
+			return View.RECENT_REVIEW;
 		case 3:
 			return View.ADD;
 		case 4:

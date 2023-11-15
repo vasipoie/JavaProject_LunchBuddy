@@ -33,6 +33,7 @@ public class MemberPrint extends Print{
 		System.out.println(" 1. 내 정보 보기");
 		System.out.println(" 2. 내가 쓴 리뷰 보기");
 		System.out.println(" 3. 탈퇴");
+		System.out.println(" 4. 로그아웃");
 		System.out.println(" 9. 홈");
 		System.out.println(" 0. 뒤로가기");
 		printLn(1);
@@ -103,5 +104,34 @@ public class MemberPrint extends Print{
 		System.out.println("pw 찾기");
 		printBar();
 	}
+	
+	public void print_logout() {
+		printBar();
+		printLn(2);
+		System.out.println("로그아웃 되었습니다.");
+		System.out.println("3초 후 홈으로 이동");
+		printLn(3);
+		printBar();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void print_goodbye() {
+		printBar();
+		printLn(2);
+		System.out.println("Bye~!");
+		System.out.println("3초 후 홈으로 이동");
+		printLn(3);
+		printBar();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }

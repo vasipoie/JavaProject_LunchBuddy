@@ -121,6 +121,10 @@ public class MemberService {
 	public MemberVo find_pw(String id) {
 		return dao.find_pw(id);
 	}
+
+	public void reset_pw(String pw, String mem_no) {
+		dao.reset_pw(pw,mem_no);
+	}
 	
 	
 

@@ -74,14 +74,13 @@ public class RestaurantDao {
 		return list;
 	}
 
-	public Map<String, Object> resAdd(List<Object> restAdd) {
+	public RestaurantVo resAdd(List<Object> restAdd) {
 		String sql = "insert into restaurant (res_no, res_name, res_add, res_phone, res_bookyn, cat_no)\r\n" + 
-					"values(0? || lpad( (select nvl(max(no),0)+1 from\r\n" + 
-					"(select substr(res_no,3) no from restaurant where cat_no = 0?)\r\n" + 
-					"),3,'0')\r\n" + 
-					",?,?,?,?,0?)";
+				"values('0'? || lpad((select nvl(max(no),0)+1 \r\n" + 
+				"from(select substr(res_no,3) no from restaurant where cat_no = 0?)),3,'0')\r\n" + 
+				",?,?,?,?,'0'?)";
 		Map<String, Object> map = jdbc.selectOne(sql, restAdd);
-		return map;
+		return ConvertUtils.convertToVo(map, RestaurantVo.class);
 	}
 
 	
