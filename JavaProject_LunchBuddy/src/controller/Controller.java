@@ -101,7 +101,34 @@ public class Controller extends Print {
 			return View.HOME;
 		}
 	}
+	
+	/**
+	 * @param list 출력할 리스트
+	 * @param num 한 페이지에 들어갈 오브젝트 갯수
+	 * @param line 오브젝트 하나의 출력 줄 수
+	 * @param type 오브젝트 종류 이름 : (~ 상세)에 들어갈 ~
+	 * @param view 상세보기 눌렀을 때 이동할 뷰
+	 */
+	public void init_page(List<Object> list, int num, int line, String type, View view) {
+		sessionStorage.put("list_for_paging", list);
+		sessionStorage.put("pageSize_for_paging", num);
+		sessionStorage.put("object_size_for_paging", line);
+		sessionStorage.put("type_for_paging", type);
+		sessionStorage.put("after_page", view);
+		sessionStorage.put("pageno", 1);
+	}
 
+	/**
+	 * 출력하는 오브젝트는 Controller.sessionStorage.get("selected_object")에 들어있습니다.
+	 * Controller.sessionStorage에 다음 항목 넣어주세요
+	 * (list_for_paging : 출력할 리스트)
+	 * (pageSize_for_paging : 한 페이지에 들어갈 오브젝트 갯수)
+	 * (object_size_for_paging : 오브젝트 출력 하나의 줄 수 )
+	 * (type_for_paging : 오브젝트 종류 이름)
+	 * (after_page : 상세보기 눌렀을 때 이동할 뷰)
+	 * (pageno : 1넣어주세요~)
+	 * @return
+	 */
 	public View list_paging() {
 		int page_size = (int) sessionStorage.get("pageSize_for_paging");
 		int object_size = (int) sessionStorage.get("object_size_for_paging");
