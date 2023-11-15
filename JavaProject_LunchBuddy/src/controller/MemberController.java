@@ -58,8 +58,12 @@ public class MemberController extends MemberPrint {
 	}
 
 	private View reset_pw() {
-		
-		return null;
+		MemberVo member = (MemberVo) Controller.sessionStorage.get("member_reseting_pw");
+		String pw = ScanUtil.nextLine(" 재설정할 비밀번호 : ");
+		memberService.reset_pw(pw,member.getMem_no());
+		System.out.println("비밀번호 재설정 완료");
+		Controller.removeHistory();
+		return View.MEMBER;
 	}
 
 	private View find_pw() {
@@ -96,8 +100,7 @@ public class MemberController extends MemberPrint {
 			System.out.println("1. 재시도   0. 뒤로가기");
 			if(ScanUtil.nextInt("선택 >> ")==0) return Controller.goBack();
 			else {
-
-				Controller.pageHistory.remove(Controller.pageHistory.size());
+				Controller.removeHistory();
 				find_id();
 			}
 		}else if(member.getMem_delyn().equals("y")||member.getMem_delyn().equals("Y")) {
@@ -124,6 +127,7 @@ public class MemberController extends MemberPrint {
 			case 0:
 				return Controller.goBack();
 			default:
+				print_wrong_input();
 				break;
 			}
 		}
@@ -154,11 +158,20 @@ public class MemberController extends MemberPrint {
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
 		switch (select) {
 		case 1:
-			memberService.byebye(member);
-			System.out.println("탈퇴처리 되었습니다.\n Bye~");
-			Controller.sessionStorage.remove("log_in_member");
-			Controller.pageHistory.clear();
-			return View.HOME;
+			String pw = ScanUtil.nextLine("비밀번호 입력 : ");
+			if(member.getMem_pw().equals(pw)) {
+				print_goodbye();
+				Controller.sessionStorage.remove("log_in_member");
+				Controller.pageHistory.clear();
+				return View.HOME;
+			}else {
+				System.out.println("비밀 번호가 틀렸습니다.");
+				View view = askBack();
+				if(view == null) {
+					Controller.removeHistory();
+					return View.BYEBYE;
+				}else return view;
+			}
 		case 0: return Controller.goBack();
 		default:
 			byebye();
@@ -167,6 +180,11 @@ public class MemberController extends MemberPrint {
 	}
 
 	private View modify_my_info() {
+		// 현재 로그인된 회원 있는지 확인
+		if(Controller.sessionStorage.get("log_in_member")==null) {
+			print_wrong_acess();
+			return Controller.goBack();
+		}
 		MemberVo member = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		// 비밀번호 확인
 		print_ask_pw();
@@ -186,7 +204,7 @@ public class MemberController extends MemberPrint {
 		switch (select) {
 		case 1:
 			String new_pw = ScanUtil.nextLine("pw : ");
-			memberService.update_pw(new_pw,member.getMem_no());
+			memberService.update_pw(new_pw, member.getMem_no());
 			break;
 		case 2:
 			String name = ScanUtil.nextLine("name : ");
@@ -214,10 +232,15 @@ public class MemberController extends MemberPrint {
 		
 		member = memberService.update(member.getMem_no());
 		Controller.sessionStorage.replace("log_in_member", member);
-		return View.MY_INFO;
+		return View.MY_INFO; //완료 후 내 정보 보기
 	}
 
 	private View my_info() {
+		// 로그인 된 멤버 있는지 확인
+		if(Controller.sessionStorage.get("log_in_member")==null) {
+			print_wrong_acess();
+			return Controller.goBack();
+		}
 		MemberVo member = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		print_my_info(member);
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
@@ -236,7 +259,6 @@ public class MemberController extends MemberPrint {
 
 	private View member() {
 		if (Controller.sessionStorage.get("log_in_member") != null) {
-			Controller.pageHistory.remove(Controller.pageHistory.size());
 			return View.MY_PAGE;
 		}
 		print_member();
@@ -251,6 +273,7 @@ public class MemberController extends MemberPrint {
 		case 0:
 			return Controller.goBack();
 		default:
+			Controller.pageHistory.remove(Controller.pageHistory.size());
 			return View.MEMBER;
 		}
 	}
@@ -266,10 +289,10 @@ public class MemberController extends MemberPrint {
 				break;
 			else {
 				view = askBack();
-				if (view == null) {
-					break;
-				} else
+				if (view != null) {
+					Controller.removeHistory();
 					return view;
+				}
 			}
 		}
 
@@ -280,10 +303,10 @@ public class MemberController extends MemberPrint {
 				break;
 			else {
 				view = askBack();
-				if (view == null) {
-					break;
-				} else
+				if (view != null) {
+					Controller.removeHistory();
 					return view;
+				}
 			}
 		}
 
@@ -294,10 +317,10 @@ public class MemberController extends MemberPrint {
 				break;
 			else {
 				view = askBack();
-				if (view == null) {
-					break;
-				} else
+				if (view != null) {
+					Controller.removeHistory();
 					return view;
+				}
 			}
 		}
 
@@ -308,10 +331,10 @@ public class MemberController extends MemberPrint {
 				break;
 			else {
 				view = askBack();
-				if (view == null) {
-					break;
-				} else
+				if (view != null) {
+					Controller.removeHistory();
 					return view;
+				}
 			}
 		}
 
@@ -322,10 +345,10 @@ public class MemberController extends MemberPrint {
 				break;
 			else {
 				view = askBack();
-				if (view == null) {
-					break;
-				} else
+				if (view != null) {
+					Controller.removeHistory();
 					return view;
+				}
 			}
 		}
 		String idQue = ScanUtil.nextLine("본인 확인 질문 : ");
@@ -358,7 +381,8 @@ public class MemberController extends MemberPrint {
 			if (view != null)
 				return view;
 			else {
-				log_in();
+				Controller.removeHistory();
+				return View.LOG_IN;
 			}
 		}else if(member.getMem_delyn().equals("y")||member.getMem_delyn().equals("Y")) {
 			System.out.println("탈퇴한 회원입니다.");
@@ -366,7 +390,8 @@ public class MemberController extends MemberPrint {
 			if (view != null)
 				return view;
 			else {
-				log_in();
+				Controller.removeHistory();
+				return View.LOG_IN;
 			}
 		}
 		Controller.sessionStorage.put("log_in_member", member);
@@ -391,6 +416,10 @@ public class MemberController extends MemberPrint {
 	}
 
 	public View my_page() {
+		if(Controller.sessionStorage.get("log_in_member")==null) {
+			print_wrong_acess();
+			return Controller.goBack();
+		}
 		print_my_page();
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
@@ -399,6 +428,11 @@ public class MemberController extends MemberPrint {
 		case 2:
 		case 3:
 			return View.BYEBYE;
+		case 4:
+			Controller.sessionStorage.remove("log_in_member");
+			Controller.pageHistory.clear();
+			print_logout();
+			return View.HOME;
 		case 9:
 			return View.HOME;
 		case 0:

@@ -31,7 +31,8 @@ public class ScanUtil {
 				int result = Integer.parseInt(sc.nextLine());
 				return result;
 			}catch (NumberFormatException e) {
-				System.out.println("잘못 입력!!");
+				System.out.println("숫자만 입력해주세요.");
+				System.out.print("메뉴 선택>>");
 			}
 		}
 	}
