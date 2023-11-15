@@ -103,14 +103,12 @@ public class Controller extends Print {
 	}
 	
 	/**
-	 * @param list 출력할 리스트
 	 * @param num 한 페이지에 들어갈 오브젝트 갯수
 	 * @param line 오브젝트 하나의 출력 줄 수
 	 * @param type 오브젝트 종류 이름 : (~ 상세)에 들어갈 ~
 	 * @param view 상세보기 눌렀을 때 이동할 뷰
 	 */
-	public void init_page(List<Object> list, int num, int line, String type, View view) {
-		sessionStorage.put("list_for_paging", list);
+	public static void init_page(int num, int line, String type, View view) {
 		sessionStorage.put("pageSize_for_paging", num);
 		sessionStorage.put("object_size_for_paging", line);
 		sessionStorage.put("type_for_paging", type);

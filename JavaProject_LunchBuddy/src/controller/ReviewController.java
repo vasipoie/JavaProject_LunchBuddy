@@ -111,14 +111,8 @@ public class ReviewController extends ReviewPrint{
 	 */
 	public View recent_review() {
 		List<ReviewVo> review_recent = reviewService.recent_review();
-//		Controller.sessionStorage.put("selected_review_list", review_recent);
+		Controller.init_page(5, 2, "리뷰", View.REVIEW_DETAIL);
 		Controller.sessionStorage.put("list_for_paging", review_recent);
-		Controller.sessionStorage.put("type_for_paging", "리뷰");
-		Controller.sessionStorage.put("pageSize_for_paging", 5);
-		Controller.sessionStorage.put("object_size_for_paging", 2);
-		Controller.sessionStorage.put("pageno", 1);
-		Controller.sessionStorage.put("after_page", View.REVIEW_DETAIL);
-//		Controller.sessionStorage.put("selected_review", review);
 		return new Controller().list_paging();
 	}
 	
