@@ -23,6 +23,10 @@ public class MenuReviewService {
 	public List<MenuReviewVo> getMenuReview(String res_no, String mem_no) {
 		return dao.getMenuReview(res_no,mem_no);
 	}
+
+	public List<MenuReviewVo> see_menu_review_by_menu(String menu_no) {
+		return dao.see_menu_review_by_menu(menu_no);
+	}
 	
 	
 }
