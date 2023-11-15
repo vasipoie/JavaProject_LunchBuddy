@@ -24,5 +24,19 @@ public class Print {
 		printBar();
 	}
 	
+	public void print_wrong_input() {
+		printBar();
+		System.out.println("잘못된 입력입니다.");
+		printBar();
+	}
+	
+	public void print_wrong_acess() {
+		System.out.println("잘못된 접근입니다.");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

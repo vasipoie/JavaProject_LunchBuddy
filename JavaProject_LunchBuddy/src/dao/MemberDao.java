@@ -115,5 +115,12 @@ public class MemberDao {
 		return ConvertUtils.convertToVo(mem, MemberVo.class);
 	}
 
+	public void reset_pw(String pw, String mem_no) {
+		String sql = "update member\r\n" + 
+				"set mem_pw = '" + pw +
+				"' where mem_no = '" + mem_no + "'";
+		jdbc.update(sql);
+	}
+
 
 }
