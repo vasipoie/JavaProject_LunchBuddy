@@ -6,16 +6,19 @@ import java.util.Map;
 import java.util.Scanner;
 
 import print.RestaurantPrint;
+import service.MenuService;
 import service.RestaurantService;
 import util.ScanUtil;
 import util.View;
 import vo.MemberVo;
+import vo.MenuVo;
 import vo.RestaurantVo;
 
 public class RestaurantController extends RestaurantPrint{
 	Scanner sc = new Scanner(System.in);
 	static private Map<String, Object> sessionStorage = Controller.sessionStorage;
 	RestaurantService resService = RestaurantService.getInstance();
+	MenuService menuService = MenuService.getInstance();
 	
 	void start() {
 		View view = View.HOME;
@@ -53,20 +56,17 @@ public class RestaurantController extends RestaurantPrint{
 
 	//식당 상세보기
 	public View resDetail() {
-		
+		//페이징
 		return null;
 	}
 	
 	//식당 등록요청 전에 사용자가 요청한 등록 출력
 	public View resAddOne() {
 		MemberVo mb = (MemberVo) sessionStorage.get("log_in_member");
-		RestaurantVo restAdd = (RestaurantVo) sessionStorage.get("restAdd");
-		RestaurantVo menuPrice = (RestaurantVo) sessionStorage.get("menuPrice");
-		
-		RestaurantVo resAddOne = resService.resAddOne();
+		RestaurantVo resAddOnePrint = (RestaurantVo) sessionStorage.get("resAddOnePrint");
 		printBar();
 		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
-		printResAddOne(resAddOne);
+		printResAddOne(resAddOnePrint);
 		
 		return null;
 	}
@@ -85,10 +85,8 @@ public class RestaurantController extends RestaurantPrint{
 			}
 		}
 		printBar();
-//		Controller.pageHistory.remove(Controller.pageHistory.size());
+		System.out.println("식당 등록");
 		printBar();
-		List<Object> restAdd = new ArrayList<Object>();
-		List<Object> menuPrice = new ArrayList<Object>();
 		System.out.println("예시)\n 카테고리 : 2\n 식당 이름 : 버거킹\n 주소 : 대전 중구 계룡로 853\n 전화번호 : 042-221-0332\n"
 				+ " 예약가능여부(Y/N) : Y\n 대표메뉴 : 비프+슈림프버거 세트\n 가격 : 8500");
 		printBar();
@@ -158,11 +156,14 @@ public class RestaurantController extends RestaurantPrint{
 		
 		String resName = "테스트이름";
 		String address = "테스트주소";
-		String phone = "테스트번호";
+		String phone = "테스트번호";//수정!!!!!숫자만 넣게하기
 		String bookyn = "y";
 		String sigMenu = "테스트대표메뉴";
-		int price = 999;
+		String price = "999";
 		
+		//식당테이블에 회원이 새로 등록하려는 식당 insert, vo로 select
+		List<Object> restAdd = new ArrayList<Object>();
+//		restAdd(param) = res_no, mem_no, res_no, mem_no, rev_star, rev_cont, res_no, mem_no
 		restAdd.add(cateNo);
 		restAdd.add(cateNo);
 		restAdd.add(resName);
@@ -170,25 +171,22 @@ public class RestaurantController extends RestaurantPrint{
 		restAdd.add(phone);
 		restAdd.add(bookyn);
 		restAdd.add(cateNo);
-		
 		resService.resAdd(restAdd);
+		RestaurantVo resAddOneBefore = resService.resAddOneBefore(cateNo);
 		
-		Controller.sessionStorage.put("restAdd", restAdd);
+		//메뉴테이블에 대표메뉴, 가격 insert, vo로 select
+		List<Object> menuAdd = new ArrayList<Object>();
+//		menuAdd(param) = res_no, res_no, menu_name, menu_price, res_no
+		menuAdd.add(resAddOneBefore.getRes_no());
+		menuAdd.add(resAddOneBefore.getRes_no());
+		menuAdd.add(sigMenu);
+		menuAdd.add(price);
+		menuAdd.add(resAddOneBefore.getRes_no());
+		menuService.menuAdd(menuAdd);
+		RestaurantVo resAddOnePrint = resService.resAddOnePrint(cateNo);
+		sessionStorage.put("resAddOnePrint", resAddOnePrint);
 		
-		menuPrice.add(sigMenu);
-		menuPrice.add(price);
-		Controller.sessionStorage.put("menuPrice",menuPrice);
-		
-//		RestaurantVo rn = (RestaurantVo) Controller.sessionStorage.get("restAdd");
-//		System.out.println("rn.getRes_name() : "+rn.getRes_name());
-		RestaurantVo resAddOne = resService.resAddOne();
-		
-		printBar();
-		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
-		printResAddOne(resAddOne);
-		
-		
-		return null; //다음 뷰로 이동해서 등록요청
+		return View.RES_ADD_ONE; //다음 뷰로 이동해서 등록요청
 	}
 
 	//메뉴 카테고리로 검색
@@ -221,6 +219,7 @@ public class RestaurantController extends RestaurantPrint{
 
 	public View resList() {
 		//페이징
+//		List<RestaurantVo> resSearchList = resService.
 		new Controller().list_paging();
 		
 //		List<RestaurantVo> resList = resService.resList();
@@ -258,8 +257,9 @@ public class RestaurantController extends RestaurantPrint{
 			System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
 			return View.RES_SEARCH_RESNAME;
 		}
+		Controller.init_page(5,2,"식당 상세 보기", "",View.RES_DETAIL);
 		sessionStorage.put("resSearchName", rsrn);
-		return View.RES_LIST;
+		return new Controller().list_paging();
 		
 	}
 

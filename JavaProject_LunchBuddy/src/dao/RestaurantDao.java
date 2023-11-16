@@ -92,12 +92,23 @@ public class RestaurantDao {
 //				"                        ),?,?,?,?,"+cateNo+")";
 		jdbc.update(sql);
 	}
+	
+	public RestaurantVo resAddOneBefore(String cateNo) {
+		String sql = "select res_no, res_name, cat_no, res_add, res_phone, res_bookyn\r\n" + 
+					 "from restaurant\r\n" + 
+					 "where res_no like '"+cateNo+"%'\r\n" + 
+					 "AND ROWNUM = 1\r\n" + 
+					 "order by res_no desc";
+		Map<String, Object> map = jdbc.selectOne(sql);
+		return ConvertUtils.convertToVo(map, RestaurantVo.class);
+	}
 
-	public RestaurantVo resAddOne() {
-		String sql = "select cat_no, res_name,res_bookyn, res_add, res_phone\r\n" + 
-					  ",(select menu_name from menu where res_no=a.res_no and menu_no like '%001') menu_name\r\n" + 
-					  ",(select menu_price from menu where res_no=a.res_no and menu_no like '%001') menu_price\r\n" + 
-					 "from restaurant a";
+	public RestaurantVo resAddOnePrint(String cateNo) {
+		String sql = "select res_no, res_name, cat_no, res_add, res_phone, res_bookyn\r\n" + 
+				",(select menu_name from menu where res_no=a.res_no and menu_no like '%001') menu_name\r\n" + 
+				",(select menu_price from menu where res_no=a.res_no and menu_no like '%001') menu_price\r\n" + 
+				"from (select * from restaurant where res_no like '"+cateNo+"%' order by res_no desc) a\r\n" + 
+				"where ROWNUM = 1";
 		Map<String, Object> map = jdbc.selectOne(sql);
 		return ConvertUtils.convertToVo(map, RestaurantVo.class);
 	}

@@ -67,6 +67,10 @@ public class Controller extends Print {
 				break;
 			case RES_ADD:
 				view = resc.resAdd();
+				break;
+			case RES_ADD_ONE:
+				view = resc.resAddOne();
+				break;
 			case RECOMMAND_MENU:
 //				view = recommand_menu();
 				break;
