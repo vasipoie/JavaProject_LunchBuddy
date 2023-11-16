@@ -10,7 +10,7 @@ public class RestaurantService {
 
 	private static RestaurantService singleTon = null;
 	
-	private RestaurantService(){};
+	public RestaurantService(){};
 	
 	public static RestaurantService getInstance() {
 		if(singleTon == null) {
@@ -35,6 +35,24 @@ public class RestaurantService {
 
 	public void resAdd(List<Object> restAdd) {
 		resDao.resAdd(restAdd);
+	}
+
+	public RestaurantVo resAddOne() {
+		RestaurantVo resAddOne = resDao.resAddOne();
+		//쿼리 보낸거 받아와서 cat_no 한글로 바꾼 후 리턴
+		String changeKorea = resAddOne.getCat_no();
+		switch(changeKorea) {
+		case "01": resAddOne.getCat_no().replace("01", "한식"); break;
+		case "02": resAddOne.getCat_no().replace("02", "양식"); break;
+		case "03": resAddOne.getCat_no().replace("03", "아시아음식"); break;
+		case "04": resAddOne.getCat_no().replace("04", "일식"); break;
+		case "05": resAddOne.getCat_no().replace("05", "중식"); break;
+		case "06": resAddOne.getCat_no().replace("06", "분식"); break;
+		case "07": resAddOne.getCat_no().replace("07", "카페"); break;
+		case "08": resAddOne.getCat_no().replace("08", "뷔페"); break;
+		case "09": resAddOne.getCat_no().replace("09", "기타"); break;
+		}
+		return resAddOne;
 	}
 
 	

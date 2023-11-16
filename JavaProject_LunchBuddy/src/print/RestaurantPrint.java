@@ -76,9 +76,12 @@ public class RestaurantPrint {
 	}
 	
 	
-	public void printResAddOne(RestaurantVo restAdd, RestaurantVo menuPrice) {
+	public void printResAddOne(RestaurantVo restAdd) {
 		printBar();
-		System.out.println("[ " + restAdd.getRes_name() + " ] " + restAdd.getRes_bookyn());
+//		RestaurantVo mp = (RestaurantVo) Controller.sessionStorage.get("menuPrice");
+		System.out.println("[ " + restAdd.getRes_name() + " ] " +"\s 카테고리 : "+restAdd.getCat_no());
+		System.out.println("주소 : "+ restAdd.getRes_add() + "\s 전화번호 : " + restAdd.getRes_phone()+"\s 예약가능여부 : "+ restAdd.getRes_bookyn());
+		System.out.println("대표메뉴 : " + restAdd.getMenu_name() + "\s 가격 : "+restAdd.getMenu_price());
 		printBar();
 		System.out.println("1. 등록요청");
 		System.out.println("2. 수정");

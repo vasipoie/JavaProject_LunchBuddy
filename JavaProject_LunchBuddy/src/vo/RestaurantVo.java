@@ -13,4 +13,7 @@ public class RestaurantVo {
 	 private int res_walk;
 	 private String res_postyn;
 	 private String cat_no;
+	 private String menu_name;
+	 private String menu_price;
+	 
 }

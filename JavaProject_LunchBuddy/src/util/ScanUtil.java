@@ -36,4 +36,43 @@ public class ScanUtil {
 			}
 		}
 	}
+	
+	//Restaurant - 식당등록 - 카테고리
+	public static int nextIntC(String print) {
+		System.out.print(print);
+		return nextIntC();
+	}
+
+	 static int nextIntC() {
+		 while(true) {
+			try {
+				int result = Integer.parseInt(sc.nextLine());
+				return result;
+			}catch (NumberFormatException e) {
+				System.out.println("잘못 입력했습니다. 다시 입력해주세요");
+				System.out.print("카테고리 번호 : ");
+			}
+		 }
+	 }
+	 
+	 //Restaurant - 식당등록 - 가격
+	 public static int nextIntP(String print) {
+		 System.out.print(print);
+		 return nextIntP();
+	 }
+	 
+	 static int nextIntP() {
+		 while(true) {
+			 try {
+				 int result = Integer.parseInt(sc.nextLine());
+				 return result;
+			 }catch (NumberFormatException e) {
+				 System.out.println("숫자만 입력해주세요");
+				 System.out.print("가격 : ");
+			 }
+		 }
+	 }
+	 
+	 
+	 
 }
