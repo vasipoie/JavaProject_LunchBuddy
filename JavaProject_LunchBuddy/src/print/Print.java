@@ -13,6 +13,15 @@ public class Print {
 		for(int i=0; i<num; i++)
 			System.out.println();
 	}
+	
+	public void pause() {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	public void printHome() {
 		System.out.println("HOME");
@@ -41,11 +50,7 @@ public class Print {
 	
 	public void print_wrong_acess() {
 		System.out.println("잘못된 접근입니다.");
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		pause();
 	}
 	
 	
