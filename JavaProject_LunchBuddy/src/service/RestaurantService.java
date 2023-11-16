@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Map;
 
 import dao.RestaurantDao;
 import vo.RestaurantVo;
@@ -24,9 +25,18 @@ public class RestaurantService {
 		return resDao.resList();
 	}
 
-	public List<RestaurantVo> resSearchResName(List<Object> param) {
+	public List<Map<String, Object>> resSearchResName(List<Object> param) {
 		return resDao.resSearchResName(param);
 	}
+
+	public List<Map<String, Object>> resSearchCategory(int category) {
+		return resDao.resSearchCategory(category);
+	}
+
+	public void resAdd(List<Object> restAdd) {
+		resDao.resAdd(restAdd);
+	}
+
 	
 	
 }

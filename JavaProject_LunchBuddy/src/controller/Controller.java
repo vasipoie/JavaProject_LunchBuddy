@@ -48,7 +48,7 @@ public class Controller extends Print {
 				view = resc.resSearchResName();
 				break;
 			case RES_SEARCH_CATEGORY:// 메뉴 카테고리로 검색
-				view = resc.resList();
+				view = resc.resSearchCategory();
 				break;
 			case RES_LIST: // 식당 리스트
 				view = resc.resList();
@@ -60,11 +60,13 @@ public class Controller extends Print {
 				view = revc.reviewController(view);
 				break;
 			case ADD:
-//				view = add();
+				view = add();
 				break;
 			case ADD_REVIEW:
 //				view = add_review();
 				break;
+			case RES_ADD:
+				view = resc.resAdd();
 			case RECOMMAND_MENU:
 //				view = recommand_menu();
 				break;
@@ -78,6 +80,19 @@ public class Controller extends Print {
 				view = memberController.memberController(view);
 				view = revc.reviewController(view);
 			}
+		}
+	}
+
+	private View add() {
+		printAdd();
+		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		switch (select) {
+		case 1:
+			return View.ADD_REVIEW;//리뷰등록
+		case 2:
+			return View.RES_ADD;//식당등록
+		default:
+			return View.ADD;
 		}
 	}
 

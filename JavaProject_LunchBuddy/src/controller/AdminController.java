@@ -12,13 +12,9 @@ import util.View;
 import vo.AdminVo;
 
 public class AdminController extends AdminPrint {
-	static public Map<String, Object> sessionStorage = new HashMap<>();
 	
+	static private Map<String, Object> sessionStorage = Controller.sessionStorage;
 	AdminService adminService = AdminService.getInstance();
-	
-	public static void main(String[] args) {
-		
-	}
 	
 	void start() {
 		View view = View.HOME;
@@ -43,7 +39,7 @@ public class AdminController extends AdminPrint {
 		}
 	}
 
-	View adminHome() {
+	public View adminHome() {
 		printAdminHome();
 		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
 		switch (select) {
@@ -54,6 +50,7 @@ public class AdminController extends AdminPrint {
 		case 3:
 			return View.ADMIN_RES_MANAGE;
 		case 0:
+			sessionStorage.clear();
 			return View.HOME;
 		default :
 			return View.ADMIN_HOME;
@@ -66,6 +63,7 @@ public class AdminController extends AdminPrint {
 //			sessionStorage.put("view", View.ADMIN_LOGIN);
 //			return View.ADMIN_LOGIN;
 //		}
+		
 //		String id = ScanUtil.nextLine("ID >> ");
 //		String pass = ScanUtil.nextLine("PASS >> ");
 		String id = "nahye";

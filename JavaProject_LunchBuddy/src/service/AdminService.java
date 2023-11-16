@@ -3,13 +3,13 @@ package service;
 import java.util.List;
 import java.util.Map;
 
-import controller.AdminController;
+import controller.Controller;
 import dao.AdminDao;
 import vo.AdminVo;
 
 
 public class AdminService {
-	static public Map<String, Object> sessionStorage = AdminController.sessionStorage;
+	static public Map<String, Object> sessionStorage = Controller.sessionStorage;
 
 	private static AdminService singleTon = null;
 	
