@@ -11,7 +11,9 @@ public class BFVo {
 	 private int bf_num;
 	 private String bf_date;
 	 private String res_no;
-	 private String menu_no;
+	 private String mem_nick;
+	 private String res_name;
+	 private String bf_delyn;
 
 
 }
