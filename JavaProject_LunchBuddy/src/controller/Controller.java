@@ -76,7 +76,7 @@ public class Controller extends Print {
 			case LIST_PAGING:
 				view = list_paging();
 				break;
-			default :
+			default:
 				view = memberController.memberController(view);
 				view = revc.reviewController(view);
 			}
@@ -88,9 +88,9 @@ public class Controller extends Print {
 		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
 		switch (select) {
 		case 1:
-			return View.ADD_REVIEW;//리뷰등록
+			return View.ADD_REVIEW;// 리뷰등록
 		case 2:
-			return View.RES_ADD;//식당등록
+			return View.RES_ADD;// 식당등록
 		default:
 			return View.ADD;
 		}
@@ -116,35 +116,30 @@ public class Controller extends Print {
 			return View.HOME;
 		}
 	}
-	
+
 	/**
-	 * @param num 한 페이지에 들어갈 오브젝트 갯수
+	 * @param num  한 페이지에 들어갈 오브젝트 갯수
 	 * @param line 오브젝트 하나의 출력 줄 수
-	 * @param type 오브젝트 종류 이름 : (~ 상세)에 들어갈 ~
+	 * @param type 오브젝트 선택 보기에 들어갈 단어
+	 * @param type 선택한 오브젝트가 들어갈 sessionStorage 키
 	 * @param view 상세보기 눌렀을 때 이동할 뷰
 	 */
-	public static void init_page(int num, int line, String type, View view) {
-		if(sessionStorage.get("pageSize_for_paging")==null) {
+	public static void init_page(int num, int line, String type, String returnName, View view) {
 			sessionStorage.put("pageSize_for_paging", num);
-		}else {
-			sessionStorage.replace("pageSize_for_paging", num);
-		}
-		
-		sessionStorage.put("object_size_for_paging", line);
-		sessionStorage.put("type_for_paging", type);
-		sessionStorage.put("after_page", view);
-		sessionStorage.put("pageno", 1);
+			sessionStorage.put("object_size_for_paging", line);
+			sessionStorage.put("type_for_paging", type);
+			sessionStorage.put("returnName", returnName);
+			sessionStorage.put("after_page", view);
+			sessionStorage.put("pageno", 1);
 	}
 
 	/**
 	 * 출력하는 오브젝트는 Controller.sessionStorage.get("selected_object")에 들어있습니다.
-	 * Controller.sessionStorage에 다음 항목 넣어주세요
-	 * (list_for_paging : 출력할 리스트)
-	 * (pageSize_for_paging : 한 페이지에 들어갈 오브젝트 갯수)
-	 * (object_size_for_paging : 오브젝트 출력 하나의 줄 수 )
-	 * (type_for_paging : 오브젝트 종류 이름)
-	 * (after_page : 상세보기 눌렀을 때 이동할 뷰)
+	 * Controller.sessionStorage에 다음 항목 넣어주세요 (list_for_paging : 출력할 리스트)
+	 * (pageSize_for_paging : 한 페이지에 들어갈 오브젝트 갯수) (object_size_for_paging : 오브젝트 출력
+	 * 하나의 줄 수 ) (type_for_paging : 오브젝트 종류 이름) (after_page : 상세보기 눌렀을 때 이동할 뷰)
 	 * (pageno : 1넣어주세요~)
+	 * 
 	 * @return
 	 */
 	public View list_paging() {
@@ -152,6 +147,7 @@ public class Controller extends Print {
 		int object_size = (int) sessionStorage.get("object_size_for_paging");
 		String type = (String) sessionStorage.get("type_for_paging");
 		List<Object> list = (List<Object>) sessionStorage.get("list_for_paging");
+		String returnName = (String) sessionStorage.get("returnName");
 		int page = (int) sessionStorage.get("pageno");
 		View view = (View) sessionStorage.get("after_page");
 		int lastNo = list.size();
@@ -171,30 +167,31 @@ public class Controller extends Print {
 				}
 			}
 			printBar();
-
-			if (page == 1) {
-				System.out.println("            2." + type + "   3.다음페이지");
-			} else if ((page * page_size) >= lastNo) {
-				System.out.println("1.이전페이지     2." + type + "   3.다음페이지");
-			} else {
-				System.out.println("1.이전페이지     2." + type );
-			}
+			
+			if (page == 1) 	System.out.print("            2." + type);
+			else 			System.out.print("1.이전페이지     2." + type);
+			
+			if((page*page_size) < lastNo) System.out.println("   3.다음페이지");
+			else System.out.println();
+			
 			System.out.println("9.홈              0.뒤로가기");
 			printBar();
 			int select = ScanUtil.nextInt(" 선택 >> ");
 			switch (select) {
 			case 1:
-				if(page==1) break;
+				if (page == 1)
+					break;
 				else {
 					sessionStorage.put("pageno", --page);
 					return View.LIST_PAGING;
 				}
 			case 2:
 				int selected_no = ScanUtil.nextInt(" 번호 >> ") - 1;
-				sessionStorage.put("selected_object", list.get(selected_no));
+				sessionStorage.put(returnName, list.get(selected_no));
 				return view;
 			case 3:
-				if((page*page_size) >= lastNo) break;
+				if ((page * page_size) >= lastNo)
+					break;
 				else {
 					sessionStorage.put("pageno", ++page);
 					return View.LIST_PAGING;

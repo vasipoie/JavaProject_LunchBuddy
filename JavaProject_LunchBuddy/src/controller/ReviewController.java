@@ -8,7 +8,9 @@ import service.MenuReviewService;
 import service.ReviewService;
 import util.ScanUtil;
 import util.View;
+import vo.MemberVo;
 import vo.MenuReviewVo;
+import vo.RestaurantVo;
 import vo.ReviewVo;
 
 public class ReviewController extends ReviewPrint{
@@ -26,14 +28,17 @@ public class ReviewController extends ReviewPrint{
 			case REVIEW_DETAIL:
 				view = review_detail();
 				break;
-			case REVIEW_LIST:
-//				view = review_list();
-				break;
 			case SEE_MENU_REVIEW_BY_MENU:
-				see_menu_review_by_menu();
+				view = see_menu_review_by_menu();
 				break;
 			case SEE_MENU_REVIEW_BY_RES_N_WRITER:
-				see_menu_review_by_res_n_writer();
+				view = see_menu_review_by_res_n_writer();
+				break;
+			case SEE_REVIEW_BY_WRITER:
+				view = see_review_by_writer();
+				break;
+			case ADD_REVIEW:
+				view = add_review();
 				break;
 			default:
 				Controller.removeHistory();
@@ -42,30 +47,84 @@ public class ReviewController extends ReviewPrint{
 		}
 	}
 
-	private void see_menu_review_by_menu() {
-		Controller.removeHistory();
-		MenuReviewVo menuReview = (MenuReviewVo) Controller.sessionStorage.get("selected_object");
-		System.out.println("여기!");
+	/**
+	 * 리뷰 추가
+	 * @return
+	 */
+	private View add_review() {
+		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+		if(login_member==null) return View.LOG_IN;
+		
+		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
+		if(restaurant==null) return View.RES_SEARCH_RESNAME;
+		
+		System.out.println("[ " + restaurant.getRes_name()+" ]");
+		
+		//param = res_no, mem_no, res_no, mem_no, rev_star
+		//		, rev_cont, res_no, mem_no
+		List<Object> param = new ArrayList();
+		param.add(restaurant.getRes_no());
+		param.add(login_member.getMem_no());
+		param.add(restaurant.getRes_no());
+		param.add(login_member.getMem_no());
+		param.add(ScanUtil.nextInt("평점 (1~10) >> "));
+		param.add(ScanUtil.nextLine("후기를 남겨주세요 : "));
+		param.add(restaurant.getRes_no());
+		param.add(login_member.getMem_no());
+		reviewService.add_review(param);
+		
+		ReviewVo review = reviewService.review_just_wrote();
+		Controller.sessionStorage.put("selected_review", review);
+		return View.REVIEW_DETAIL;
+	}
+
+	/**
+	 * 작성자 리뷰 모아보기
+	 * >>리뷰 상세보기
+	 * @return
+	 */
+	private View see_review_by_writer() {
+		ReviewVo review = (ReviewVo) Controller.sessionStorage.get("selected_review");
+		List<ReviewVo> reviewList = reviewService.review_by_writer(review.getMem_no());
+		Controller.init_page(5, 2, "리뷰 상세 보기", "selected_review" , View.REVIEW_DETAIL);
+		Controller.sessionStorage.put("list_for_paging", reviewList);
+		return new Controller().list_paging();
+	}
+
+	/**
+	 * 특정 메뉴의 메뉴 리뷰 모아보기
+	 * >>식당 보기
+	 * @return
+	 */
+	private View see_menu_review_by_menu() {
+		MenuReviewVo menuReview = (MenuReviewVo) Controller.sessionStorage.get("selected_menuReview");
 		List<MenuReviewVo> menuReviewList = menuReviewService.see_menu_review_by_menu(menuReview.getMenu_no());
-		Controller.init_page(10, 1, "식당 보기", View.RES_DETAIL);
-		Controller.sessionStorage.replace("list_for_paging", menuReviewList);
-		new Controller().list_paging();
-	}
-
-	private void see_menu_review_by_res_n_writer() {
-		Controller.removeHistory();
-		List<MenuReviewVo> menuReviewList = (List<MenuReviewVo>) Controller.sessionStorage.get("menu_review");
-		Controller.init_page(10, 1, "식당 보기", View.RES_DETAIL);
+		Controller.init_page(10, 1, "식당 보기", "selected_menuReview" , View.RES_DETAIL);
 		Controller.sessionStorage.put("list_for_paging", menuReviewList);
-		new Controller().list_paging();
+		return new Controller().list_paging();
 	}
 
-	private void see_menu_review() {
-		print_menu_review();
+	/**
+	 * 리뷰 페이지에서 메뉴 리뷰 더 보기 누르면 해당 식당 해당 작성자의 메뉴 리뷰 출력
+	 * >> 이 메뉴 리뷰 더 보기 (해당 메뉴 리뷰 모아보기)
+	 * @return
+	 */
+	private View see_menu_review_by_res_n_writer() {
+		List<MenuReviewVo> menuReviewList = (List<MenuReviewVo>) Controller.sessionStorage.get("menu_review");
+		Controller.init_page(10, 1, "이 메뉴 리뷰 더보기", "selected_menuReview" , View.SEE_MENU_REVIEW_BY_MENU);
+		Controller.sessionStorage.put("list_for_paging", menuReviewList);
+		return new Controller().list_paging();
 	}
 
+
+	/**
+	 * 리뷰 상세보기
+	 * sessionStorage "selected_object" 가져와서 보여줌
+	 * >>식당 정보보기 >>작성자 리뷰 더보기 >> 메뉴 리뷰 더보기
+	 * @return
+	 */
 	private View review_detail() {
-		ReviewVo review = (ReviewVo) Controller.sessionStorage.get("selected_object");
+		ReviewVo review = (ReviewVo) Controller.sessionStorage.get("selected_review");
 		print_review_detail(review);
 		List<MenuReviewVo> menuReviewList = menuReviewService.getMenuReview(review.getRes_no(),review.getMem_no());
 		print_menuReview_for_reviewDetail(menuReviewList);
@@ -76,9 +135,8 @@ public class ReviewController extends ReviewPrint{
 			Controller.sessionStorage.put("selected_res_no", review.getRes_no());
 			return View.RES_DETAIL;
 		case 2 :
-			List<ReviewVo> reviewList = reviewService.get_review_list_by_writer(review.getMem_no());
-			Controller.sessionStorage.put("selected_review_list", reviewList);
-			return View.REVIEW_LIST;
+			Controller.sessionStorage.put("selected_review", review);
+			return View.SEE_REVIEW_BY_WRITER;
 		case 3 : 
 			Controller.sessionStorage.put("menu_review", menuReviewList);
 			return View.SEE_MENU_REVIEW_BY_RES_N_WRITER;
@@ -90,38 +148,6 @@ public class ReviewController extends ReviewPrint{
 		}
 	}
 
-	//리뷰 등록
-	private View addReview() {
-		//로그인 확인
-//		MemberVo mb = (MemberVo) sessionStorage.get("member");
-//		if(mb == null) {
-			System.out.println("로그인 후 이용할 수 있습니다");
-//			sessionStorage.put("view", View.MEMBER_MYBOARD_UPDATE);
-//			return View.MEMBER_LOGIN;
-//		}
-		
-		List<Object> addRev = new ArrayList<Object>();
-		addRev.add(ScanUtil.nextInt("평점 : "));
-		addRev.add(ScanUtil.nextLine("내용 : "));
-		
-		return null;
-	}
-
-	//리뷰 홈
-	private View review() {
-		printReviewHome();
-		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
-		switch (select) {
-		case 1:
-			return View.ADD_REVIEW;
-		case 2:
-			return View.REVIEW_DETAIL;
-		case 3:
-			return View.REVIEW_LIST;
-		default:
-			return null;
-		}
-	}
 
 	/**
 	 * 최근 리뷰 보기
@@ -129,7 +155,7 @@ public class ReviewController extends ReviewPrint{
 	 */
 	public View recent_review() {
 		List<ReviewVo> review_recent = reviewService.recent_review();
-		Controller.init_page(5, 2, "리뷰 상세 보기", View.REVIEW_DETAIL);
+		Controller.init_page(5, 2, "리뷰 상세 보기", "selected_review" , View.REVIEW_DETAIL);
 		Controller.sessionStorage.put("list_for_paging", review_recent);
 		return new Controller().list_paging();
 	}
