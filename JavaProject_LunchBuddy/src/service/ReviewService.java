@@ -28,4 +28,17 @@ public class ReviewService {
 	public List<ReviewVo> get_review_list_by_writer(String mem_no) {
 		return dao.get_review_list_by_writer(mem_no);
 	}
+
+	public List<ReviewVo> review_by_writer(String mem_no) {
+		return dao.review_by_writer(mem_no);
+	}
+
+	public void add_review(List<Object> param) {
+		dao.add_review(param);
+		
+	}
+
+	public ReviewVo review_just_wrote() {
+		return dao.review_just_wrote();
+	}
 }
