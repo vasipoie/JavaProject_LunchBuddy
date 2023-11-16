@@ -184,6 +184,7 @@ public class RestaurantController extends RestaurantPrint{
 
 	public View resList() {
 		//페이징
+		new Controller().list_paging();
 //		List<RestaurantVo> resList = resService.resList();
 //		printResList(resList);
 		List<Object> param = new ArrayList<Object>();
