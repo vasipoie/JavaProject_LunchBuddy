@@ -32,4 +32,9 @@ public class BFService {
 		dao.delete(bf_no);
 	}
 
+	public List<BFVo> get_bfList() {
+		return dao.get_bfList();
+	}
+
+
 }

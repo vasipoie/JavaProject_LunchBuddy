@@ -5,14 +5,28 @@ import vo.MemberVo;
 public class MemberPrint extends Print{
 
 	public void print_member() {
-		System.out.println("로그인");
+		System.out.println("\t\t   점심친구");
 		printBar();
+		System.out.println();
 		System.out.println("1. 로그인");
 		System.out.println("2. 회원가입");
-		System.out.println("3. 아이디, 비밀번호 찾기");
+		System.out.println("3. id, pw 찾기");
+		printLn(7);
+		System.out.println("9. 홈");
 		System.out.println("0. 뒤로 가기");
-		printLn(2);
 		printBar();
+	}
+	
+	public void print_login_sucess(String nick) {
+		System.out.println();
+		printBar();
+		printLn(5);
+		System.out.println("\t" + nick +"님 로그인이 완료되었습니다.");
+		System.out.println("\t\t 반가워용~");
+		printLn(6);
+		printBar();
+		pause();
+		
 	}
 	
 	public void print_join() {
@@ -20,10 +34,33 @@ public class MemberPrint extends Print{
 		System.out.println("회원가입");
 		printBar();
 	}
-	
-	public void print_login() {
-		printLn(7);
-		System.out.println("로그인");
+
+	public void print_login_for_id() {
+		System.out.println("\t\t    로그인");
+		printBar();
+		printLn(5);
+		System.out.println(" id\t: ");
+		System.out.println(" pw\t: ");
+		printLn(6);
+		printBar();
+	}
+	public void print_login_for_pw(String id) {
+		System.out.println("\t\t    로그인");
+		printBar();
+		printLn(5);
+		System.out.println(" id\t: "+id);
+		System.out.println(" pw\t: ");
+		printLn(6);
+		printBar();
+	}
+	public void print_login_fail(String why) {
+		System.out.println("\t\t 로그인 실패");
+		printBar();
+		printLn(5);
+		System.out.println(why);
+		System.out.println("다시 시도해 주세요.");
+		printLn(5);
+		System.out.println("1. 재시도	    0. 뒤로가기");
 		printBar();
 	}
 	
@@ -109,7 +146,7 @@ public class MemberPrint extends Print{
 		printBar();
 		printLn(2);
 		System.out.println("로그아웃 되었습니다.");
-		System.out.println("3초 후 홈으로 이동");
+		System.out.println("잠시 후 홈으로 이동");
 		printLn(3);
 		printBar();
 		try {
@@ -123,7 +160,7 @@ public class MemberPrint extends Print{
 		printBar();
 		printLn(2);
 		System.out.println("Bye~!");
-		System.out.println("3초 후 홈으로 이동");
+		System.out.println("잠시 후 홈으로 이동");
 		printLn(3);
 		printBar();
 		try {

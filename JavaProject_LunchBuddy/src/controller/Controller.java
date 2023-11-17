@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import print.MemberPrint;
 import print.Print;
 import service.MemberService;
 import service.Service;
@@ -19,6 +20,7 @@ public class Controller extends Print {
 	MemberController memberController = new MemberController();
 	ReviewController revc = new ReviewController();
 	RestaurantController resc = new RestaurantController();
+	BFController bfController = new BFController();
 
 	Service service = Service.getInstance();
 	MemberService memberService = new MemberService();
@@ -79,6 +81,7 @@ public class Controller extends Print {
 			default:
 				view = memberController.memberController(view);
 				view = revc.reviewController(view);
+				view = bfController.bfcontroller(view);
 			}
 		}
 	}
@@ -109,6 +112,8 @@ public class Controller extends Print {
 		case 4:
 			return View.RECOMMAND_MENU;
 		case 5:
+			return View.BF_MAIN;
+		case 6:
 			return View.MEMBER;
 		case 99:
 			return View.ADMIN_LOGIN;
@@ -118,10 +123,11 @@ public class Controller extends Print {
 	}
 
 	/**
+	 * Controller.sessionStorage에 "list_for_paging" 따로 넣어주세요~ 
 	 * @param num  한 페이지에 들어갈 오브젝트 갯수
 	 * @param line 오브젝트 하나의 출력 줄 수
 	 * @param type 오브젝트 선택 보기에 들어갈 단어
-	 * @param type 선택한 오브젝트가 들어갈 sessionStorage 키
+	 * @param returnName 선택한 오브젝트가 들어갈 sessionStorage 키
 	 * @param view 상세보기 눌렀을 때 이동할 뷰
 	 */
 	public static void init_page(int num, int line, String type, String returnName, View view) {
@@ -157,22 +163,31 @@ public class Controller extends Print {
 			int topNo = (page - 1) * page_size;
 			int bottomNo = page * page_size;
 			int no = topNo + 1;
-			for (int i = topNo; i < bottomNo; i++) {
-				if (i < lastNo) {
-					System.out.println(no + ". " + list.get(i));
-					no++;
-				} else {
-					for (int j = 0; j < object_size; j++)
-						System.out.println();
+			if(list.size()==0) {
+				System.out.println("검색 결과가 없습니다.");
+				printLn(9);
+			}else {
+				for (int i = topNo; i < bottomNo; i++) {
+					if (i < lastNo) {
+						System.out.println(no + ". " + list.get(i));
+						no++;
+					} else {
+						for (int j = 0; j < object_size; j++)
+							System.out.println();
+					}
 				}
 			}
 			printBar();
 			
-			if (page == 1) 	System.out.print("            2." + type);
-			else 			System.out.print("1.이전페이지     2." + type);
+			if(list.size()==0) System.out.println();
+			else {
+				if (page == 1) 	System.out.print("            2." + type);
+				else 			System.out.print("1.이전페이지     2." + type);
+				
+				if((page*page_size) < lastNo) System.out.println("   3.다음페이지");
+				else System.out.println();
+			}
 			
-			if((page*page_size) < lastNo) System.out.println("   3.다음페이지");
-			else System.out.println();
 			
 			System.out.println("9.홈              0.뒤로가기");
 			printBar();
@@ -186,9 +201,14 @@ public class Controller extends Print {
 					return View.LIST_PAGING;
 				}
 			case 2:
-				int selected_no = ScanUtil.nextInt(" 번호 >> ") - 1;
-				sessionStorage.put(returnName, list.get(selected_no));
-				return view;
+				if(list.size()==0) {
+					removeHistory();
+					return View.LIST_PAGING;
+				}else {
+					int selected_no = ScanUtil.nextInt(" 번호 >> ") - 1;
+					sessionStorage.put(returnName, list.get(selected_no));
+					return view;
+				}
 			case 3:
 				if ((page * page_size) >= lastNo)
 					break;
@@ -196,10 +216,12 @@ public class Controller extends Print {
 					sessionStorage.put("pageno", ++page);
 					return View.LIST_PAGING;
 				}
+			case 9 : return View.HOME;
+			case 0 : return goBack();
 			default:
-				break;
+				removeHistory();
+				return View.LIST_PAGING;
 			}
-
 		}
 	}
 

@@ -20,6 +20,9 @@ public class MemberController extends MemberPrint {
 			case MEMBER:
 				view = member();
 				break;
+			case SELECT_LOGIN:
+				view = select_login();
+				break;
 			case LOG_IN:
 				view = log_in();
 				break;
@@ -260,6 +263,12 @@ public class MemberController extends MemberPrint {
 	private View member() {
 		if (Controller.sessionStorage.get("log_in_member") != null) {
 			return View.MY_PAGE;
+		}else return View.SELECT_LOGIN;
+	}
+	
+	private View select_login() {
+		if (Controller.sessionStorage.get("log_in_member") != null) {
+			return Controller.goBack();
 		}
 		print_member();
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
@@ -270,6 +279,8 @@ public class MemberController extends MemberPrint {
 			return View.JOIN;
 		case 3:
 			return View.FIND;
+		case 9 : 
+			return View.HOME;
 		case 0:
 			return Controller.goBack();
 		default:
@@ -370,31 +381,42 @@ public class MemberController extends MemberPrint {
 	}
 
 	public View log_in() {
-		View view;
+		print_login_for_id();
 		List<Object> param = new ArrayList();
-		param.add(ScanUtil.nextLine("id : "));
+		String id = ScanUtil.nextLine("id : ");
+		print_login_for_pw(id);
+		param.add(id);
 		param.add(ScanUtil.nextLine("pw : "));
 		MemberVo member = memberService.log_in(param);
 		if (member == null) {
-			System.out.println("id 혹은 pw가 잘못되었습니다.");
-			view = askBack();
-			if (view != null)
-				return view;
-			else {
-				Controller.removeHistory();
-				return View.LOG_IN;
+			while(true) {
+				print_login_fail("id 혹은 pw가 잘못되었습니다.");
+				switch (ScanUtil.nextInt("선택 >> ")) {
+				case 1:
+					Controller.removeHistory();
+					return View.LOG_IN;
+				case 0 : 
+					return Controller.goBack();
+				default:
+					break;
+				}
 			}
 		}else if(member.getMem_delyn().equals("y")||member.getMem_delyn().equals("Y")) {
-			System.out.println("탈퇴한 회원입니다.");
-			view = askBack();
-			if (view != null)
-				return view;
-			else {
-				Controller.removeHistory();
-				return View.LOG_IN;
+			while(true) {
+				print_login_fail("탈퇴한 회원입니다..");
+				switch (ScanUtil.nextInt("선택 >> ")) {
+				case 1:
+					Controller.removeHistory();
+					return View.LOG_IN;
+				case 0 : 
+					return Controller.goBack();
+				default:
+					break;
+				}
 			}
 		}
 		Controller.sessionStorage.put("log_in_member", member);
+		print_login_sucess(member.getMem_nick());
 		return Controller.goBack();
 	}
 
@@ -405,6 +427,7 @@ public class MemberController extends MemberPrint {
 	 */
 	private View askBack() {
 		System.out.println("1. 재시도   0. 뒤로가기");
+		printBar();
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
 		case 0:
