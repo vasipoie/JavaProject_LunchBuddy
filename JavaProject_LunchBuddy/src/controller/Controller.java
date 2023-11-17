@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import service.MemberService;
 import service.Service;
 import util.ScanUtil;
 import util.View;
+import vo.MemberVo;
 
 public class Controller extends Print {
 
@@ -26,7 +28,23 @@ public class Controller extends Print {
 	MemberService memberService = new MemberService();
 
 	public static void main(String[] args) {
-		new Controller().start();
+//		new Controller().start();
+		new Controller().test();
+	}
+	
+	public void test() {
+//		new Print().printHome();
+//		new MemberPrint().print_login_fail("어쩌구가 틀렸습니다.","idid","pwpwpwpw");
+//		new MemberPrint().print_join_error("","","","","","","");
+//		List<Object> param = new ArrayList();
+//		param.add("yeeun0814");
+//		param.add("0000");
+//		MemberVo member = memberService.log_in(param);
+//		new MemberPrint().print_my_info(member);
+//		new MemberPrint().print_find_id("","");
+		new MemberPrint().print_user_not_found();
+		
+		
 	}
 
 	public void start() {

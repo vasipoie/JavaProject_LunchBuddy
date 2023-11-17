@@ -1,140 +1,223 @@
 package print;
 
+import controller.Controller;
 import vo.MemberVo;
 
 public class MemberPrint extends Print{
 
 	public void print_member() {
-		System.out.println("\t\t   점심친구");
 		printBar();
+		System.out.println("\t\t\t\t           ☆★점심 친구☆★\t\t\t\t");
+		printLn(2);
+		System.out.println("\t   1. 로그인");
+		System.out.println("\t   2. 회원가입");
+		System.out.println("\t   3. id, pw 찾기\t");
+		printLn(6);
+		System.out.println("\t   9. 홈");
+		System.out.println("\t   0. 뒤로 가기");
 		System.out.println();
-		System.out.println("1. 로그인");
-		System.out.println("2. 회원가입");
-		System.out.println("3. id, pw 찾기");
-		printLn(7);
-		System.out.println("9. 홈");
-		System.out.println("0. 뒤로 가기");
 		printBar();
 	}
 	
 	public void print_login_sucess(String nick) {
-		System.out.println();
 		printBar();
-		printLn(5);
-		System.out.println("\t" + nick +"님 로그인이 완료되었습니다.");
-		System.out.println("\t\t 반가워용~");
 		printLn(6);
+		System.out.println("\t\t\t           " + nick +"님 로그인이 완료되었습니다.");
+		System.out.println("\t\t\t\t          반가워용~");
+		printLn(7);
 		printBar();
 		pause();
 		
 	}
 	
-	public void print_join() {
-		printLn(7);
-		System.out.println("회원가입");
+	public void print_join(String id, String pw, String name, String phone, String nick, String idQue, String idAns) {
 		printBar();
+		String pws = "";
+		for(int i = 0; i<pw.length(); i++) pws += "*";
+		System.out.println("\t\t\t\t           회원가입\t\t\t\t");
+		printLn(2);
+		System.out.println("\t   - id\t\t: "+id);
+		System.out.println("\t   - pw\t\t: "+pws);
+		System.out.println("\t   - 이름\t\t: "+name);
+		System.out.println("\t   - 전화번호\t: "+phone);
+		System.out.println("\t   - 닉네임\t: "+nick);
+		System.out.println("\t   - 본인 확인 질문\t: "+idQue);
+		System.out.println("\t   - 답변\t\t: "+idAns);
+		printLn(5);
+		printBar();
+	}
+	
+	public void print_join_error(String id, String pw, String name, String phone, String nick, String idQue,
+			String idAns) {	
+		String pws = "";
+		for(int i = 0; i<pw.length(); i++) pws += "*";
+		String error = (String) Controller.sessionStorage.get("error message");
+		printBar();
+		System.out.println("\t\t\t\t           회원가입\t\t\t\t");
+		printLn(2);
+		System.out.println("\t   - id\t\t: "+id);
+		System.out.println("\t   - pw\t\t: "+pws);
+		System.out.println("\t   - 이름\t\t: "+name);
+		System.out.println("\t   - 전화번호\t: "+phone);
+		System.out.println("\t   - 닉네임\t: "+nick);
+		System.out.println("\t   - 본인 확인 질문\t: "+idQue);
+		System.out.println("\t   - 답변\t\t: "+idAns);
+		printLn(2);
+		System.out.println("\t   "+error);
+		System.out.println();
+//		System.out.println("\t   1. 재시도            9. 홈           0. 뒤로가기");
+//		printBar();
+	}
+
+
+	public void print_join_sucess() {
+		printBar();
+		printLn(4);
+		System.out.println("\t\t\t\t    /\\_/\\  \r\n" + 
+				"\t\t\t\t   ( o.o ) \r\n" + 
+				"\t\t\t\t    > ^ <");
+		System.out.println("\t\t\t\t가입이 완료되었습니다");
+		System.out.println("\t\t\t\t     로그인해주세요");
+		System.out.println("\t\t\t\t          •‧:❤️:‧:❤️:‧•");
+		printLn(4);
+		printBar();
+		System.out.println();
+		pause();
+		
 	}
 
 	public void print_login_for_id() {
-		System.out.println("\t\t    로그인");
 		printBar();
+		System.out.println("\t\t\t\t           로그인\t\t\t\t");
 		printLn(5);
-		System.out.println(" id\t: ");
-		System.out.println(" pw\t: ");
-		printLn(6);
+		System.out.println("\t   - id\t\t: ");
+		System.out.println("\t   - pw\t\t: ");
+		printLn(7);
 		printBar();
 	}
 	public void print_login_for_pw(String id) {
-		System.out.println("\t\t    로그인");
 		printBar();
+		System.out.println("\t\t\t\t           로그인\t\t\t\t");
 		printLn(5);
-		System.out.println(" id\t: "+id);
-		System.out.println(" pw\t: ");
-		printLn(6);
+		System.out.println("\t   - id\t\t: "+id);
+		System.out.println("\t   - pw\t\t: ");
+		printLn(7);
 		printBar();
 	}
-	public void print_login_fail(String why) {
-		System.out.println("\t\t 로그인 실패");
+	public void print_login_fail(String why,String id,String pw) {
+		String pws = "";
+		for(int i = 0; i<pw.length(); i++) pws += "*";
 		printBar();
+		System.out.println("\t\t\t\t         로그인실패\t\t\t\t");
 		printLn(5);
-		System.out.println(why);
-		System.out.println("다시 시도해 주세요.");
-		printLn(5);
-		System.out.println("1. 재시도	    0. 뒤로가기");
+		System.out.println("\t\t\t   - id\t\t: "+id);
+		System.out.println("\t\t\t   - pw\t\t: "+pws);
+		printLn(4);
+		System.out.println("\t\t\t   "+why+" 다시 시도해 주세요.");
+//		System.out.println("\t       다시 시도해 주세요.");
+		System.out.println();
+		System.out.println("\t\t\t  1. 재시도           9. 홈           0. 뒤로가기");
 		printBar();
 	}
 	
 	public void print_my_page() {
-		System.out.println("MY PAGE");
 		printBar();
-		System.out.println(" 1. 내 정보 보기");
-		System.out.println(" 2. 내가 쓴 리뷰 보기");
-		System.out.println(" 3. 탈퇴");
-		System.out.println(" 4. 로그아웃");
-		System.out.println(" 9. 홈");
-		System.out.println(" 0. 뒤로가기");
-		printLn(1);
+		System.out.println("\t\t\t\t    MY PAGE\t\t\t\t");
+		printLn(3);
+		System.out.println("\t\t\t\t 1. 내 정보 보기");
+		System.out.println("\t\t\t\t 2. 내가 쓴 리뷰 보기");
+		System.out.println("\t\t\t\t 3. 탈퇴");
+		System.out.println("\t\t\t\t 4. 로그아웃");
+		System.out.println("\t\t\t\t 9. 홈");
+		System.out.println("\t\t\t\t 0. 뒤로가기");
+		printLn(5);
 		printBar();
 	}
 	
+	//·̇·̣̇̇·̣̣̇·̣̇̇·̇ •๑♡๑•୨୧┈┈┈୨୧•๑♡๑• ·̇·̣̇̇·̣̣̇·̣̇̇·̇
 	public void print_my_info(MemberVo member) {
-		System.out.println("MY INFO");
 		printBar();
-		System.out.println("id \t: "+member.getMem_id());
-		System.out.println("이름 \t: "+member.getMem_name());
-		System.out.println("전화번호 \t: "+member.getMem_phone());
-		System.out.println("닉네임 \t: "+member.getMem_nick());
-		System.out.println("본인 확인 질문 \n: "+member.getMem_idque());
-		System.out.println("답변 \t: "+member.getMem_idans());
+		System.out.println("\t\t\t\t    MY INFO\t\t\t\t");
+		printLn(3);
+		System.out.println("\t\t\t• id \t: "+member.getMem_id());
+		System.out.println("\t\t\t• 이름 \t: "+member.getMem_name());
+		System.out.println("\t\t\t• 전화번호 \t: "+member.getMem_phone());
+		System.out.println("\t\t\t• 닉네임 \t: "+member.getMem_nick());
+		System.out.println("\t\t\t• 본인 확인 질문\t: "+member.getMem_idque());
+		System.out.println("\t\t\t• 답변 \t: "+member.getMem_idans());
+		printLn(4);
+		System.out.println("\t\t     1. 내 정보 수정            9. 홈                 0. 뒤로가기");
 		printBar();
-		System.out.println("1. 회원 정보 수정\t9. 홈\t0. 뒤로가기");
 	}
 	
 	public void print_ask_pw() {
+		printBar();
+		System.out.println("\t\t\t\t           로그인\t\t\t\t");
+		printLn(6);
+		System.out.println("\t\t\t       pass word를 입력하세요. ");
 		printLn(7);
-		System.out.println("pass word를 입력하세요.");
 		printBar();
 	}
 	
 	public void print_modify_my_info() {
-		System.out.println("내 정보 수정");
 		printBar();
-		System.out.println("1. 비밀번호 수정");
-		System.out.println("2. 이름 수정");
-		System.out.println("3. 전화번호 수정");
-		System.out.println("4. 닉네임 수정");
-		System.out.println("5. 본인 확인 질문 수정");
-		System.out.println("6. 답변 수정");
-		System.out.println("0. 뒤로가기");
+		System.out.println("\t\t\t\t   내 정보 수정\t\t\t\t");
+		printLn(3);
+		System.out.println("\t\t\t\t1. 비밀번호 수정");
+		System.out.println("\t\t\t\t2. 이름 수정");
+		System.out.println("\t\t\t\t3. 전화번호 수정");
+		System.out.println("\t\t\t\t4. 닉네임 수정");
+		System.out.println("\t\t\t\t5. 본인 확인 질문 수정");
+		System.out.println("\t\t\t\t6. 답변 수정");
+		System.out.println("\t\t\t\t9. 홈");
+		System.out.println("\t\t\t\t0. 뒤로가기");
+		printLn(3);
 		printBar();
 	}
 	
 	public void print_byebye() {
-		System.out.println("탈퇴");
 		printBar();
-		System.out.println("\n정말로 탈퇴하시겠습니까?");
-		System.out.println("탈퇴하셔도 리뷰 기록은 남게 되며 탈퇴 후 리뷰 기록 삭제는 불가합니다.\n");
-		printBar();
-		System.out.println("1. 탈퇴");
-		System.out.println("0. 뒤로가기");
+		System.out.println("\t\t\t\t              탈퇴\t\t\t\t");
+		printLn(5);
+		System.out.println("\t\t\t               정말로 탈퇴하시겠습니까?");
+		System.out.println("\t\t탈퇴하셔도 리뷰 기록은 남게 되며 탈퇴 후 리뷰 기록 삭제는 불가합니다.");
+		printLn(5);
+		System.out.println("\t\t\t1. 탈퇴하기             9. 홈            0.뒤로 가기");
 		printBar();
 	}
 	
 	public void print_find() {
-		System.out.println("id, pw 찾기");
 		printBar();
-		System.out.println("1. id 찾기");
-		System.out.println("2. pw 찾기");
-		System.out.println("9. HOME");
-		System.out.println("0. 뒤로가기");
-		printLn(3);
+		System.out.println("\t\t\t\t   id, pw 찾기\t\t\t\t");
+		printLn(5);
+		System.out.println("\t\t\t\t  1. id 찾기");
+		System.out.println("\t\t\t\t  2. pw 재설정");
+		System.out.println("\t\t\t\t  9. HOME");
+		System.out.println("\t\t\t\t  0. 뒤로가기");
+		printLn(5);
 		printBar();
+		
 		
 	}
 
-	public void print_find_id() {
-		System.out.println("id 찾기");
+	public void print_find_id(String name, String phone) {
 		printBar();
+		System.out.println("\t\t\t\t id 찾기");
+		printLn(6);
+		System.out.println("\t\t\t     이름\t : " + name);
+		System.out.println("\t\t\t     전화번호\t : " + phone);
+		printLn(6);
+		printBar();
+	}
+	
+	public void print_user_not_found() {
+		printBar();
+		System.out.println("\t\t\t\t id 찾기");
+		printLn(6);
+		System.out.println("\t\t\t         존재하지 않는 사용자 입니다.");
+		printLn(6);
+		printBar();
+		
 	}
 	
 	public void print_find_pw() {

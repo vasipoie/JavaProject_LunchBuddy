@@ -87,7 +87,7 @@ public class BFPrint extends Print {
 	public void print_delete_sucess() {
 		printLn(5);
 		System.out.println("삭제 완료 되었습니다");
-		System.out.println("3초 후 홈으로 돌아갑니다.");
+		System.out.println("잠시 후 홈으로 돌아갑니다.");
 		printLn(4);
 		pause();
 	}
@@ -95,7 +95,7 @@ public class BFPrint extends Print {
 	public void print_already_part() {
 		printLn(5);
 		System.out.println("이미 참여한 모임입니다.");
-		System.out.println("3초 후 페이지로 돌아갑니다.");
+		System.out.println("잠시 후 페이지로 돌아갑니다.");
 		printLn(4);
 		pause();
 
@@ -108,13 +108,18 @@ public class BFPrint extends Print {
 			if (bfList.size() > i) {
 				BFVo bf = bfList.get(i);
 				String resName = bf.getRes_name();
-				if (bf.getRes_name().length() < 4) resName += "\t";
-				System.out.println(" " + resName + " \t" + bf.getBf_date() 
-						+ " - " + bf.getBf_name() 
-						+ " ( " + bf.getPart_num() + " / " + bf.getBf_num() + " )");
+				if (bf.getRes_name().length() < 6) resName += "\t";
+				String bf_name = bf.getBf_name();
+				if(bf_name.length()<12) bf_name += "\t";
+				String str = "" + resName + " \t" + bf.getBf_date() 
+				+ " - " + bf_name 
+				+ " ( " + bf.getPart_num() + " / " + bf.getBf_num() + " )\t";
+				System.out.println("\t    - " + str);
+				
 			} else System.out.println();
 		}
 
 	}
+	
 
 }
