@@ -212,16 +212,53 @@ public class MemberPrint extends Print{
 	
 	public void print_user_not_found() {
 		printBar();
-		System.out.println("\t\t\t\t id 찾기");
+		System.out.println("\t\t\t\t    id 찾기");
 		printLn(6);
-		System.out.println("\t\t\t         존재하지 않는 사용자 입니다.");
+		System.out.println("\t\t\t            존재하지 않는 사용자 입니다.");
 		printLn(6);
+		System.out.println("\t\t\t1. 재시도             9. 홈            0.뒤로 가기");
 		printBar();
 		
 	}
 	
-	public void print_find_pw() {
+	public void print_user_gone() {
+		printBar();
+		System.out.println("\t\t\t\t    id 찾기");
+		printLn(4);
+		System.out.println( "\t\t\t\t    /\\_/\\  \r\n" + 
+							"\t\t\t\t   ( `ω´ )\r\n" + 
+							"\t\t\t\t    >   <" );
+		System.out.println("\t\t\t                  탈퇴한 사용자 입니다.");
+		printLn(5);
+		System.out.println("\t\t\t1. 재시도             9. 홈            0.뒤로 가기");
+		printBar();
+		
+	}
+	
+	public void print_found_id(String id, String name, String phone) {
+		printBar();
+		System.out.println("\t\t\t\t    id 찾기");
+		printLn(5);
+		System.out.println("\t\t\t            이름       : " + name);
+		System.out.println("\t\t\t            전화번호 : " + phone);
+		printLn(1);
+		System.out.println("\t\t\t "+name+"님의 id는  " + id.substring(0, id.length() - 3) + "*** 입니다.");
+		printLn(4);
+		System.out.println("\t\t1. 로그인          2. 비밀번호 재설정           9. 홈            0.뒤로 가기");
+		printBar();
+		
+	}
+	
+	public void print_find_pw(String id) {
 		System.out.println("pw 찾기");
+		printBar();
+		
+
+		printBar();
+		System.out.println("\t\t\t\t pw 재설정");
+		printLn(6);
+		System.out.println("\t\t\t     id\t : " + id);
+		printLn(6);
 		printBar();
 	}
 	

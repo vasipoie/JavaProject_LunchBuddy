@@ -42,7 +42,7 @@ public class Controller extends Print {
 //		MemberVo member = memberService.log_in(param);
 //		new MemberPrint().print_my_info(member);
 //		new MemberPrint().print_find_id("","");
-		new MemberPrint().print_user_not_found();
+		new MemberPrint().print_found_id("yeeun0814","권예은","01058070814");
 		
 		
 	}

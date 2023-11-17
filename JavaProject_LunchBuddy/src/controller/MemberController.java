@@ -70,8 +70,8 @@ public class MemberController extends MemberPrint {
 	}
 
 	private View find_pw() {
-		print_find_pw();
 		String id = ScanUtil.nextLine(" id : ");
+		print_find_pw(id);
 		MemberVo member = memberService.find_pw(id);
 		if (member == null) {
 			System.out.println("존재하지 않는 id입니다.");
@@ -103,36 +103,39 @@ public class MemberController extends MemberPrint {
 		MemberVo member = memberService.find(param);
 		if (member == null) {
 			print_user_not_found();
-			System.out.println("존재하지 않는 사용자 입니다.");
-			System.out.println("1. 재시도   0. 뒤로가기");
-			if (ScanUtil.nextInt("선택 >> ") == 0)
+			switch (ScanUtil.nextInt("선택 >> ")) {
+			case 0 :
 				return Controller.goBack();
-			else {
+			case 9 :
+				return View.HOME;
+			default:
 				Controller.removeHistory();
-				find_id();
+				return View.FIND_ID;
 			}
 		} else if (member.getMem_delyn().equals("y") || member.getMem_delyn().equals("Y")) {
-			System.out.println("탈퇴한 사용자 입니다.");
-			System.out.println("1. 재시도   0. 뒤로가기");
-			if (ScanUtil.nextInt("선택 >> ") == 0)
+			print_user_gone();
+			switch (ScanUtil.nextInt("선택 >> ")) {
+			case 0 :
 				return Controller.goBack();
-			else {
-
-				Controller.pageHistory.remove(Controller.pageHistory.size());
-				find_id();
+			case 9 :
+				return View.HOME;
+			default:
+				Controller.removeHistory();
+				return View.FIND_ID;
 			}
 		} else {
 			String id = member.getMem_id();
-			System.out.println("id : " + id.substring(0, id.length() - 3) + "***");
+			print_found_id(id,name,phone);
 		}
 		while (true) {
-			System.out.println("1. 로그인  2. 비밀번호 찾기 \n0. 뒤로가기");
 			int select = ScanUtil.nextInt("선택 >> ");
 			switch (select) {
 			case 1:
 				return View.LOG_IN;
 			case 2:
 				return View.FIND_PW;
+			case 9 :
+				return View.HOME;
 			case 0:
 				return Controller.goBack();
 			default:
