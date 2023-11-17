@@ -20,7 +20,7 @@ public class RestaurantDao {
 		}
 		return singleTon;
 	}
-	
+
 	JDBCUtil jdbc = JDBCUtil.getInstance();
 
 //	public List<RestaurantVo> resList() {
@@ -40,6 +40,7 @@ public class RestaurantDao {
 
 	//'%'||?||'%'"
 //	like '"+cateNo+"%' 
+	//식당이름으로검색
 	public List<RestaurantVo> resSearchResName(String name) {
 		String sql = "with data as\r\n" + 
 				     "(select re.*, round(nvl(avg(r.rev_star),0)) rev_star\r\n" + 
@@ -52,28 +53,31 @@ public class RestaurantDao {
 				      "from data, menu\r\n" + 
 				      "where data.res_no = menu.res_no\r\n" + 
 				      "and menu.menu_no like '%001'\r\n" + 
-				      "and res_name like '%"+name+"%'";
+				      "and data.res_name like '%"+name+"%'\r\n"+
+				      "and data.res_postyn = 'Y'";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
 	}
 
-	public List<Map<String, Object>> resSearchCategory(int category) {
+	//메뉴카테고리로검색
+	public List<RestaurantVo> resSearchCategory(int category) {
 		String sql = "with data as\r\n" + 
 					 "(select re.*, round(nvl(avg(r.rev_star),0)) rev_star\r\n" + 
 					  "from review r right outer join restaurant re\r\n" + 
 					    "on r.res_no = re.res_no\r\n" + 
 					  "group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn \r\n" + 
 							   ",re.res_walk, re.res_postyn, re.cat_no, re.column1, re.column2)\r\n" + 
-					 "select rownum, data.res_name, data.res_walk, data.res_bookyn\r\n" + 
-					        ",data.rev_star\r\n" + 
+					 "select rownum, data.*\r\n" + 
 					        ",menu.menu_name, menu.menu_price\r\n" + 
 					 "from data, menu\r\n" + 
 					 "where data.res_no = menu.res_no\r\n" + 
-					 "and menu.menu_no like '%001'\r\n" + 
-					 "and cat_no = 0"+category;
+					 "and menu.menu_no like '%001'\r\n" +
+					 "and data.res_postyn = 'Y'\r\n"+
+					 "and data.cat_no = 0"+category;
 		List<Map<String, Object>> list = jdbc.selectList(sql);
-		return list;
+		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
 	}
 
+	//회원이 입력한 식당등록 중 식당테이블 관련 정보
 	public void resAdd(List<Object> restAdd) {
 		String sql1 = "select '"+restAdd.remove(0)+"' || lpad(aa,3,'0')from(select nvl(max(no),0)+1 aa\r\n"+
 					  "                  from(select substr(res_no,3) no\r\n" +
@@ -92,6 +96,7 @@ public class RestaurantDao {
 		jdbc.update(sql);
 	}
 	
+	//회원이 입력한 식당등록 값 중 res_no 사용을 위해
 	public RestaurantVo resAddOneBefore(String cateNo) {
 		String sql = "select res_no, res_name, cat_no, res_add, res_phone, res_bookyn\r\n" + 
 					 "from restaurant\r\n" + 
@@ -102,6 +107,7 @@ public class RestaurantDao {
 		return ConvertUtils.convertToVo(map, RestaurantVo.class);
 	}
 
+	//회원이 등록한 식당 출력
 	public RestaurantVo resAddOnePrint(String cateNo) {
 		String sql = "select res_no, res_name, cat_no, res_add, res_phone, res_bookyn\r\n" + 
 				",(select menu_name from menu where res_no=a.res_no and menu_no like '%001') menu_name\r\n" + 
@@ -112,10 +118,59 @@ public class RestaurantDao {
 		return ConvertUtils.convertToVo(map, RestaurantVo.class);
 	}
 
+	//식당 이름으로 검색할 때 상세보기
 	public List<RestaurantVo> getResDetail(String res_no) {
 		String sql = "select *,(select menu_name from menu where res_no=a.res_no) menu_name,(select menu_price from menu where res_no=a.res_no) menu price";
 		return null;
 	}
+	
+	//식당등록 전 수정
+	public void updateResName(String newResName, String res_no) {
+		String sql = "update restaurant \r\n" + 
+					 "set res_name = '"+newResName+ 
+					 "'where res_no = '"+res_no+"'";
+		jdbc.update(sql);
+	}
+
+	public void updateAdd(String newAdd, String res_no) {
+		String sql = "update restaurant \r\n" + 
+					 "set res_add = '"+newAdd+ 
+					 "'where res_no = '"+res_no+"'";
+		jdbc.update(sql);
+	}
+
+	public void updatePhone(String newPhone, String res_no) {
+		String sql = "update restaurant \r\n" + 
+					 "set res_phone = '"+newPhone+ 
+					 "'where res_no = '"+res_no+"'";
+		jdbc.update(sql);
+	}
+
+	public void updateBookyn(String newBookyn, String res_no) {
+		String sql = "update restaurant \r\n" + 
+					 "set res_bookyn = '"+newBookyn+ 
+					 "'where res_no = '"+res_no+"'";
+		jdbc.update(sql);
+	}
+
+	public void updatePrice(String newPrice, String res_no) {
+		String sql = "update menu \r\n" + 
+					 "set menu_price = '"+newPrice+ 
+					 "where res_no = '"+res_no+"'";
+		jdbc.update(sql);
+	}
+
+	//수정한 식당등록 출력
+	public RestaurantVo modifyResAdd(String res_no) {
+		String sql = "select res_no, res_name, cat_no, res_add, res_phone, res_bookyn\r\n" + 
+					",(select menu_name from menu where res_no=a.res_no and menu_no like '%001') menu_name\r\n" + 
+					",(select menu_price from menu where res_no=a.res_no and menu_no like '%001') menu_price\r\n" + 
+					"from (select * from restaurant where res_no='"+res_no+"' order by res_no desc) a\r\n" + 
+					"where ROWNUM = 1";
+		Map<String, Object> map = jdbc.selectOne(sql);
+		return ConvertUtils.convertToVo(map, RestaurantVo.class);
+	}
+	
 	
 	
 

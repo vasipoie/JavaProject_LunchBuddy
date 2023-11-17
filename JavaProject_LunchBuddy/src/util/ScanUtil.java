@@ -72,7 +72,26 @@ public class ScanUtil {
 			 }
 		 }
 	 }
-	 
+	 //Restaurant - 식당등록 - 가격
+	 public static String nextLineP(String print) {
+			System.out.print(print);
+			return nextLineP();
+		}
+		
+		/*
+		 * 니까 사용자가 사용 못하게 막음
+		 */
+		static String nextLineP() {
+			while (true) {
+				try {
+					String result = sc.nextLine();
+					return result;
+				} catch (NumberFormatException e) {
+					System.out.println("숫자만 입력해주세요");
+					System.out.print("가격 : ");
+				}
+			}
+		}
 	 
 	 
 }

@@ -25,11 +25,13 @@ public class RestaurantService {
 //		return resDao.resList();
 //	}
 
+	//식당이름으로검색
 	public List<RestaurantVo> resSearchResName(String name) {
 		return resDao.resSearchResName(name);
 	}
 
-	public List<Map<String, Object>> resSearchCategory(int category) {
+	//메뉴카테고리로검색
+	public List<RestaurantVo> resSearchCategory(int category) {
 		return resDao.resSearchCategory(category);
 	}
 
@@ -42,13 +44,41 @@ public class RestaurantService {
 		return resAddOne;
 	}
 
+	//회원이 등록한 식당 출력
 	public RestaurantVo resAddOnePrint(String cateNo) {
 		return resDao.resAddOnePrint(cateNo);
 	}
 
-//	public List<RestaurantVo> getResDetail(String res_no) {
-//		return resDao.getResDetail(res_no);
-//	}
+	//식당 이름으로 검색할 때 상세보기
+	public List<RestaurantVo> getResDetail(String res_no) {
+		return resDao.getResDetail(res_no);
+	}
+
+	//식당등록 전 수정
+	public void updateResName(String newResName, String res_no) {
+		resDao.updateResName(newResName, res_no);
+	}
+
+	public void updateAdd(String newAdd, String res_no) {
+		resDao.updateAdd(newAdd, res_no);
+	}
+
+	public void updatePhone(String newPhone, String res_no) {
+		resDao.updatePhone(newPhone, res_no);
+	}
+
+	public void updateBookyn(String newBookyn, String res_no) {
+		resDao.updateBookyn(newBookyn, res_no);
+	}
+
+	public void updatePrice(String newPrice, String res_no) {
+		resDao.updatePrice(newPrice, res_no);		
+	}
+	
+	//수정한 식당등록 보여주기
+	public RestaurantVo modifyResAdd(String res_no) {
+		return resDao.modifyResAdd(res_no);
+	}
 
 	
 	
