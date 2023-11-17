@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.List;
 import java.util.Map;
 
 import util.ConvertUtils;
@@ -18,5 +19,10 @@ public class Dao {
 	}
 
 	JDBCUtil jdbc = JDBCUtil.getInstance();
+
+	public List<Map<String, Object>> getMenuList(String res_no) {
+		String sql = "select * from menu where res_no =" + res_no ;
+		return jdbc.selectList(sql);
+	}
 	
 }

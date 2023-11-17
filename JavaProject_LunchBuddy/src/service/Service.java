@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.Map;
 
 import controller.Controller;
@@ -22,5 +23,9 @@ public class Service {
 	}
 	
 	Dao dao = Dao.getInstance();
+
+	public List<Map<String, Object>> getMenuList(String res_no) {
+		return dao.getMenuList(res_no);
+	}
 	
 }

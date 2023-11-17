@@ -56,7 +56,8 @@ public class BFController extends BFPrint{
 		switch (select) {
 		case 1 : 
 			Controller.init_page(5, 2, "상세보기", "selected_bf", View.BF_DETAIL);
-			return new Controller().list_paging();
+			Controller.sessionStorage.put("list_for_paging", bfService.get_bfList());
+			return View.LIST_PAGING;
 		case 2 : return View.BF_MAKE;
 		case 9 : return View.HOME;
 		case 0 : return Controller.goBack();
@@ -66,6 +67,12 @@ public class BFController extends BFPrint{
 		}
 	}
 
+	/**
+	 * 점심친구 상세보기
+	 * 로그인이 되어있고 로그인한 사용자가 등록한 본인이라면 삭제 선택지
+	 * 그렇지 않으면 참여 선택지
+	 * @return
+	 */
 	private View bf_detail() {
 		BFVo bobF = (BFVo) Controller.sessionStorage.get("selected_bf");
 		List<BFListVo> bfMemList = bfListService.getmems(bobF.getBf_no());
@@ -73,7 +80,7 @@ public class BFController extends BFPrint{
 		MemberVo loginmem = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		if( loginmem!=null && loginmem.getMem_no()==bobF.getMem_no() ) {
 			System.out.println("1. 삭제하기");
-		} else if ( bfMemList.size() < (bobF.getBf_num()-1) ){
+		} else if ( bfMemList.size() < (bobF.getBf_num()) ){
 			System.out.println("1. 참석하기");
 		}else System.out.println();
 		System.out.println("9.홈으로 가기     0.뒤로가기");
@@ -86,9 +93,12 @@ public class BFController extends BFPrint{
 				print_delete_sucess();
 				return View.HOME;
 			}else {
-				if(loginmem==null) return View.LOG_IN;
-				else if( bfMemList.size() < (bobF.getBf_num()-1) ){
-					if(bfListService.checkParti(loginmem.getMem_no(),bobF.getBf_no())) {
+				if( bfMemList.size() < (bobF.getBf_num()) ){
+					if(loginmem == null) {
+						page_need_login();
+						return View.LOG_IN;
+					}
+					else if(bfListService.checkParti(loginmem.getMem_no(),bobF.getBf_no())) {
 						bfListService.parti(loginmem.getMem_no(),bobF.getBf_no());
 						return View.BF_DETAIL;
 					}else {
@@ -129,12 +139,17 @@ public class BFController extends BFPrint{
 		//로그인 되어있는지 확인
 		//안되어있으면 로그인
 		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		if(login_member==null) return View.LOG_IN;
+		if(login_member==null) {
+			page_need_login();
+			return View.SELECT_LOGIN;
+		}
 		
 		// 식당 선택 했는지 확인
 		// 안되어있으면 검색
 		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_res_for_bf");
 		if(restaurant==null) return View.RES_SEARCH_FOR_BF;
+		restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_res_for_bf");
+		System.out.println(restaurant);
 		
 		String bfTitle = ScanUtil.nextLine("모임 이름 : ");
 		String bfCont = ScanUtil.nextLine("모임 내용 : ");
@@ -159,13 +174,14 @@ public class BFController extends BFPrint{
 		param.add(bfTitle);
 		param.add(bfCont);
 		param.add(bfNum);
-		param.add(bfDate);
+		param.add(bfDate+"13");
 		param.add(restaurant.getRes_no());
 		
 		bfService.bf_make(param);
 		System.out.println("등록 되었습니다!");
 		
 		BFVo bf = bfService.getBF_just_wrote();
+		bfListService.parti(login_member.getMem_no(), bf.getBf_no());
 		Controller.sessionStorage.put("selected_bf", bf);
 		return View.BF_DETAIL;
 	}
