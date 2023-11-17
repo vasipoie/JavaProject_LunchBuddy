@@ -64,4 +64,9 @@ public class ReviewDao {
 				"where rownum =1";
 		return ConvertUtils.convertToVo(jdbc.selectOne(sql), ReviewVo.class);
 	}
+
+	public List<ReviewVo> review_by_res(String res_no) {
+		String sql = sql_+"where res_no = " + res_no;
+		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
+	}
 }

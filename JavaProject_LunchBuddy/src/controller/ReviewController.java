@@ -37,6 +37,9 @@ public class ReviewController extends ReviewPrint{
 			case SEE_REVIEW_BY_WRITER:
 				view = see_review_by_writer();
 				break;
+			case SEE_REVIEW_BY_RES:
+				view = see_review_by_res();
+				break;
 			case ADD_REVIEW:
 				view = add_review();
 				break;
@@ -45,6 +48,14 @@ public class ReviewController extends ReviewPrint{
 				return view;
 			}
 		}
+	}
+
+	private View see_review_by_res() {
+		String res_no = (String) Controller.sessionStorage.get("selected_rest_no");
+		List<ReviewVo> reviewList = reviewService.review_by_res(res_no);
+		Controller.init_page(5, 2, "리뷰 상세 보기", "selected_review" , View.REVIEW_DETAIL);
+		Controller.sessionStorage.put("list_for_paging", reviewList);
+		return new Controller().list_paging();
 	}
 
 	/**
