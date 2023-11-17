@@ -21,6 +21,7 @@ public class Controller extends Print {
 	ReviewController revc = new ReviewController();
 	RestaurantController resc = new RestaurantController();
 	BFController bfController = new BFController();
+	RestaurantController resController = new RestaurantController();
 
 	Service service = Service.getInstance();
 	MemberService memberService = new MemberService();
@@ -51,9 +52,6 @@ public class Controller extends Print {
 				break;
 			case RES_SEARCH_CATEGORY:// 메뉴 카테고리로 검색
 				view = resc.resSearchCategory();
-				break;
-			case RES_LIST: // 식당 리스트
-				view = resc.resList();
 				break;
 			case SEARCH:
 //				view = search();
@@ -86,6 +84,7 @@ public class Controller extends Print {
 				view = memberController.memberController(view);
 				view = revc.reviewController(view);
 				view = bfController.bfcontroller(view);
+				view = resController.restController(view);
 			}
 		}
 	}
