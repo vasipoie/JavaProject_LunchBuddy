@@ -93,7 +93,7 @@ public class BFController extends BFPrint{
 				print_delete_sucess();
 				return View.HOME;
 			}else {
-				if( bfMemList.size() < (bobF.getBf_num()) ){
+				if( bfMemList.size() <= (bobF.getBf_num()) ){
 					if(loginmem == null) {
 						page_need_login();
 						return View.LOG_IN;
@@ -125,11 +125,7 @@ public class BFController extends BFPrint{
 	 * @return
 	 */
 	private View res_search_for_bf() {
-		String res_name = ScanUtil.nextLine("식당 이름  검색: ");
-		List<Object> param = new ArrayList();
-		param.add(res_name);
-		List<Map<String,Object>> l = restaurantService.resSearchResName(param);
-		List<RestaurantVo> restaurantList = ConvertUtils.convertToList(l, RestaurantVo.class);
+		List<RestaurantVo> restaurantList = restaurantService.resSearchResName(ScanUtil.nextLine("식당 이름  검색: "));
 		Controller.init_page( 5, 2, "식당 선택하기", "selected_res_for_bf", View.BF_MAKE );
 		Controller.sessionStorage.put("list_for_paging", restaurantList);
 		return new Controller().list_paging();

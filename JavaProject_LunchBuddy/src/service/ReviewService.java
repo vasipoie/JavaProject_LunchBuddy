@@ -41,4 +41,8 @@ public class ReviewService {
 	public ReviewVo review_just_wrote() {
 		return dao.review_just_wrote();
 	}
+
+	public List<ReviewVo> review_by_res(String res_no) {
+		return dao.review_by_res(res_no);
+	}
 }
