@@ -76,9 +76,11 @@ public class RestaurantPrint {
 	}
 	
 	
-	public void printResAddOne(RestaurantVo restAdd, RestaurantVo menuPrice) {
+	public void printResAddOne(RestaurantVo resAddOnePrint) {
 		printBar();
-		System.out.println("[ " + restAdd.getRes_name() + " ] " + restAdd.getRes_bookyn());
+		System.out.println("[ " + resAddOnePrint.getRes_name() + " ] " +"\s 카테고리 : "+resAddOnePrint.getCat_no());
+		System.out.println("주소 : "+ resAddOnePrint.getRes_add() + "\s 전화번호 : " + resAddOnePrint.getRes_phone()+"\s 예약가능여부 : "+ resAddOnePrint.getRes_bookyn());
+		System.out.println("대표메뉴 : " + resAddOnePrint.getMenu_name() + "\s 가격 : "+resAddOnePrint.getMenu_price()+"원");
 		printBar();
 		System.out.println("1. 등록요청");
 		System.out.println("2. 수정");
