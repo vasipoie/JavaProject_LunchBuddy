@@ -15,5 +15,14 @@ public class RestaurantVo {
 	 private String cat_no;
 	 private String menu_name;
 	 private String menu_price;
+	 private int rev_star;
+	 
+	@Override
+	public String toString() {
+		return "["+res_name+"]\s거리 :"+res_walk+"분 /예약여부 : "+res_bookyn+"\n"+
+				"(평점:"+rev_star+")\s대표메뉴 :"+menu_name+" - "+menu_price+"원";
+	}
+	 
+	 
 	 
 }

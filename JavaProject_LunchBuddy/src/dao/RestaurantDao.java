@@ -23,38 +23,37 @@ public class RestaurantDao {
 	
 	JDBCUtil jdbc = JDBCUtil.getInstance();
 
-	public List<RestaurantVo> resList() {
-		String sql = "select re.res_name, re.res_walk, re.res_bookyn \r\n" + 
-					   ",(select round(nvl(avg(rev_star),0)) rev_star \r\n" + 
-					    "from review \r\n" + 
-					    "where review.res_no = re.res_no) rev_star\r\n" + 
-					  ",m.menu_name, m.menu_price\r\n" + 
-					 "from  restaurant re, menu m\r\n" + 
-					 "where m.res_no = re.res_no\r\n" + 
-					 "and m.menu_no like '%001'\r\n" + 
-					 "and re.res_postyn = 'N'\r\n" + 
-					 "order by m.menu_price";
-		List<Map<String, Object>> resList = jdbc.selectList(sql);
-		return ConvertUtils.convertToList(resList, RestaurantVo.class);
-	}
+//	public List<RestaurantVo> resList() {
+//		String sql = "select re.res_name, re.res_walk, re.res_bookyn \r\n" + 
+//					   ",(select round(nvl(avg(rev_star),0)) rev_star \r\n" + 
+//					    "from review \r\n" + 
+//					    "where review.res_no = re.res_no) rev_star\r\n" + 
+//					  ",m.menu_name, m.menu_price\r\n" + 
+//					 "from  restaurant re, menu m\r\n" + 
+//					 "where m.res_no = re.res_no\r\n" + 
+//					 "and m.menu_no like '%001'\r\n" + 
+//					 "and re.res_postyn = 'N'\r\n" + 
+//					 "order by m.menu_price";
+//		List<Map<String, Object>> resList = jdbc.selectList(sql);
+//		return ConvertUtils.convertToList(resList, RestaurantVo.class);
+//	}
 
 	//'%'||?||'%'"
-	public List<Map<String, Object>> resSearchResName(List<Object> param) {
+//	like '"+cateNo+"%' 
+	public List<RestaurantVo> resSearchResName(String name) {
 		String sql = "with data as\r\n" + 
 				     "(select re.*, round(nvl(avg(r.rev_star),0)) rev_star\r\n" + 
 				       "from review r right outer join restaurant re\r\n" + 
 				         "on r.res_no = re.res_no\r\n" + 
 				       "group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn \r\n" + 
 				                ", re.res_walk, re.res_postyn, re.cat_no, re.column1, re.column2)\r\n" + 
-				      "select rownum, data.res_name, data.res_walk, data.res_bookyn\r\n" + 
-				             ", data.rev_star\r\n" + 
+				      "select rownum, data.*\r\n" + 
 				             ", menu.menu_name, menu.menu_price\r\n" + 
 				      "from data, menu\r\n" + 
 				      "where data.res_no = menu.res_no\r\n" + 
 				      "and menu.menu_no like '%001'\r\n" + 
-				      "and res_name like '%'||?||'%'";
-		List<Map<String, Object>> list = jdbc.selectList(sql,param);
-		return list;
+				      "and res_name like '%"+name+"%'";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
 	}
 
 	public List<Map<String, Object>> resSearchCategory(int category) {
@@ -111,6 +110,11 @@ public class RestaurantDao {
 				"where ROWNUM = 1";
 		Map<String, Object> map = jdbc.selectOne(sql);
 		return ConvertUtils.convertToVo(map, RestaurantVo.class);
+	}
+
+	public List<RestaurantVo> getResDetail(String res_no) {
+		String sql = "select *,(select menu_name from menu where res_no=a.res_no) menu_name,(select menu_price from menu where res_no=a.res_no) menu price";
+		return null;
 	}
 	
 	
