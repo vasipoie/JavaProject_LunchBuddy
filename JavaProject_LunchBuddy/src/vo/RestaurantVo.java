@@ -19,8 +19,8 @@ public class RestaurantVo {
 	 
 	@Override
 	public String toString() {
-		return "["+res_name+"]\s거리 :"+res_walk+"분 / 예약여부 : "+res_bookyn+"\n"+
-				"(평점:"+rev_star+")\s대표메뉴 :"+menu_name+" - "+menu_price+"원";
+		return "["+res_name+"] 거리 :"+res_walk+"분 / 예약여부 : "+res_bookyn+"\n"+
+				"(평점:"+rev_star+") 대표메뉴 :"+menu_name+" - "+menu_price+"원";
 	}
 	 
 	 
