@@ -42,9 +42,6 @@ public class RestaurantController extends RestaurantPrint{
 			case RES_ADD_ONE:  //식당 등록요청 전에 사용자가 요청한 등록 출력
 				view = resAddOne();	
 				break;
-			case ADMIN_RES_MANAGE:	//식당 등록요청 건 관리자로 보내기
-//				view = ac.adminResManage();
-				break;
 			case RES_DETAIL_CATEGORY: //메뉴 카테고리로 검색할 때 상세보기
 				view = resDetailCategory();
 				break;
@@ -230,22 +227,22 @@ public class RestaurantController extends RestaurantPrint{
 		printResAddExample();
 		//카테고리
 		printResAddCategory();
-		String cateNo;
-		int cate = ScanUtil.nextIntC("카테고리 번호 : ");
-		switch(cate) {
-		case 1 : cateNo = "01";	break;
-		case 2 : cateNo = "02";	break;
-		case 3 : cateNo = "03";	break;
-		case 4 : cateNo = "04";	break;
-		case 5 : cateNo = "05";	break;
-		case 6 : cateNo = "06";	break;
-		case 7 : cateNo = "07";	break;
-		case 8 : cateNo = "08";	break;
-		case 9 : cateNo = "09";	break;
-		default : 
-			System.out.println("잘못 입력했습니다. 다시 입력해주세요");
-			return View.RES_ADD;
-		}
+//		String cateNo;
+//		int cate = ScanUtil.nextIntC("카테고리 번호 : ");
+//		switch(cate) {
+//		case 1 : cateNo = "01";	break;
+//		case 2 : cateNo = "02";	break;
+//		case 3 : cateNo = "03";	break;
+//		case 4 : cateNo = "04";	break;
+//		case 5 : cateNo = "05";	break;
+//		case 6 : cateNo = "06";	break;
+//		case 7 : cateNo = "07";	break;
+//		case 8 : cateNo = "08";	break;
+//		case 9 : cateNo = "09";	break;
+//		default : 
+//			System.out.println("잘못 입력했습니다. 다시 입력해주세요");
+//			return View.RES_ADD;
+//		}
 //		//식당이름
 //		String resName = ScanUtil.nextLine("식당 이름 : ");
 //		if(resName.isEmpty()) {
@@ -312,12 +309,13 @@ public class RestaurantController extends RestaurantPrint{
 //			price = ScanUtil.nextLine("가격 : ");
 //		}
 		
-		String resName = "1118테스트이름";
-		String address = "1118테스트주소";
-		String phone = "테스트번호";//수정!!!!!숫자만 넣게하기
-		String bookyn = "y";
-		String sigMenu = "테스트대표메뉴";
-		String price = "999";
+		String cateNo = "01";
+		String resName = "옹기마을";
+		String address = "대전 중구 계룡로816번길 16";
+		String phone = "0425263332";
+		String bookyn = "가능";
+		String sigMenu = "부대찌개";
+		String price = "8000";
 		
 		//insert전 회원확인용
 		List<Object> chk = new ArrayList<Object>();
@@ -342,8 +340,6 @@ public class RestaurantController extends RestaurantPrint{
 		restAdd.add(cateNo);
 		//등록요청 후에 insert되게하려고 일단 sessionStorage 저장
 		sessionStorage.put("restAdd", restAdd);
-
-		
 		return View.RES_ADD_ONE; //다음 뷰로 이동해서 등록요청
 	}
 	

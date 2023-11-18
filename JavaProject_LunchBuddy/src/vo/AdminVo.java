@@ -9,5 +9,7 @@ public class AdminVo {
 	 private String adm_id;
 	 private String adm_pw;
 	 private String adm_name;
+	 
+	 
 	
 }

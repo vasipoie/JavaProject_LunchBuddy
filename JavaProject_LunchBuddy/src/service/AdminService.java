@@ -6,6 +6,7 @@ import java.util.Map;
 import controller.Controller;
 import dao.AdminDao;
 import vo.AdminVo;
+import vo.RestaurantVo;
 
 
 public class AdminService {
@@ -31,6 +32,11 @@ public class AdminService {
 			return true;
 		}
 		return false;
+	}
+
+	//관리자용 등록 대기 중 식당 리스트
+	public List<RestaurantVo> adminResList() {
+		return adminDao.adminResList();
 	}
 	
 }
