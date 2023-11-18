@@ -100,7 +100,7 @@ public class RestaurantController extends RestaurantPrint{
 			System.out.println("예약가능여부는 숫자만 입력가능합니다");
 			String newBookyn = "";
 			while(true) {
-				int book = ScanUtil.nextIntB("예약가능여부(1.가능/2.불가능/3.미확인) : ");
+				int book = ScanUtil.nextInt("예약가능여부(1.가능/2.불가능/3.미확인) : ");
 				if(book == 1) {
 					newBookyn = "가능";
 				}
@@ -111,7 +111,7 @@ public class RestaurantController extends RestaurantPrint{
 					newBookyn = "미확인";
 				}
 				else {
-					System.out.println("default 숫자 1,2,3 중 한 개를 입력해주세요");
+					System.out.println("숫자 1,2,3 중 한 개를 입력해주세요");
 					continue;
 				}
 				break;
@@ -149,7 +149,7 @@ public class RestaurantController extends RestaurantPrint{
 	public View resAddOne() {
 		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		if(mb==null) {
-			int select = ScanUtil.nextInt("1.로그인\s2.회원가입\s|메뉴선택 : ");
+			int select = ScanUtil.nextInt("1.로그인 2.회원가입 |메뉴선택 : ");
 			printBar();
 			switch(select) {
 			case 1:
@@ -166,8 +166,9 @@ public class RestaurantController extends RestaurantPrint{
 		
 		printResInsertBefore(restAdd,chk);
 		printSelectResInsertBefore();
+		
 		//아래수정!!!!!!!!!!!!!!!
-		int select = ScanUtil.nextInt("이야아아아아 메뉴를 선택하세요\s");
+		int select = ScanUtil.nextInt("이야아아아아 메뉴를 선택하세요 ");
 		switch (select) {
 		case 1:
 			resService.resAdd(restAdd);
@@ -187,7 +188,7 @@ public class RestaurantController extends RestaurantPrint{
 			return View.HOME;
 			
 		case 2:
-			int yn = ScanUtil.nextInt("수정하시겠습니까?\s1.예\s2.아니오\s|메뉴선택 : ");
+			int yn = ScanUtil.nextInt("수정하시겠습니까? 1.예 2.아니오 |메뉴선택 : ");
 			switch(yn) {
 			case 1:
 				return View.RES_ADD_MODIFY;
@@ -215,7 +216,7 @@ public class RestaurantController extends RestaurantPrint{
 		//로그인 -> 로그인 되어있으면 잠시후 로그인페이지로 이동합니다 안나오게?
 		MemberVo mb = (MemberVo) sessionStorage.get("log_in_member");
 		if(mb==null) {
-			int select = ScanUtil.nextInt("1.로그인\s2.회원가입\s|메뉴선택 : ");
+			int select = ScanUtil.nextInt("1.로그인 2.회원가입 |메뉴선택 : ");
 			printBar();
 			switch(select) {
 			case 1:
@@ -393,7 +394,7 @@ public class RestaurantController extends RestaurantPrint{
 	public View resDetail() {
 		RestaurantVo rest = (RestaurantVo) Controller.sessionStorage.get("resDetailResName");
 		printResDetail(rest);
-		List<RestaurantVo> restaurant = resService.getResDetail(rest.getRes_no());
+//		List<RestaurantVo> restaurant = resService.getResDetail(rest.getRes_no());
 		print_select_for_restDetail();
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
@@ -401,7 +402,7 @@ public class RestaurantController extends RestaurantPrint{
 			Controller.sessionStorage.put("selected_rest_no", rest.getRes_no());
 			return View.SEE_REVIEW_BY_RES;
 		case 2 :
-			Controller.sessionStorage.put("selected_review", rest);
+			Controller.sessionStorage.put("", rest);
 			return View.SEE_REVIEW_BY_WRITER;
 		case 3 : 
 			Controller.sessionStorage.put("menu_review", rest);
@@ -432,7 +433,7 @@ public class RestaurantController extends RestaurantPrint{
 	//식당 검색 전 선택
 	public View resSearchSelect() {
 		printResSearchSelect();
-		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		int select = ScanUtil.nextInt("메뉴를 선택하세요 ");
 		switch(select) {
 		case 1:
 			return View.RES_SEARCH_RESNAME;//식당이름으로 검색

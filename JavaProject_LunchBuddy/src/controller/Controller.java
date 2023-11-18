@@ -103,7 +103,7 @@ public class Controller extends Print {
 
 	private View add() {
 		printAdd();
-		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		int select = ScanUtil.nextInt("메뉴를 선택하세요  ");
 		switch (select) {
 		case 1:
 			return View.ADD_REVIEW;// 리뷰등록
@@ -116,7 +116,7 @@ public class Controller extends Print {
 
 	private View home() {
 		printHome();
-		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		int select = ScanUtil.nextInt("메뉴를 선택하세요  ");
 		switch (select) {
 		case 1:
 			return View.RES_SEARCH_SELECT;

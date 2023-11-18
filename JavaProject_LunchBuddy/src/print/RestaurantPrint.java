@@ -22,8 +22,8 @@ public class RestaurantPrint extends Print{
 		System.out.println("식당 리스트");
 		printBar();
 		for(RestaurantVo reslist : rsrn) {
-			System.out.println("["+reslist.getRes_name()+"]\s거리 :"+reslist.getRes_walk()+"분 / 예약여부 : "+reslist.getRes_bookyn());
-			System.out.println("(평점:"+reslist.getRev_star()+")\s대표메뉴 :"+reslist.getMenu_name()+" - "+reslist.getMenu_price()+"원");
+			System.out.println("["+reslist.getRes_name()+"] 거리 :"+reslist.getRes_walk()+"분 / 예약여부 : "+reslist.getRes_bookyn());
+			System.out.println("(평점:"+reslist.getRev_star()+") 대표메뉴 :"+reslist.getMenu_name()+" - "+reslist.getMenu_price()+"원");
 		}
 		printBar();
 	}
@@ -99,9 +99,9 @@ public class RestaurantPrint extends Print{
 		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
 		printBar();
 		
-		System.out.println("["+restAdd.get(2)+"]\s카테고리 : "+cateName2((String)chk.get(1)));
-		System.out.println("주소 : "+restAdd.get(3)+"\s\s 전화번호 : "+restAdd.get(4)+"\s 예약가능여부 : "+restAdd.get(5));
-		System.out.println("대표메뉴 : "+chk.get(5)+"\s\s 가격 : "+chk.get(6)+"원");
+		System.out.println("["+restAdd.get(2)+"] 카테고리 : "+cateName2((String)chk.get(1)));
+		System.out.println("주소 : "+restAdd.get(3)+"   전화번호 : "+restAdd.get(4)+"  예약가능여부 : "+restAdd.get(5));
+		System.out.println("대표메뉴 : "+chk.get(5)+"   가격 : "+chk.get(6)+"원");
 	}
 	
 	//사용자가 입력한 식당등록 insert 전 입력한 내용 출력해서 보여주고 선택창
@@ -120,9 +120,9 @@ public class RestaurantPrint extends Print{
 		printBar();
 		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
 		printBar();
-		System.out.println("["+resAddOnePrint.getRes_name()+"]\s카테고리 : "+cateName(resAddOnePrint));
-		System.out.println("주소 : "+resAddOnePrint.getRes_add()+"\s전화번호 : "+resAddOnePrint.getRes_phone()+"\s 예약가능여부 : "+resAddOnePrint.getRes_bookyn());
-		System.out.println("대표메뉴 : "+resAddOnePrint.getMenu_name()+"\s가격 : "+resAddOnePrint.getMenu_price()+"원");
+		System.out.println("["+resAddOnePrint.getRes_name()+"] 카테고리 : "+cateName(resAddOnePrint));
+		System.out.println("주소 : "+resAddOnePrint.getRes_add()+" 전화번호 : "+resAddOnePrint.getRes_phone()+"  예약가능여부 : "+resAddOnePrint.getRes_bookyn());
+		System.out.println("대표메뉴 : "+resAddOnePrint.getMenu_name()+" 가격 : "+resAddOnePrint.getMenu_price()+"원");
 		printBar();
 		System.out.println("1. 등록요청");
 		System.out.println("2. 수정");
@@ -174,7 +174,7 @@ public class RestaurantPrint extends Print{
 	public void printResDetail(RestaurantVo rest) {
 		System.out.println("식당 상세 보기");
 		printBar();
-		System.out.println("["+rest.getRes_name()+"]\s"+ new ReviewPrint().stars(rest.getRev_star()));
+		System.out.println("["+rest.getRes_name()+"] "+ new ReviewPrint().stars(rest.getRev_star()));
 		System.out.println(cateName(rest) + "\t" + rest.getRes_walk()+"min");
 		System.out.println(rest.getRes_phone());
 		System.out.println(rest.getRes_add());
@@ -185,7 +185,7 @@ public class RestaurantPrint extends Print{
 	public void printCateDetail(RestaurantVo cate) {
 		System.out.println("식당 상세 보기");
 		printBar();
-		System.out.println("["+cate.getRes_name()+"]\s"+ new ReviewPrint().stars(cate.getRev_star()));
+		System.out.println("["+cate.getRes_name()+"] "+ new ReviewPrint().stars(cate.getRev_star()));
 		System.out.println(cateName(cate) + "\t" + cate.getRes_walk()+"min");
 		System.out.println(cate.getRes_phone());
 		System.out.println(cate.getRes_add());
