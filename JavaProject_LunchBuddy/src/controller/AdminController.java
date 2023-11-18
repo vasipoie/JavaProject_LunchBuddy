@@ -170,8 +170,8 @@ public class AdminController extends AdminPrint {
 			return View.ADMIN_HOME;
 		case 9:
 			return View.ADMIN_HOME;
-		case 0:
-			return View.RES_ADD_ONE;
+//		case 0:
+//			return View.RES_ADD_ONE;
 		default:
 			adminModifyStandbyResDetail();
 		}
@@ -224,8 +224,120 @@ public class AdminController extends AdminPrint {
 	
 	//관리자 등록된 식당 수정
 	public View adminModifyRegiResDeatil() {
-		
-		return null;
+		RestaurantVo regiRes = (RestaurantVo) Controller.sessionStorage.get("adminRegiResDetail");
+		printAdminModifyResDetailSelect();
+		int select = ScanUtil.nextInt("메뉴 선택 >> ");
+		switch (select) {
+		case 1:
+			String newResName = ScanUtil.nextLine("새로운 식당이름 : ");
+			if(newResName.isEmpty()) {
+				System.out.println("식당이름을 입력해주세요");
+				newResName = ScanUtil.nextLine("새로운 식당이름 : ");
+			}
+			regiRes.setRes_name(newResName);
+			adminService.adminUpdateResName(newResName, regiRes.getRes_no());
+			RestaurantVo adminModiResDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiResDetail);
+			break;
+		case 2:
+			System.out.println("이동시간은 숫자만 입력가능합니다");
+			int newWalk = ScanUtil.nextIntW("이동시간 : ");
+			regiRes.setRes_walk(newWalk);
+			adminService.adminUpdateWalk(newWalk, regiRes.getRes_no());
+			RestaurantVo adminModiWalkDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiWalkDetail);
+			break;
+		case 3:
+			System.out.println("예약가능여부는 숫자만 입력가능합니다");
+			String newBookyn = "";
+			while(true) {
+				int book = ScanUtil.nextIntB("새로운 예약가능여부(1.가능/2.불가능/3.미확인) : ");
+				if(book == 1) {
+					newBookyn = "가능";
+				}
+				else if(book == 2 ) {
+					newBookyn = "불가능";
+				}
+				else if(book == 3) {
+					newBookyn = "미확인";
+				}
+				else {
+					System.out.println("숫자 1,2,3 중 한 개를 입력해주세요");
+					continue;
+				}
+				break;
+			}
+			regiRes.setRes_bookyn(newBookyn);
+			adminService.adminUpdateBook(newBookyn, regiRes.getRes_no());
+			RestaurantVo adminModiBookDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiBookDetail);
+			break;
+		case 4:
+			String newAdd = ScanUtil.nextLine("새로운 주소 : ");
+			if(newAdd.isEmpty()) {
+				System.out.println("주소를 입력해주세요");
+				newAdd = ScanUtil.nextLine("새로운 주소 : ");
+			}
+			regiRes.setRes_add(newAdd);
+			adminService.adminUpdateAdd(newAdd, regiRes.getRes_no());
+			RestaurantVo adminModiAddDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiAddDetail);
+			break;
+		case 5:
+			String newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
+			if(newPhone.isEmpty()) {
+				System.out.println("전화번호를 입력해주세요");
+				newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
+			}
+			if(!newPhone.matches("^[0-9]*$")) {
+				System.out.println("숫자만 입력가능합니다");
+				newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
+			}
+			regiRes.setRes_phone(newPhone);
+			adminService.adminUpdatePhone(newPhone, regiRes.getRes_no());
+			RestaurantVo adminModiPhoneDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiPhoneDetail);
+			break;
+		case 6:
+			String newMenu = ScanUtil.nextLine("새로운 메뉴 : ");
+			if(newMenu.isEmpty()) {
+				System.out.println("메뉴를 입력해주세요");
+				newMenu = ScanUtil.nextLine("새로운 메뉴 : ");
+			}
+			regiRes.setMenu_name(newMenu);
+			adminService.adminUpdateMenu(newMenu, regiRes.getRes_no());
+			RestaurantVo adminModiMenuDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiMenuDetail);
+			break;
+		case 7:
+			System.out.println("가격은 숫자만 입력가능합니다");
+			String newPrice = ScanUtil.nextLine("새로운 가격 : ");
+			if(newPrice.isEmpty()) {
+				System.out.println("가격을 입력해주세요");
+				newPrice = ScanUtil.nextLine("가격 : ");
+			}
+			if(!newPrice.matches("^[0-9]*$")) {
+				System.out.println("가격은 숫자만 입력가능합니다");
+				newPrice = ScanUtil.nextLine("가격 : ");
+			}
+			regiRes.setMenu_price(newPrice);
+			adminService.adminUpdatePrice(newPrice, regiRes.getRes_no());
+			RestaurantVo adminModiPriceDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
+			printAdminResDetail(adminModiPriceDetail);
+			break;
+		case 8:
+			adminService.adminResUpload(regiRes.getRes_no());
+			printAdminRegiRes();
+			return View.ADMIN_HOME;
+		case 9:
+			return View.ADMIN_HOME;
+//		case 0:
+//			return View.RES_ADD_ONE;
+		default:
+			adminModifyStandbyResDetail();
+		}
+		sessionStorage.replace("adminStandbyResDetail", regiRes);
+		return View.ADMIN_MODIFY_REGI_RES_DETAIL;
 	}
 	
 	//관리자 등록된 식당 상세보기
@@ -264,7 +376,7 @@ public class AdminController extends AdminPrint {
 				return View.ADMIN_REGI_RES_DETAIL;
 			}
 		case 9 : return View.ADMIN_HOME;
-		case 0 : return Controller.goBack();
+		case 0 : return Controller.goBack();//안먹힘
 		default:
 			Controller.removeHistory();
 			return View.ADMIN_REGI_RES_DETAIL;
