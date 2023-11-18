@@ -19,7 +19,7 @@ public class MenuDao {
 	
 	JDBCUtil jdbc = JDBCUtil.getInstance();
 
-	//식당등록할 때 입력하는 대표메뉴, 가격 insert
+	//식당등록할 때 입력받는 대표메뉴, 가격 insert
 	public void menuAdd(List<Object> menuAdd) {
 		String sql = "insert into menu (menu_no, menu_name, menu_price, res_no)\r\n" + 
 					 "values( ?||'M'|| lpad((select nvl(max(no),0)+1 \r\n" + 

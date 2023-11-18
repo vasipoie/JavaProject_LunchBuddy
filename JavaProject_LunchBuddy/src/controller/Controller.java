@@ -23,27 +23,17 @@ public class Controller extends Print {
 	ReviewController revc = new ReviewController();
 	RestaurantController resc = new RestaurantController();
 	BFController bfController = new BFController();
+	RestaurantController resController = new RestaurantController();
 
 	Service service = Service.getInstance();
 	MemberService memberService = new MemberService();
 
 	public static void main(String[] args) {
-//		new Controller().start();
-		new Controller().test();
+		new Controller().start();
+//		new Controller().test();
 	}
 	
 	public void test() {
-//		new Print().printHome();
-//		new MemberPrint().print_login_fail("어쩌구가 틀렸습니다.","idid","pwpwpwpw");
-//		new MemberPrint().print_join_error("","","","","","","");
-//		List<Object> param = new ArrayList();
-//		param.add("yeeun0814");
-//		param.add("0000");
-//		MemberVo member = memberService.log_in(param);
-//		new MemberPrint().print_my_info(member);
-//		new MemberPrint().print_find_id("","");
-		new MemberPrint().print_found_id("yeeun0814","권예은","01058070814");
-		
 		
 	}
 
@@ -69,9 +59,6 @@ public class Controller extends Print {
 				break;
 			case RES_SEARCH_CATEGORY:// 메뉴 카테고리로 검색
 				view = resc.resSearchCategory();
-				break;
-			case RES_LIST: // 식당 리스트
-				view = resc.resList();
 				break;
 			case SEARCH:
 //				view = search();
@@ -104,6 +91,7 @@ public class Controller extends Print {
 				view = memberController.memberController(view);
 				view = revc.reviewController(view);
 				view = bfController.bfcontroller(view);
+				view = resController.restController(view);
 			}
 		}
 	}
@@ -249,15 +237,15 @@ public class Controller extends Print {
 
 	static void newPage(View view) {
 		int page = pageHistory.size();
-		if (pageHistory.get(page) == view)
+		if (pageHistory.get(page-1) == view)
 			return;
 		pageHistory.put(page + 1, view);
 	}
 
 	public static View goBack() {
-		int page = pageHistory.size();
-		if (page == 1)
+		if (pageHistory.size() == 1)
 			return View.HOME;
+		int page = pageHistory.size();
 		pageHistory.remove(page);
 		return pageHistory.get(page - 1);
 	}

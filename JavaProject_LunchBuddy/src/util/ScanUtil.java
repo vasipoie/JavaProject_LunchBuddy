@@ -6,20 +6,17 @@ public class ScanUtil {
 	// 스캐너를 손쉽게 사용할 수 있는 static 메서드를 가지고있음
 	static Scanner sc = new Scanner(System.in);
 	
-	/*
-	 * (String print) : 강제로 안내문구 넣게 함
-	 */
+	//(String print) : 강제로 안내문구 넣게 함
 	public static String nextLine(String print) {
 		System.out.print(print);
 		return nextLine();
 	}
 	
-	/*
-	 * 니까 사용자가 사용 못하게 막음
-	 */
+	 //static:사용자가 사용 못하게 막음
 	 static String nextLine() {
 		return sc.nextLine();
-	}
+	 }
+	 
 	public static int nextInt(String print) {
 		System.out.print(print);
 		return nextInt();
@@ -55,11 +52,11 @@ public class ScanUtil {
 		 }
 	 }
 	 
-	 //Restaurant - 식당등록 - 가격
-	 public static int nextIntP(String print) {
-		 System.out.print(print);
-		 return nextIntP();
-	 }
+	//Restaurant - 식당등록 - 가격
+	public static int nextIntP(String print) {
+		System.out.print(print);
+		return nextIntP();
+	}
 	 
 	 static int nextIntP() {
 		 while(true) {
@@ -73,6 +70,42 @@ public class ScanUtil {
 		 }
 	 }
 	 
+	//Restaurant - 식당등록 - 가격
+	public static String nextLineP(String print) {
+		System.out.print(print);
+		return nextLineP();
+	}
+		
+	 static String nextLineP() {
+		 while (true) {
+		 	 try {
+		 		 String result = sc.nextLine();
+		 		 return result;
+		 	 } catch (NumberFormatException e) {
+		 		 System.out.println("숫자만 입력해주세요");
+		 		 System.out.print("가격 : ");
+		 	 }
+		 }
+	 }
+	
+	//Restaurant - 식당등록 - 예약가능여부
+	public static int nextIntB(String print) {
+		System.out.print(print);
+		return nextIntB();
+	}
+
+	 static int nextIntB() {
+		 while(true) {
+			 try {
+				 int result = Integer.parseInt(sc.nextLine());
+				 return result;
+			 }catch (NumberFormatException e) {
+				 System.out.println("숫자 1,2,3 중 한 개를 입력해주세요");
+				 int book = ScanUtil.nextInt("예약가능여부(1.가능/2.불가능/3.미확인) : ");
+				 return sc.nextInt();
+			 }
+		 }
+	 }
 	 
 	 
 }
