@@ -40,4 +40,43 @@ public class AdminDao {
 					 "order by res.res_date desc";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
 	}
+
+	public void adminUpdateResName(String newResName, String resNo) {
+		String sql = "UPDATE restaurant \r\n"
+					+ "SET res_name = '"+newResName+"'\r\n"
+					+ "where res_no = "+resNo;
+		jdbc.update(sql);
+	}
+
+	public RestaurantVo adminSelectModifyResDetail(String resNo) {
+		String sql = "select *\r\n"
+					+ "from restaurant\r\n"
+					+ "where res_no = "+resNo;
+		Map<String, Object> map = jdbc.selectOne(sql);
+		return ConvertUtils.convertToVo(map, RestaurantVo.class);
+	}
+
+	public void adminUpdateWalkName(int newWalk, String resNo) {
+		String sql = "UPDATE restaurant \r\n"
+				   + "SET res_walk = '"+newWalk+"'\r\n"
+				   + "where res_no = "+resNo;
+		jdbc.update(sql);
+	}
+
+	public RestaurantVo adminSelectModifyWalkDetail(String res_no) {
+		String sql = "select *\r\n"
+					+ "from restaurant\r\n"
+					+ "where res_no = "+res_no;
+		Map<String, Object> map = jdbc.selectOne(sql);
+		return ConvertUtils.convertToVo(map, RestaurantVo.class);
+	}
+
+	public void adminResUpload(String res_no) {
+		String sql = "UPDATE restaurant\r\n"
+					+ "SET res_postyn = 'Y'\r\n"
+					+ "where res_no="+res_no;
+		jdbc.update(sql);
+	}
+	
+	
 }

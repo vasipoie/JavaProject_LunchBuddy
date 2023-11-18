@@ -38,5 +38,25 @@ public class AdminService {
 	public List<RestaurantVo> adminResList() {
 		return adminDao.adminResList();
 	}
+
+	public void adminUpdateResName(String newResName, String resNo) {
+		adminDao.adminUpdateResName(newResName, resNo);
+	}
+
+	public RestaurantVo adminSelectModifyResDetail(String resNo) {
+		return adminDao.adminSelectModifyResDetail(resNo);
+	}
+
+	public void adminUpdateWalkName(int newWalk, String resNo) {
+		adminDao.adminUpdateWalkName(newWalk, resNo);
+	}
+
+	public RestaurantVo adminSelectModifyWalkDetail(String res_no) {
+		return adminDao.adminSelectModifyWalkDetail(res_no);;
+	}
+
+	public void adminResUpload(String res_no) {
+		adminDao.adminResUpload(res_no);
+	}
 	
 }

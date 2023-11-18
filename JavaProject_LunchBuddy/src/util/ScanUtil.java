@@ -106,6 +106,23 @@ public class ScanUtil {
 			 }
 		 }
 	 }
+
+	//admin - 등록대기중식당정보수정 - 이동시간
+	public static int nextIntW(String print) {
+		System.out.print(print);
+		return nextIntW();
+	}
 	 
-	 
+	 static int nextIntW() {
+		 while(true) {
+			 try {
+				 int result = Integer.parseInt(sc.nextLine());
+				 return result;
+			 }catch (NumberFormatException e) {
+				 System.out.println("숫자만 입력해주세요");
+				 System.out.print("이동시간 : ");
+			 }
+		 }
+	 }
+ 
 }

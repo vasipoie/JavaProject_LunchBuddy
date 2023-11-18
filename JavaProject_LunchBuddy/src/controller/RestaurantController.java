@@ -393,7 +393,7 @@ public class RestaurantController extends RestaurantPrint{
 	public View resDetail() {
 		RestaurantVo rest = (RestaurantVo) Controller.sessionStorage.get("resDetailResName");
 		printResDetail(rest);
-		List<RestaurantVo> restaurant = resService.getResDetail(rest.getRes_no());
+//		List<RestaurantVo> restaurant = resService.getResDetail(rest.getRes_no());
 		print_select_for_restDetail();
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
@@ -401,7 +401,7 @@ public class RestaurantController extends RestaurantPrint{
 			Controller.sessionStorage.put("selected_rest_no", rest.getRes_no());
 			return View.SEE_REVIEW_BY_RES;
 		case 2 :
-			Controller.sessionStorage.put("selected_review", rest);
+			Controller.sessionStorage.put("", rest);
 			return View.SEE_REVIEW_BY_WRITER;
 		case 3 : 
 			Controller.sessionStorage.put("menu_review", rest);
