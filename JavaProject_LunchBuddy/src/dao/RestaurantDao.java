@@ -43,7 +43,7 @@ public class RestaurantDao {
 	//식당이름으로검색
 	public List<RestaurantVo> resSearchResName(String name) {
 		String sql = "with data as\r\n" + 
-				     "(select re.*, round(nvl(avg(r.rev_star),0)) rev_star\r\n" + 
+				     "(select re.*, round(nvl(avg(r.rev_star),0),1) rev_star\r\n" + 
 				       "from review r right outer join restaurant re\r\n" + 
 				         "on r.res_no = re.res_no\r\n" + 
 				       "group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn \r\n" + 

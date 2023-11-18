@@ -10,15 +10,16 @@ import service.AdminService;
 import util.ScanUtil;
 import util.View;
 import vo.AdminVo;
+import vo.RestaurantVo;
 
 public class AdminController extends AdminPrint {
 	
 	static private Map<String, Object> sessionStorage = Controller.sessionStorage;
 	AdminService adminService = AdminService.getInstance();
 	
-	void start() {
-		View view = View.HOME;
+	public View adminController(View view) {
 		while (true) {
+			Controller.newPage(view);
 			switch (view) {
 			case ADMIN_LOGIN:
 				view = adminLogin();
@@ -32,19 +33,52 @@ public class AdminController extends AdminPrint {
 			case ADMIN_MEMBER_MANAGE:
 				view = adminHome();
 				break;
-			case ADMIN_RES_MANAGE:
+			case ADMIN_RES_MANAGE:	//관리자 식당관리
 				view = adminResManage();
 				break;
+			case ADMIN_STANDBY_RES_MANAGE:	//관리자용 등록 대기 중 식당 리스트
+				view = adminStandbyResManage();
+				break;
+			case ADMIN_STANDBY_RES_DETAIL:	//관리자용 등록대기중 식당 상세보기
+				view = adminStandbyResDetail();
+				break;
+			default :
+				Controller.removeHistory();
+				return view;
 			}
 		}
 	}
 
-	//식당등록 관리자요청온거 확인
-	public View adminResManage() {
-		sessionStorage.get("resAddOnePrint");
-		
+	//관리자용 등록대기중 식당 상세보기
+	public View adminStandbyResDetail() {
 		
 		return null;
+	}
+	
+	//식당등록 관리자요청온거 확인 sessionStorage.get("resAddOnePrint");
+	
+	//관리자용 등록 대기 중 식당 리스트
+	public View adminStandbyResManage() {
+		List<RestaurantVo> adminResList = adminService.adminResList();
+		Controller.init_page(5, 2, "식당상세보기", "adminStandbyResDetail", View.ADMIN_HOME);
+		sessionStorage.put("list_for_paging", adminResList);
+		return View.LIST_PAGING;
+	}
+	
+	//관리자 식당관리
+	private View adminResManage() {
+		printAdminResManage();
+		int select = ScanUtil.nextInt("메뉴를 선택하세요\s");
+		switch (select) {
+		case 1:
+			return View.ADMIN_REVIEW_CHECK;//수정
+		case 2:
+			return View.ADMIN_STANDBY_RES_MANAGE;
+		case 0:
+			return View.ADMIN_HOME;
+		default :
+			return View.ADMIN_RES_MANAGE;
+		}
 	}
 
 	public View adminHome() {
@@ -90,4 +124,5 @@ public class AdminController extends AdminPrint {
 			return View.ADMIN_LOGIN;
 		}
 	}
+
 }

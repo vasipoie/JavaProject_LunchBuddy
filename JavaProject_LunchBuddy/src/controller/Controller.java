@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import print.MemberPrint;
 import print.Print;
 import service.MemberService;
 import service.Service;
@@ -34,6 +33,11 @@ public class Controller extends Print {
 	}
 	
 	public void test() {
+		List<Object> param = new ArrayList();
+		param.add("nahye");
+		param.add("nahye1234");
+		MemberVo member = memberService.log_in(param);
+
 		
 	}
 
@@ -92,6 +96,7 @@ public class Controller extends Print {
 				view = revc.reviewController(view);
 				view = bfController.bfcontroller(view);
 				view = resController.restController(view);
+				view = ac.adminController(view);
 			}
 		}
 	}
