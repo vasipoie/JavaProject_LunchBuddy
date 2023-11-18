@@ -33,10 +33,18 @@ public class AdminController extends AdminPrint {
 				view = adminHome();
 				break;
 			case ADMIN_RES_MANAGE:
-				view = adminHome();
+				view = adminResManage();
 				break;
 			}
 		}
+	}
+
+	//식당등록 관리자요청온거 확인
+	public View adminResManage() {
+		sessionStorage.get("resAddOnePrint");
+		
+		
+		return null;
 	}
 
 	public View adminHome() {
