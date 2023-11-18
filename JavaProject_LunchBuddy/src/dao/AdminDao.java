@@ -6,6 +6,7 @@ import java.util.Map;
 import util.ConvertUtils;
 import util.JDBCUtil;
 import vo.AdminVo;
+import vo.RestaurantVo;
 
 public class AdminDao {
 	private static AdminDao singleTon = null;
@@ -27,5 +28,16 @@ public class AdminDao {
 		if(map == null) return null;
 		AdminVo ad = ConvertUtils.convertToVo(map, AdminVo.class);
 		return ad;
+	}
+
+	//관리자용 등록 대기 중 식당 리스트
+	public List<RestaurantVo> adminResList() {
+		String sql = "select distinct res.*, m.*\r\n" + 
+					 "from restaurant res\r\n" + 
+					 "    ,menu m\r\n" + 
+					 "where res.res_no = m.res_no(+)\r\n" + 
+					 "and res.res_postyn ='N'\r\n" + 
+					 "order by res.res_date desc";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
 	}
 }
