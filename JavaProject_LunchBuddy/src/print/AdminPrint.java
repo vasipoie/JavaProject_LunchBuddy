@@ -64,7 +64,7 @@ public class AdminPrint extends Print{
 		System.out.println("7. 가격 수정");
 		System.out.println("8. 식당 등록");
 		System.out.println("9. 관리자 홈");
-		System.out.println("0. 뒤로가기");
+//		System.out.println("0. 뒤로가기");
 		printBar();
 	}
 	
