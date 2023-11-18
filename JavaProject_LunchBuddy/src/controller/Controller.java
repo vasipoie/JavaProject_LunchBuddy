@@ -37,7 +37,7 @@ public class Controller extends Print {
 		param.add("nahye");
 		param.add("nahye1234");
 		MemberVo member = memberService.log_in(param);
-		
+
 		
 	}
 
@@ -242,15 +242,15 @@ public class Controller extends Print {
 
 	static void newPage(View view) {
 		int page = pageHistory.size();
-		if (pageHistory.get(page) == view)
+		if (pageHistory.get(page-1) == view)
 			return;
 		pageHistory.put(page + 1, view);
 	}
 
 	public static View goBack() {
-		int page = pageHistory.size();
-		if (page == 1)
+		if (pageHistory.size() == 1)
 			return View.HOME;
+		int page = pageHistory.size();
 		pageHistory.remove(page);
 		return pageHistory.get(page - 1);
 	}

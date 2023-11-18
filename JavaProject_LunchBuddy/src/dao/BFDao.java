@@ -28,7 +28,7 @@ public class BFDao {
 		return singleTon;
 	}
 
-	public void bf_make(List<Object> param) {
+	public BFVo bf_make(List<Object> param) {
 		System.out.println(param);
 		String sql = "INSERT INTO BOBFRIEND ( BF_NO, MEM_NO, BF_NAME, BF_CONT, BF_NUM, BF_DATE, RES_NO)\r\n" + 
 				"VALUES\r\n" + 
@@ -39,6 +39,8 @@ public class BFDao {
 				"    , ? , ? , ? , ? , TO_DATE(?,'YYMMDDHH24') , ?\r\n" + 
 				")";
 		jdbc.update(sql, param);
+		sql = sql_ + " b where to_char(bf_date,'yymmdd') = "+param.get(0)+" and rownum =1 order by bf_no desc";
+		return ConvertUtils.convertToVo(jdbc.selectOne(sql), BFVo.class);
 	}
 
 	public BFVo getBF_just_wrote() {
@@ -58,8 +60,9 @@ public class BFDao {
 	}
 
 	public List<BFVo> get_bfList() {
-		String sql = sql_ + "where bf_date > sysdate order by bf_no";
-		
+		String sql = sql_ + "where bf_date > sysdate"
+				+ " and bf_delyn !='Y' and bf_delyn !='y'"
+				+ " order by bf_no";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), BFVo.class);
 	}
 	

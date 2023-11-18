@@ -78,7 +78,7 @@ public class BFController extends BFPrint{
 		List<BFListVo> bfMemList = bfListService.getmems(bobF.getBf_no());
 		printBF( bobF , bfMemList );
 		MemberVo loginmem = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		if( loginmem!=null && loginmem.getMem_no()==bobF.getMem_no() ) {
+		if( loginmem!=null && loginmem.getMem_no().equals(bobF.getMem_no()) ) {
 			System.out.println("1. 삭제하기");
 		} else if ( bfMemList.size() < (bobF.getBf_num()) ){
 			System.out.println("1. 참석하기");
@@ -88,7 +88,7 @@ public class BFController extends BFPrint{
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
 		switch (select) {
 		case 1:
-			if( loginmem!=null && loginmem.getMem_no()==bobF.getMem_no() ) {
+			if( loginmem!=null && loginmem.getMem_no().equals(bobF.getMem_no()) ) {
 				bfService.delete(bobF.getBf_no());
 				print_delete_sucess();
 				return View.HOME;
@@ -131,6 +131,10 @@ public class BFController extends BFPrint{
 		return new Controller().list_paging();
 	}
 
+	/**
+	 * 점심 친구 모임 등록
+	 * @return 완료 후 해당 모임 상세보기
+	 */
 	private View bf_make() {
 		//로그인 되어있는지 확인
 		//안되어있으면 로그인
@@ -147,6 +151,7 @@ public class BFController extends BFPrint{
 		restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_res_for_bf");
 		System.out.println(restaurant);
 		
+		//모임 이름, 내용, 날짜 입력
 		String bfTitle = ScanUtil.nextLine("모임 이름 : ");
 		String bfCont = ScanUtil.nextLine("모임 내용 : ");
 		int bfNum = ScanUtil.nextInt("인원수 : ");
@@ -173,12 +178,12 @@ public class BFController extends BFPrint{
 		param.add(bfDate+"13");
 		param.add(restaurant.getRes_no());
 		
-		bfService.bf_make(param);
+		BFVo bf = bfService.bf_make(param);
 		System.out.println("등록 되었습니다!");
 		
-		BFVo bf = bfService.getBF_just_wrote();
 		bfListService.parti(login_member.getMem_no(), bf.getBf_no());
 		Controller.sessionStorage.put("selected_bf", bf);
+		Controller.sessionStorage.remove("selected_res_for_bf");
 		return View.BF_DETAIL;
 	}
 	
