@@ -19,6 +19,7 @@ public class MenuService {
 	
 	MenuDao menuDao = MenuDao.getInstance();
 
+	//식당등록할 때 입력받는 대표메뉴, 가격 insert
 	public void menuAdd(List<Object> menuAdd) {
 		menuDao.menuAdd(menuAdd);
 	}

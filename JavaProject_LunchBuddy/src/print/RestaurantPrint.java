@@ -63,28 +63,49 @@ public class RestaurantPrint extends Print{
 //		String cateName2 = (String) chk.get(1);
 		String cateName2 = "";
 		switch(str) {
-		case "01 ": cateName2 = "한식"; break;
-		case "02 ": cateName2 = "양식"; break;
-		case "03 ": cateName2 = "아시아음식"; break;
-		case "04 ": cateName2 = "일식"; break;
-		case "05 ": cateName2 = "중식"; break;
-		case "06 ": cateName2 = "분식"; break;
-		case "07 ": cateName2 = "카페"; break;
-		case "08 ": cateName2 = "뷔페"; break;
-		case "09 ": cateName2 = "기타"; break;
+		case "01": cateName2 = "한식"; break;
+		case "02": cateName2 = "양식"; break;
+		case "03": cateName2 = "아시아음식"; break;
+		case "04": cateName2 = "일식"; break;
+		case "05": cateName2 = "중식"; break;
+		case "06": cateName2 = "분식"; break;
+		case "07": cateName2 = "카페"; break;
+		case "08": cateName2 = "뷔페"; break;
+		case "09": cateName2 = "기타"; break;
 		}
 		return cateName2;
 	}
 	
+	//식당등록 예시 보여주기
+	public void printResAddExample() {
+		printBar();
+		System.out.println("식당 등록");
+		printBar();
+		//카테고리,식당이름,주소,전화번호,예약가능여부,대표메뉴,가격
+		System.out.println("예시)\n 카테고리 : 2\n 식당 이름 : 버거킹\n 주소 : 대전 중구 계룡로 853\n 전화번호 : 0422210332\n"
+				+ " 예약가능여부(1.가능/2.불가능/3.미확인) : 1\n 대표메뉴 : 비프+슈림프버거 세트\n 가격 : 8500");
+		printBar();
+	}
+	
+	//식당등록 카테고리 보여주기
+	public void printResAddCategory() {
+		System.out.println("카테고리 종류 : 1.한식/2.양식/3.아시아음식/4.일식/5.중식/6.분식/7.카페/8.뷔페/9.기타");
+	}
+	
 	//사용자가 입력한 식당등록 insert 전 출력
-	public void printResInsertBefore(List<Object> chk) {
+	public void printResInsertBefore(List<Object> restAdd, List<Object> chk) {
 		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		printBar();
 		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
 		printBar();
-		System.out.println("["+chk.get(0)+"]\s카테고리 : "+cateName2((String)chk.get(1)));
-		System.out.println("주소 : "+chk.get(2)+"\s전화번호 : "+chk.get(3)+"\s 예약가능여부 : "+chk.get(4));
-		System.out.println("대표메뉴 : "+chk.get(5)+"\s가격 : "+chk.get(6)+"원");
+		
+		System.out.println("["+restAdd.get(2)+"]\s카테고리 : "+cateName2((String)chk.get(1)));
+		System.out.println("주소 : "+restAdd.get(3)+"\s\s 전화번호 : "+restAdd.get(4)+"\s 예약가능여부 : "+restAdd.get(5));
+		System.out.println("대표메뉴 : "+chk.get(5)+"\s\s 가격 : "+chk.get(6)+"원");
+	}
+	
+	//사용자가 입력한 식당등록 insert 전 입력한 내용 출력해서 보여주고 선택창
+	public void printSelectResInsertBefore() {
 		printBar();
 		System.out.println("1. 등록요청");
 		System.out.println("2. 수정");
@@ -109,8 +130,19 @@ public class RestaurantPrint extends Print{
 		printBar();
 	}
 	
-	//식당등록 요청 전 수정내역 선택
+	//1.등록요청
+	public void printRegiReque() {
+		printBar();
+		System.out.println("관리자에게 등록요청을 보냈습니다!");
+		System.out.println("*.☆⸜(⑉˙ᗜ˙⑉)⸝♡.*");
+		System.out.println("등록해주셔서 감사합니다");
+		System.out.println("홈으로 이동합니다");
+		pause();
+	}
+	
+	//2.식당등록 요청 전 수정내역 선택
 	public void printResAddModify() {
+		printBar();
 		System.out.println("식당등록 수정");
 		printBar();
 		System.out.println("1. 식당이름 수정");
@@ -122,6 +154,14 @@ public class RestaurantPrint extends Print{
 		printBar();
 	}
 	
+	//3.등록취소
+	public void printRegiCancle() {
+		printBar();
+		System.out.println("등록이 취소되었습니다");
+		System.out.println("홈으로 이동합니다");
+		pause();
+	}
+	
 //	public void printCateList(List<Map<String, Object>> cateList) {
 //		printBar();
 //		System.out.println("식당이름\t거리\t예약여부\t평점\t대표메뉴\t가격");
@@ -131,7 +171,6 @@ public class RestaurantPrint extends Print{
 //		printBar();
 //	}
 	
-	//예약여부 null값인거 바꾸기
 	public void printResDetail(RestaurantVo rest) {
 		System.out.println("식당 상세 보기");
 		printBar();
@@ -160,13 +199,6 @@ public class RestaurantPrint extends Print{
 		printBar();
 	}
 	
-	public void printRegiReque() {
-		printBar();
-		System.out.println("관리자에게 등록요청을 보냈습니다!");
-		System.out.println("₍₍ (◟˙꒳​˙)◟ ⁾⁾등록해주셔서 감사합니다₍₍ ◝(˙꒳​˙◝) ⁾⁾");
-		System.out.println("홈으로 이동합니다");
-		pause();
-	}
 	
 	
 }

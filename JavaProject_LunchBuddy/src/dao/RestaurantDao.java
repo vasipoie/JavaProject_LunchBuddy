@@ -124,55 +124,6 @@ public class RestaurantDao {
 		return null;
 	}
 	
-	//식당등록 전 수정
-	public void updateResName(String newResName, String res_no) {
-		String sql = "update restaurant \r\n" + 
-					 "set res_name = '"+newResName+ 
-					 "'where res_no = '"+res_no+"'";
-		jdbc.update(sql);
-	}
-
-	public void updateAdd(String newAdd, String res_no) {
-		String sql = "update restaurant \r\n" + 
-					 "set res_add = '"+newAdd+ 
-					 "'where res_no = '"+res_no+"'";
-		jdbc.update(sql);
-	}
-
-	public void updatePhone(String newPhone, String res_no) {
-		String sql = "update restaurant \r\n" + 
-					 "set res_phone = '"+newPhone+ 
-					 "'where res_no = '"+res_no+"'";
-		jdbc.update(sql);
-	}
-
-	public void updateBookyn(String newBookyn, String res_no) {
-		String sql = "update restaurant \r\n" + 
-					 "set res_bookyn = '"+newBookyn+ 
-					 "'where res_no = '"+res_no+"'";
-		jdbc.update(sql);
-	}
-
-	public void updatePrice(String newPrice, String res_no) {
-		String sql = "update menu \r\n" + 
-					 "set menu_price = '"+newPrice+ 
-					 "where res_no = '"+res_no+"'";
-		jdbc.update(sql);
-	}
-
-	//수정한 식당등록 출력
-	public RestaurantVo modifyResAdd(String res_no) {
-		String sql = "select res_no, res_name, cat_no, res_add, res_phone, res_bookyn\r\n" + 
-					",(select menu_name from menu where res_no=a.res_no and menu_no like '%001') menu_name\r\n" + 
-					",(select menu_price from menu where res_no=a.res_no and menu_no like '%001') menu_price\r\n" + 
-					"from (select * from restaurant where res_no='"+res_no+"' order by res_no desc) a\r\n" + 
-					"where ROWNUM = 1";
-		Map<String, Object> map = jdbc.selectOne(sql);
-		return ConvertUtils.convertToVo(map, RestaurantVo.class);
-	}
-	
-	
-	
 
 //	public RestaurantVo resAdd(List<Object> restAdd) {
 //		String sql = "insert into restaurant (res_no, res_name, res_add, res_phone, res_bookyn, cat_no)\r\n" + 

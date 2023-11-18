@@ -34,16 +34,11 @@ public class Controller extends Print {
 	}
 	
 	public void test() {
-//		new Print().printHome();
-//		new MemberPrint().print_login_fail("어쩌구가 틀렸습니다.","idid","pwpwpwpw");
-//		new MemberPrint().print_join_error("","","","","","","");
-//		List<Object> param = new ArrayList();
-//		param.add("yeeun0814");
-//		param.add("0000");
-//		MemberVo member = memberService.log_in(param);
-//		new MemberPrint().print_my_info(member);
-//		new MemberPrint().print_find_id("","");
-		new MemberPrint().print_user_not_found();
+		List<Object> param = new ArrayList();
+		param.add("nahye");
+		param.add("nahye1234");
+		MemberVo member = memberService.log_in(param);
+		resc.resAddOne();
 		
 		
 	}

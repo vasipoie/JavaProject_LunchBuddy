@@ -39,6 +39,7 @@ public class RestaurantService {
 		resDao.resAdd(restAdd);
 	}
 
+	//회원이 입력한 식당등록 값 중 res_no 사용을 위해
 	public RestaurantVo resAddOneBefore(String cateNo) {
 		RestaurantVo resAddOne = resDao.resAddOneBefore(cateNo);
 		return resAddOne;
@@ -54,32 +55,4 @@ public class RestaurantService {
 		return resDao.getResDetail(res_no);
 	}
 
-	//식당등록 전 수정
-	public void updateResName(String newResName, String res_no) {
-		resDao.updateResName(newResName, res_no);
-	}
-
-	public void updateAdd(String newAdd, String res_no) {
-		resDao.updateAdd(newAdd, res_no);
-	}
-
-	public void updatePhone(String newPhone, String res_no) {
-		resDao.updatePhone(newPhone, res_no);
-	}
-
-	public void updateBookyn(String newBookyn, String res_no) {
-		resDao.updateBookyn(newBookyn, res_no);
-	}
-
-	public void updatePrice(String newPrice, String res_no) {
-		resDao.updatePrice(newPrice, res_no);		
-	}
-	
-	//수정한 식당등록 보여주기
-	public RestaurantVo modifyResAdd(String res_no) {
-		return resDao.modifyResAdd(res_no);
-	}
-
-	
-	
 }
