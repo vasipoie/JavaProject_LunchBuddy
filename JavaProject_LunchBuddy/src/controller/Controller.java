@@ -37,7 +37,6 @@ public class Controller extends Print {
 		param.add("nahye");
 		param.add("nahye1234");
 		MemberVo member = memberService.log_in(param);
-		resc.resAddOne();
 		
 		
 	}
