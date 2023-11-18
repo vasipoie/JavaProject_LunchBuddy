@@ -19,7 +19,7 @@ public class BFVo {
 	@Override
 	public String toString() {
 		return "[ " + res_name + " ]  " + bf_date
-				+ "\n" + mem_nick + " - " + bf_name
+				+ "\n\t\t" + mem_nick + " - " + bf_name
 				+ " ( " + part_num + " / " + bf_num + " )" ;
 	}
 

@@ -55,4 +55,8 @@ public class RestaurantService {
 		return resDao.getResDetail(res_no);
 	}
 
+	public RestaurantVo getRes_by_resNo(String res_no) {
+		return resDao.getRes_by_resNo(res_no);
+	}
+
 }

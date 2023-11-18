@@ -15,6 +15,7 @@ public class MemberController extends MemberPrint {
 
 	public View memberController(View view) {
 		while (true) {
+			System.out.println("membercontroller, view = "+view);
 			Controller.newPage(view);
 			switch (view) {
 			case MEMBER:
@@ -55,6 +56,8 @@ public class MemberController extends MemberPrint {
 				break;
 
 			default:
+				Controller.removeHistory();
+				System.out.println("member controller out");
 				return view;
 			}
 		}

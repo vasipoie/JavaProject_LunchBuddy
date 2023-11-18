@@ -1,8 +1,11 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import util.ConvertUtils;
 import util.JDBCUtil;
+import vo.MenuVo;
 
 public class MenuDao {
 
@@ -29,4 +32,23 @@ public class MenuDao {
 				"        ,?,?,?)";
 		jdbc.update(sql, menuAdd);
 	}
+
+	public int count_menu() {
+		String sql = "select count(*) amount from menu where menu_postyn='Y' or menu_postyn='y'";
+		return ((BigDecimal)jdbc.selectOne(sql).get("AMOUNT")).intValue();
+	}
+
+	public List<MenuVo> get_all_menu_list() {
+		String sql = "select * from menu \n"
+				+ "where (menu_postyn='Y' or menu_postyn='y')";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), MenuVo.class);
+	}
+
+	public List<MenuVo> menuList_by_res(String res_no) {
+		String sql = "select * from menu \n"
+				+ "where (menu_postyn='Y' or menu_postyn='y')\n"
+				+ "and res_no = "+res_no;
+		return ConvertUtils.convertToList(jdbc.selectList(sql), MenuVo.class);
+	}
+
 }

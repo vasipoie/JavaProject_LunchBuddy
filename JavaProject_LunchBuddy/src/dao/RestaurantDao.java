@@ -123,6 +123,20 @@ public class RestaurantDao {
 		String sql = "select *,(select menu_name from menu where res_no=a.res_no) menu_name,(select menu_price from menu where res_no=a.res_no) menu price";
 		return null;
 	}
+
+	public RestaurantVo getRes_by_resNo(String res_no) {
+		String sql = "select r.res_no, r.res_name, r.res_add, r.res_phone, r.res_bookyn, r.res_walk\r\n"
+				+ "    ,r.res_postyn, r.cat_no, to_char(r.res_date,'yymmdd') res_date\r\n"
+				+ "    , mn.menu_name\r\n"
+				+ "    , mn.menu_price\r\n"
+				+ "    ,(select round(nvl(avg(rev_star),0),0)  from review where res_no = "+res_no+") rev_star\r\n"
+				+ "from restaurant r \r\n"
+				+ "    ,(select * from menu \r\n"
+				+ "                where res_no = "+res_no
+				+ "                    and menu_no like '%001') mn\r\n"
+				+ "    where r. res_no = "+res_no;
+		return ConvertUtils.convertToVo(jdbc.selectOne(sql), RestaurantVo.class);
+	}
 	
 
 //	public RestaurantVo resAdd(List<Object> restAdd) {

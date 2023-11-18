@@ -28,6 +28,7 @@ public class BFController extends BFPrint{
 	
 	public View bfcontroller(View view) {
 		while(true) {
+			System.out.println("bfcontroller, view = "+view);
 			Controller.newPage(view);
 			switch (view) {
 			case BF_MAIN:
@@ -44,6 +45,7 @@ public class BFController extends BFPrint{
 				break;
 			default:
 				Controller.removeHistory();
+				System.out.println("bfcontroller out");
 				return view;
 			}
 			
@@ -79,11 +81,11 @@ public class BFController extends BFPrint{
 		printBF( bobF , bfMemList );
 		MemberVo loginmem = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		if( loginmem!=null && loginmem.getMem_no().equals(bobF.getMem_no()) ) {
-			System.out.println("1. 삭제하기");
+			System.out.print("\t\t1. 삭제하기");
 		} else if ( bfMemList.size() < (bobF.getBf_num()) ){
-			System.out.println("1. 참석하기");
+			System.out.print("\t\t1. 참석하기");
 		}else System.out.println();
-		System.out.println("9.홈으로 가기     0.뒤로가기");
+		System.out.println("      9.홈으로 가기      0.뒤로가기");
 		printBar();
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
 		switch (select) {
@@ -143,6 +145,12 @@ public class BFController extends BFPrint{
 			page_need_login();
 			return View.SELECT_LOGIN;
 		}
+		String resName = "";
+		String bfTitle = "";
+		String bfCont = "";
+		int bfNum = 0 ;
+		String bfDate = "";
+		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,true);
 		
 		// 식당 선택 했는지 확인
 		// 안되어있으면 검색
@@ -150,23 +158,35 @@ public class BFController extends BFPrint{
 		if(restaurant==null) return View.RES_SEARCH_FOR_BF;
 		restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_res_for_bf");
 		System.out.println(restaurant);
+		resName = restaurant.getRes_name();
 		
 		//모임 이름, 내용, 날짜 입력
-		String bfTitle = ScanUtil.nextLine("모임 이름 : ");
-		String bfCont = ScanUtil.nextLine("모임 내용 : ");
-		int bfNum = ScanUtil.nextInt("인원수 : ");
-		System.out.println("모임 날짜를 선택하세요. 일주일 뒤의 날짜까지 선택이 가능합니다.");
+		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,true);
+		bfTitle =ScanUtil.nextLine("모임 이름 : ");
+		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,true);
+		bfCont = ScanUtil.nextLine("모임 내용 : ");
+		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,true);
+		bfNum = ScanUtil.nextInt("인원수 : ");
+		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,true);
+		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		DateFormat df = new SimpleDateFormat("yyMMdd");
 		printDate(cal);
 		if(cal.HOUR_OF_DAY<13) cal.add(Calendar.DATE, -1);
 		
 		int select = ScanUtil.nextInt("선택 >>");
 		cal.add(Calendar.DATE, select);
 		if(cal.get(Calendar.DAY_OF_WEEK)==1) cal.add(Calendar.DATE, 1);		
-		String bfDate = df.format(cal.getTime());
-
+		DateFormat df = new SimpleDateFormat("yyMMdd");
+		bfDate = df.format(cal.getTime());
+		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,false);
+		
+		while(true) {
+			select = ScanUtil.nextInt("메뉴 선택 >> ");
+			if(select==1) break;
+			else if(select==0) return Controller.goBack();
+		}
+		
 		//param = date, date, mem_no, title, cont, num, date, res_no
 		List<Object> param = new ArrayList<Object>();
 		param.add(bfDate);
@@ -178,7 +198,7 @@ public class BFController extends BFPrint{
 		param.add(bfDate+"13");
 		param.add(restaurant.getRes_no());
 		
-		BFVo bf = bfService.bf_make(param);
+		BFVo bf = bfService.bf_make(param,bfDate);
 		System.out.println("등록 되었습니다!");
 		
 		bfListService.parti(login_member.getMem_no(), bf.getBf_no());
