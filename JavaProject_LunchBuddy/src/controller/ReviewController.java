@@ -88,77 +88,77 @@ public class ReviewController extends ReviewPrint{
 	 * @return
 	 */
 	public View add_review() {
-		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		if(login_member==null) return View.LOG_IN;
-		
-		//테스트용
-//		RestaurantVo restaurant = new RestaurantService().resAddOnePrint("01");
-		//
+//		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+//		if(login_member==null) return View.LOG_IN;
+//		
+//		//테스트용
+////		RestaurantVo restaurant = new RestaurantService().resAddOnePrint("01");
+//		//
+////		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
+////		if(restaurant==null) return View.RES_SEARCH_RESNAME;
+//		
+//    
 //		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
-//		if(restaurant==null) return View.RES_SEARCH_RESNAME;
+//		if(restaurant==null) {
+//			return View.RES_DETAIL;//식당이름으로 검색 시
+//		}
+//		else {
+//			System.out.println("[ " + restaurant.getRes_name()+" ]");
+//		}
+//		
+//		RestaurantVo cate = (RestaurantVo) Controller.sessionStorage.get("selected_category");
+//		if(cate == null) {
+//			return View.RES_DETAIL_CATEGORY;//식당카테고리로 검색 시
+//		}
+//		else {
+//			System.out.println("[ " + cate.getRes_name()+" ]");
+//    
+//		String res_name = restaurant.getRes_name();
+//		int score = 0;
+//		String review_cont = "";
+//		
+//		print_add_review(res_name, score, review_cont,true);
+//		score = ScanUtil.nextInt("평점 (1~10) >> ");
+//		print_add_review(res_name, score, review_cont,true);
+//		review_cont = ScanUtil.nextLine("후기를 남겨주세요 : ");
+//		print_add_review(res_name, score, review_cont,false);
+//		switch (ScanUtil.nextInt("선택 >>")) {
+//		case 0:
+//			return Controller.goBack();
+//		default:
+//			break;
 		
-    
-		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
-		if(restaurant==null) {
-			return View.RES_DETAIL;//식당이름으로 검색 시
-		}
-		else {
-			System.out.println("[ " + restaurant.getRes_name()+" ]");
-		}
-		
-		RestaurantVo cate = (RestaurantVo) Controller.sessionStorage.get("selected_category");
-		if(cate == null) {
-			return View.RES_DETAIL_CATEGORY;//식당카테고리로 검색 시
-		}
-		else {
-			System.out.println("[ " + cate.getRes_name()+" ]");
-    
-		String res_name = restaurant.getRes_name();
-		int score = 0;
-		String review_cont = "";
-		
-		print_add_review(res_name, score, review_cont,true);
-		score = ScanUtil.nextInt("평점 (1~10) >> ");
-		print_add_review(res_name, score, review_cont,true);
-		review_cont = ScanUtil.nextLine("후기를 남겨주세요 : ");
-		print_add_review(res_name, score, review_cont,false);
-		switch (ScanUtil.nextInt("선택 >>")) {
-		case 0:
-			return Controller.goBack();
-		default:
-			break;
-		}
 		
 		//식당이름으로 검색 시
-		//param = res_no, mem_no, res_no, mem_no, rev_star
-		//		, rev_cont, res_no, mem_no
-		List<Object> param = new ArrayList();
-		param.add(restaurant.getRes_no());
-		param.add(login_member.getMem_no());
-		param.add(restaurant.getRes_no());
-		param.add(login_member.getMem_no());
-		param.add(score);
-		param.add(review_cont);
-		param.add(restaurant.getRes_no());
-		param.add(login_member.getMem_no());
-		reviewService.add_review(param);
-		
-		//식당카테고리로 검색 시
-		//cateParam = res_no, mem_no, res_no, mem_no, rev_star
-		//		, rev_cont, res_no, mem_no
-		List<Object> cateParam = new ArrayList<Object>();
-		cateParam.add(cate.getRes_no());
-		cateParam.add(login_member.getMem_no());
-		cateParam.add(cate.getRes_no());
-		cateParam.add(login_member.getMem_no());
-		cateParam.add(ScanUtil.nextInt("평점 (1~10) >> "));
-		cateParam.add(ScanUtil.nextLine("후기를 남겨주세요 : "));
-		cateParam.add(cate.getRes_no());
-		cateParam.add(login_member.getMem_no());
-		reviewService.add_review(cateParam);
-		
-		ReviewVo review = reviewService.review_just_wrote();
-		Controller.sessionStorage.put("selected_review", review);
+//		//param = res_no, mem_no, res_no, mem_no, rev_star
+//		//		, rev_cont, res_no, mem_no
+//		List<Object> param = new ArrayList();
+//		param.add(restaurant.getRes_no());
+//		param.add(login_member.getMem_no());
+//		param.add(restaurant.getRes_no());
+//		param.add(login_member.getMem_no());
+//		param.add(score);
+//		param.add(review_cont);
+//		param.add(restaurant.getRes_no());
+//		param.add(login_member.getMem_no());
+//		reviewService.add_review(param);
+//		
+//		//식당카테고리로 검색 시
+//		//cateParam = res_no, mem_no, res_no, mem_no, rev_star
+//		//		, rev_cont, res_no, mem_no
+//		List<Object> cateParam = new ArrayList<Object>();
+//		cateParam.add(cate.getRes_no());
+//		cateParam.add(login_member.getMem_no());
+//		cateParam.add(cate.getRes_no());
+//		cateParam.add(login_member.getMem_no());
+//		cateParam.add(ScanUtil.nextInt("평점 (1~10) >> "));
+//		cateParam.add(ScanUtil.nextLine("후기를 남겨주세요 : "));
+//		cateParam.add(cate.getRes_no());
+//		cateParam.add(login_member.getMem_no());
+//		reviewService.add_review(cateParam);
+//		
+//		ReviewVo review = reviewService.review_just_wrote();
+//		Controller.sessionStorage.put("selected_review", review);
 		return View.REVIEW_DETAIL;
 	}
 
