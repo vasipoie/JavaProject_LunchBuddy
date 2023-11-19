@@ -73,7 +73,7 @@ public class RestaurantController extends RestaurantPrint{
 			}
 			restAdd.remove(2);
 			restAdd.add(2, newResName);
-			break;
+			return View.RES_ADD_MODIFY;
 		case 2:
 			String newAdd = ScanUtil.nextLine("주소 : ");
 			if(newAdd.isEmpty()) {
@@ -82,7 +82,7 @@ public class RestaurantController extends RestaurantPrint{
 			}
 			restAdd.remove(3);
 			restAdd.add(3, newAdd);
-			break;
+			return View.RES_ADD_MODIFY;
 		case 3:
 			String newPhone = ScanUtil.nextLine("전화번호 : ");
 			if(newPhone.isEmpty()) {
@@ -90,7 +90,7 @@ public class RestaurantController extends RestaurantPrint{
 				newPhone = ScanUtil.nextLine("전화번호 : ");
 			}
 			if(newPhone.contains("-")||newPhone.contains(".")) {
-				newPhone = newPhone.replaceAll("[-.]", "");
+				newPhone = newPhone.replace("-", "").replace(".","");
 			}
 			if(!newPhone.matches("^[0-9]*$")) {
 				System.out.println("숫자만 입력가능합니다");
@@ -98,7 +98,7 @@ public class RestaurantController extends RestaurantPrint{
 			}
 			restAdd.remove(4);
 			restAdd.add(4, newPhone);
-			break;
+			return View.RES_ADD_MODIFY;
 		case 4:
 			System.out.println("예약가능여부는 숫자만 입력가능합니다");
 			String newBookyn = "";
@@ -121,7 +121,7 @@ public class RestaurantController extends RestaurantPrint{
 			}
 			restAdd.remove(5);
 			restAdd.add(5, newBookyn);
-			break;
+			return View.RES_ADD_MODIFY;
 		case 5:
 			System.out.println("가격은 숫자만 입력가능합니다");
 			String newPrice = ScanUtil.nextLine("가격 : ");
@@ -135,9 +135,9 @@ public class RestaurantController extends RestaurantPrint{
 			}
 			chk.remove(6);
 			chk.add(6, newPrice);
-			break;
+			return View.RES_ADD_MODIFY;
 		case 0:
-			return View.RES_ADD_ONE;
+			return Controller.goBack();
 		default:
 			resAddModify();
 		}
@@ -150,12 +150,11 @@ public class RestaurantController extends RestaurantPrint{
 
 	//식당 등록요청 전에 사용자가 입력한 등록 출력 -> 1.등록요청 2.수정 3.등록취소
 	public View resAddOne() {
-		//뒤로가기 고치면 다시 해제
-//		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
-//		if(login_member==null) {
-//			page_need_login();
-//			return View.LOG_IN;
-//		}
+		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+		if(login_member==null) {
+			page_need_login();
+			return View.LOG_IN;
+		}
 		
 //		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
 //		if(mb==null) {
@@ -222,11 +221,11 @@ public class RestaurantController extends RestaurantPrint{
 	//식당 등록
 	public View resAdd() {
 		//오류!!!!!!!!!!!!! 로그인 했는데 계속 로그인 입력창이 나옴->뒤로가기문제인듯
-//		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
-//		if(login_member==null) {
-//			page_need_login();
-//			return View.LOG_IN;
-//		}		
+		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+		if(login_member==null) {
+			page_need_login();
+			return View.LOG_IN;
+		}		
 		printResAddExample();
 		//카테고리
 		printResAddCategory();
@@ -268,7 +267,7 @@ public class RestaurantController extends RestaurantPrint{
 			phone = ScanUtil.nextLine("전화번호 : ");
 		}
 		if(phone.contains("-")||phone.contains(".")) {
-			phone = phone.replaceAll("[-.]", "");
+			phone = phone.replace("-", "").replace(".","");
 		}
 		if(!phone.matches("^[0-9]*$")) {
 			System.out.println("숫자만 입력가능합니다");

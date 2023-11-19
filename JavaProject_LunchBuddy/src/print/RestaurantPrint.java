@@ -95,10 +95,10 @@ public class RestaurantPrint extends Print{
 	
 	//사용자가 입력한 식당등록 insert 전 출력
 	public void printResInsertBefore(List<Object> restAdd, List<Object> chk) {
-//		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
-//		printBar();
-//		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
-//		printBar();
+		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
+		printBar();
+		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
+		printBar();
 		
 		System.out.println("["+restAdd.get(2)+"] 카테고리 : "+cateName2((String)chk.get(1)));
 		System.out.println("주소 : "+restAdd.get(3)+"   전화번호 : "+restAdd.get(4)+"  예약가능여부 : "+restAdd.get(5));
@@ -107,24 +107,6 @@ public class RestaurantPrint extends Print{
 	
 	//사용자가 입력한 식당등록 insert 전 입력한 내용 출력해서 보여주고 선택창
 	public void printSelectResInsertBefore() {
-		printBar();
-		System.out.println("1. 등록요청");
-		System.out.println("2. 수정");
-		System.out.println("3. 등록취소");
-		printBar();
-	}
-	
-	//삭제할듯
-	//식당 등록요청 전 사용자가 입력한 등록 출력
-	public void printResAddOne(RestaurantVo resAddOnePrint) {
-//		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
-//		printBar();
-//		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
-//		printBar();
-		
-		System.out.println("["+resAddOnePrint.getRes_name()+"] 카테고리 : "+cateName(resAddOnePrint));
-		System.out.println("주소 : "+resAddOnePrint.getRes_add()+" 전화번호 : "+resAddOnePrint.getRes_phone()+"  예약가능여부 : "+resAddOnePrint.getRes_bookyn());
-		System.out.println("대표메뉴 : "+resAddOnePrint.getMenu_name()+" 가격 : "+resAddOnePrint.getMenu_price()+"원");
 		printBar();
 		System.out.println("1. 등록요청");
 		System.out.println("2. 수정");
@@ -163,15 +145,6 @@ public class RestaurantPrint extends Print{
 		System.out.println("홈으로 이동합니다");
 		pause();
 	}
-	
-//	public void printCateList(List<Map<String, Object>> cateList) {
-//		printBar();
-//		System.out.println("식당이름\t거리\t예약여부\t평점\t대표메뉴\t가격");
-//		for(Object reslist : cateList) {
-//			System.out.println(reslist);
-//		}
-//		printBar();
-//	}
 	
 	public void printResDetail(RestaurantVo rest) {
 		System.out.println("식당 상세 보기");

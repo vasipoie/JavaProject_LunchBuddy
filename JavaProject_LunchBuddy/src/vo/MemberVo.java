@@ -13,4 +13,10 @@ public class MemberVo {
 	 private String mem_idque;
 	 private String mem_idans;
 	 private String mem_delyn;
+	
+	 @Override
+	public String toString() {
+		return "id : "+mem_id+" 닉네임 : "+mem_nick+" 탈퇴여부 : " + mem_delyn;
+	}
+	 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import controller.Controller;
 import dao.AdminDao;
 import vo.AdminVo;
+import vo.MemberVo;
 import vo.RestaurantVo;
 import vo.ReviewVo;
 
@@ -87,12 +88,27 @@ public class AdminService {
 	public List<ReviewVo> adminReviewList() {
 		return adminDao.adminReviewList();
 	}
+	
+	//관리자 리뷰 게시하기(Y)
+	public void adminReviewPostY(String rev_no) {
+		adminDao.adminReviewPostY(rev_no);
+	}
 
+	////관리자 리뷰 게시여부 수정확인(Y/N)
+	public ReviewVo adminRevPostYNCheck(String rev_no) {
+		return adminDao.adminRevPostYNCheck(rev_no);
+	}
+	
 	//관리자 리뷰 블라인드처리
 	public void adminReviewBlind(String rev_no) {
 		adminDao.adminReviewBlind(rev_no);
 	}
 
+	//관리자 리뷰 블라인드 처리 확인
+//	public ReviewVo adminRevBlindCheck(String rev_no) {
+//		return adminDao.adminRevBlindCheck(rev_no);
+//	}
+	
 	//관리자 리뷰검색-식당이름
 	public List<ReviewVo> adminReviewSearchResname(String resName) {
 		return adminDao.adminReviewSearchResname(resName);
@@ -103,10 +119,23 @@ public class AdminService {
 		return adminDao.adminReviewSearchNickname(nickName);
 	}
 
-	//관리자 리뷰 블라인드 처리 확인
-	public ReviewVo adminRevBlindCheck(String rev_no) {
-		return adminDao.adminRevBlindCheck(rev_no);
+	//관리자 회원관리(리스트)
+	public List<MemberVo> adminMemberList() {
+		return adminDao.adminMemberList();
 	}
+
+	//관리자 탈퇴회원조회(리스트)
+	public List<MemberVo> adminMemberDelList() {
+		return adminDao.adminMemberDelList();
+	}
+
+	//관리자 등록된 식당->미등록으로 변경
+	public void adminResPostN(String res_no) {
+		adminDao.adminResPostN(res_no);
+	}
+
+	
+
 
 	
 

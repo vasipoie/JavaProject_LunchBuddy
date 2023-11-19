@@ -9,6 +9,7 @@ import service.AdminService;
 import util.ScanUtil;
 import util.View;
 import vo.AdminVo;
+import vo.MemberVo;
 import vo.RestaurantVo;
 import vo.ReviewVo;
 
@@ -33,6 +34,12 @@ public class AdminController extends AdminPrint {
 			case ADMIN_REVIEW_DETAIL:	//관리자 리뷰 상세보기
 				view = adminReviewDetail();
 				break;
+			case ADMIN_REVIEW_POSTYN_MODIFY: //관리자 게시여부 수정
+				view = adminReviewPostynModify();
+				break;
+			case ADMIN_REVIEW_POST_Y: 	//관리자 리뷰 게시하기
+				view = adminReviewPostY();
+				break;
 			case ADMIN_REVIEW_BLIND:	//관리자 리뷰 블라인드 처리
 				view = adminReviewBlind();
 				break;
@@ -45,8 +52,20 @@ public class AdminController extends AdminPrint {
 			case ADMIN_REVIEW_SEARCH_NICKNAME: //닉네임으로 리뷰검색
 				view = adminReviewSearchNickname();
 				break;
-			case ADMIN_MEMBER_MANAGE:
-				view = adminHome();
+			case ADMIN_MEMBER_MANAGE:	//관리자 회원관리
+				view = adminMemberManage();	
+				break;
+			case ADMIN_MEMBER_LIST:	//관리자 회원 리스트
+				view = adminMemberList();
+				break;
+			case ADMIN_MEMBER_DETAIL:	//관리자 회원 상세보기
+				view = adminMemberDetail();
+				break;
+			case ADMIN_MEMBER_DEL:	//관리자 탈퇴회원조회
+				view = adminMemberDel();
+				break;
+			case ADMIN_MEMBER_DEL_DETAIL:	//관리자 탈퇴회원 상세보기
+				view = adminMemberDelDetail();
 				break;
 			case ADMIN_RES_MANAGE:	//관리자 식당관리
 				view = adminResManage();
@@ -143,6 +162,9 @@ public class AdminController extends AdminPrint {
 				System.out.println("전화번호를 입력해주세요");
 				newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
 			}
+			if(newPhone.contains("-")||newPhone.contains(".")) {
+			newPhone = newPhone.replace("-", "").replace(".","");
+			}
 			if(!newPhone.matches("^[0-9]*$")) {
 				System.out.println("숫자만 입력가능합니다");
 				newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
@@ -209,8 +231,8 @@ public class AdminController extends AdminPrint {
 				return View.ADMIN_MODIFY_STANDBY_RES_DETAIL;
 			case 2://아니오
 				System.out.println("수정을 취소합니다");
-				System.out.println("이전 페이지로 이동합니다");//확인필
-				return View.RES_ADD_ONE;//수정!!!!!!!!
+				System.out.println("이전 페이지로 이동합니다");
+				return Controller.goBack();//View.RES_ADD_ONE;//수정!!!!!!!!
 			default:
 				return View.ADMIN_STANDBY_RES_DETAIL;
 			}
@@ -238,7 +260,7 @@ public class AdminController extends AdminPrint {
 	//관리자 등록된 식당 수정
 	public View adminModifyRegiResDeatil() {
 		RestaurantVo regiRes = (RestaurantVo)sessionStorage.get("adminRegiResDetail");
-		printAdminModifyResDetailSelect();
+		printAdminModifyRegiResDetailSelect();
 		int select = ScanUtil.nextInt("메뉴 선택 >> ");
 		switch (select) {
 		case 1:
@@ -302,6 +324,9 @@ public class AdminController extends AdminPrint {
 				System.out.println("전화번호를 입력해주세요");
 				newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
 			}
+			if(newPhone.contains("-")||newPhone.contains(".")) {
+			newPhone = newPhone.replace("-", "").replace(".","");
+			}
 			if(!newPhone.matches("^[0-9]*$")) {
 				System.out.println("숫자만 입력가능합니다");
 				newPhone = ScanUtil.nextLine("새로운 전화번호 : ");
@@ -338,12 +363,10 @@ public class AdminController extends AdminPrint {
 			RestaurantVo adminModiPriceDetail = adminService.adminSelectModifyDetail(regiRes.getRes_no());
 			printAdminModifyResDetail(adminModiPriceDetail);
 			break;
-		case 8:
-			adminService.adminResUpload(regiRes.getRes_no());
-			printAdminRegiRes();
-			return View.ADMIN_HOME;
 		case 9:
 			return View.ADMIN_HOME;
+		case 0:
+			return Controller.goBack();
 		default:
 			adminModifyStandbyResDetail();
 		}
@@ -380,12 +403,25 @@ public class AdminController extends AdminPrint {
 				return View.ADMIN_HOME;
 			case 2:
 				printDelCancle();
-				return Controller.goBack();//확인필
+				return Controller.goBack();//!!뒤로가기하면 상세보기가 아닌 그 전 페이징이 나옴
 			default://삭제하시겠습니까?로 이동하고싶음!!!!ㅠㅠ
 				return View.ADMIN_REGI_RES_DETAIL;
 			}
+		case 3 ://미등록으로 변경
+			int chk = ScanUtil.nextInt("미등록 식당으로 변경하시겠습니까? 1.예 2.아니오 |메뉴선택 : ");
+			switch(chk) {
+			case 1:
+				adminService.adminResPostN(regiRes.getRes_no());
+				printAdminResPostN();
+				return View.ADMIN_HOME;
+			case 2:
+				printAdminResPostNCancle();
+				return Controller.goBack();
+			default:
+				return View.ADMIN_REGI_RES_DETAIL;
+			}
 		case 9 : return View.ADMIN_HOME;
-		case 0 : return Controller.goBack();//안먹힘
+		case 0 : return Controller.goBack();
 		default:
 			Controller.removeHistory();
 			return View.ADMIN_REGI_RES_DETAIL;
@@ -410,14 +446,76 @@ public class AdminController extends AdminPrint {
 		case 2:
 			return View.ADMIN_STANDBY_RES_MANAGE;
 		case 0:
-			return View.ADMIN_HOME;
+			return Controller.goBack();
 		default :
 			return View.ADMIN_RES_MANAGE;
+		}
+	}
+	
+	//관리자 탈퇴회원상세보기
+	public View adminMemberDelDetail() {
+		MemberVo memDelDetail = (MemberVo) Controller.sessionStorage.get("adminMemberDelList");
+		printAdminMemberDetail(memDelDetail);
+		int select = ScanUtil.nextInt("선택 >> ");
+		switch (select) {
+		case 9 : return View.ADMIN_HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.ADMIN_MEMBER_DEL_DETAIL;
+		}
+	}
+	
+	//관리자 탈퇴회원조회
+	public View adminMemberDel() {
+		List<MemberVo> adminMemberDelList = adminService.adminMemberDelList();
+		Controller.init_page(5, 2, "회원상세보기", "adminMemberDelDetail", View.ADMIN_MEMBER_DEL_DETAIL);
+		sessionStorage.put("list_for_paging", adminMemberDelList);
+		return View.LIST_PAGING;
+	}
+	
+	//관리자 회원상세보기
+	public View adminMemberDetail() {
+		MemberVo memDetail = (MemberVo) Controller.sessionStorage.get("adminMemberDetail");
+		
+		printAdminMemberDetail(memDetail);
+		
+		int select = ScanUtil.nextInt("선택 >> ");
+		switch (select) {
+		case 9 : return View.ADMIN_HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.ADMIN_MEMBER_DETAIL;
+		}
+	}
+	
+	//관리자 회원 리스트
+	public View adminMemberList() {
+		List<MemberVo> adminMemberList = adminService.adminMemberList();
+		Controller.init_page(5, 2, "회원상세보기", "adminMemberDetail", View.ADMIN_MEMBER_DETAIL);
+		sessionStorage.put("list_for_paging", adminMemberList);
+		return View.LIST_PAGING;
+	}
+	
+	//관리자 회원관리(리스트)
+	public View adminMemberManage() {
+		printAdminMemberManage();
+		int select = ScanUtil.nextInt("선택 >> ");
+		switch (select) {
+		case 1 : return View.ADMIN_MEMBER_LIST;
+		case 2 : return View.ADMIN_MEMBER_DEL;
+//		case 9 : return View.ADMIN_HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.ADMIN_MEMBER_MANAGE;
 		}
 	}
 
 	//관리자 리뷰 검색 - 닉네임
 	public View adminReviewSearchNickname() {
+		printBar();
 		String nickName = ScanUtil.nextLine("닉네임을 검색하세요 : ");
 		List<ReviewVo> reviewNickName = adminService.adminReviewSearchNickname(nickName);
 		if(reviewNickName==null){
@@ -432,6 +530,7 @@ public class AdminController extends AdminPrint {
 	
 	//관리자 리뷰 검색 - 식당이름
 	public View adminReviewSearchResname() {
+		printBar();
 		String resName = ScanUtil.nextLine("식당이름을 검색하세요 : ");
 		List<ReviewVo> reviewResName = adminService.adminReviewSearchResname(resName);
 		if(reviewResName==null){
@@ -458,14 +557,49 @@ public class AdminController extends AdminPrint {
 		}
 	}
 
-	//관리자 리뷰 블라인드 처리
+	//관리자 리뷰 블라인드 처리(N)
 	public View adminReviewBlind(){
 		ReviewVo revDetail = (ReviewVo)sessionStorage.get("adminReviewDetail");
 		adminService.adminReviewBlind(revDetail.getRev_no());
-		ReviewVo revDetailChangeBlind = adminService.adminRevBlindCheck(revDetail.getRev_no());
-		sessionStorage.put("adminReviewDetail", revDetailChangeBlind);
-		printBlindReview();
+		ReviewVo adminRevBlindCheck = adminService.adminRevPostYNCheck(revDetail.getRev_no());
+		sessionStorage.put("adminReviewDetail", adminRevBlindCheck);
+		printPostNReview();
 		return View.ADMIN_REVIEW_DETAIL;
+	}
+	
+	//관리자 리뷰 게시하기(Y)
+	private View adminReviewPostY() {
+		ReviewVo revDetail = (ReviewVo)sessionStorage.get("adminReviewDetail");
+		adminService.adminReviewPostY(revDetail.getRev_no());
+		ReviewVo adminRevPostYCheck = adminService.adminRevPostYNCheck(revDetail.getRev_no());
+		sessionStorage.put("adminReviewDetail", adminRevPostYCheck);
+		printPostYReview();
+		return View.ADMIN_REVIEW_DETAIL;
+	}
+	
+	//관리자 게시여부 수정
+	public View adminReviewPostynModify() {
+		ReviewVo revDetail = (ReviewVo)sessionStorage.get("adminReviewDetail");
+		printAdminRevDetail(revDetail);
+		int select = ScanUtil.nextInt("게시여부를 수정하시겠습니까? 1.예 2.아니오 |메뉴선택 : ");
+		switch(select) {
+		case 1:
+			printBlindReview();
+			int blind = ScanUtil.nextInt("선택 >> ");
+			switch (blind) {
+			case 1://Y
+				return View.ADMIN_REVIEW_POST_Y;
+			case 2://N
+				return View.ADMIN_REVIEW_BLIND;
+			default:
+				return View.ADMIN_REVIEW_POSTYN_MODIFY;
+			}
+		case 2:
+			printChkCancle();
+			return Controller.goBack();
+		default:
+			return View.ADMIN_REVIEW_POSTYN_MODIFY;
+		}
 	}
 	
 	//관리자 리뷰관리-리뷰상세보기
@@ -477,19 +611,10 @@ public class AdminController extends AdminPrint {
 		
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
-		case 1 ://리뷰 블라인드
-			int blind = ScanUtil.nextInt("현재 리뷰를 블라인드 하시겠습니까? 1.예 2.아니오 |메뉴선택 : ");
-			switch(blind) {
-			case 1:
-				return View.ADMIN_REVIEW_BLIND;
-			case 2:
-				printBlindCancle();
-				return Controller.goBack();//확인필
-			default:
-				return View.ADMIN_REVIEW_DETAIL;
-			}
+		case 1 ://게시여부 수정
+			return View.ADMIN_REVIEW_POSTYN_MODIFY;
 		case 9 : return View.ADMIN_HOME;
-		case 0 : return Controller.goBack();//안먹힘
+		case 0 : return Controller.goBack();
 		default:
 			Controller.removeHistory();
 			return View.ADMIN_REVIEW_DETAIL;
@@ -500,7 +625,7 @@ public class AdminController extends AdminPrint {
 	public View adminReviewManage() {
 		List<ReviewVo> adminReviewList = adminService.adminReviewList();
 		sessionStorage.put("adminRevStart", adminReviewList);
-		Controller.init_page(5,2,"리뷰상세보기", "adminReviewDetail", View.ADMIN_REVIEW_DETAIL);
+		Controller.init_page(5,3,"리뷰상세보기", "adminReviewDetail", View.ADMIN_REVIEW_DETAIL);
 		sessionStorage.put("list_for_paging", adminReviewList);
 		return View.LIST_PAGING;
 	}
