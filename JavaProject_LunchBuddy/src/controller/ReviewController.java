@@ -60,7 +60,6 @@ public class ReviewController extends ReviewPrint{
 			}
 		}
 	}
-
 	/**
 	 * 메뉴리뷰 -> 식당 상세 보내주는 메소드
 	 * @return
@@ -90,14 +89,14 @@ public class ReviewController extends ReviewPrint{
 		List<ReviewVo> reviewList = reviewService.review_by_res(res_no);
 		Controller.init_page(5, 2, "리뷰 상세 보기", "selected_review" , View.REVIEW_DETAIL);
 		Controller.sessionStorage.put("list_for_paging", reviewList);
-		return new Controller().list_paging();
+		return View.LIST_PAGING;
 	}
 
 	/**
 	 * 리뷰 추가
 	 * @return
 	 */
-	private View add_review() {
+	public View add_review() {
 		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
 		if(login_member==null) return View.LOG_IN;
 		
@@ -107,6 +106,22 @@ public class ReviewController extends ReviewPrint{
 //		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
 		if(restaurant==null) return View.RES_SEARCH_RESNAME;
 		
+    
+		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
+		if(restaurant==null) {
+			return View.RES_DETAIL;//식당이름으로 검색 시
+		}
+		else {
+			System.out.println("[ " + restaurant.getRes_name()+" ]");
+		}
+		
+		RestaurantVo cate = (RestaurantVo) Controller.sessionStorage.get("selected_category");
+		if(cate == null) {
+			return View.RES_DETAIL_CATEGORY;//식당카테고리로 검색 시
+		}
+		else {
+			System.out.println("[ " + cate.getRes_name()+" ]");
+    
 		String res_name = restaurant.getRes_name();
 		int score = 0;
 		String review_cont = "";
@@ -123,6 +138,7 @@ public class ReviewController extends ReviewPrint{
 			break;
 		}
 		
+		//식당이름으로 검색 시
 		//param = res_no, mem_no, res_no, mem_no, rev_star
 		//		, rev_cont, res_no, mem_no
 		List<Object> param = new ArrayList();
@@ -136,6 +152,20 @@ public class ReviewController extends ReviewPrint{
 		param.add(login_member.getMem_no());
 		reviewService.add_review(param);
 		
+		//식당카테고리로 검색 시
+		//cateParam = res_no, mem_no, res_no, mem_no, rev_star
+		//		, rev_cont, res_no, mem_no
+		List<Object> cateParam = new ArrayList<Object>();
+		cateParam.add(cate.getRes_no());
+		cateParam.add(login_member.getMem_no());
+		cateParam.add(cate.getRes_no());
+		cateParam.add(login_member.getMem_no());
+		cateParam.add(ScanUtil.nextInt("평점 (1~10) >> "));
+		cateParam.add(ScanUtil.nextLine("후기를 남겨주세요 : "));
+		cateParam.add(cate.getRes_no());
+		cateParam.add(login_member.getMem_no());
+		reviewService.add_review(cateParam);
+		
 		ReviewVo review = reviewService.review_just_wrote();
 		Controller.sessionStorage.put("selected_review", review);
 		return View.REVIEW_DETAIL;
@@ -146,7 +176,7 @@ public class ReviewController extends ReviewPrint{
 	 * >>리뷰 상세보기
 	 * @return
 	 */
-	private View see_review_by_writer() {
+	public View see_review_by_writer() {
 		ReviewVo review = (ReviewVo) Controller.sessionStorage.get("selected_review");
 		List<ReviewVo> reviewList = reviewService.review_by_writer(review.getMem_no());
 		Controller.init_page(5, 2, "리뷰 상세 보기", "selected_review" , View.REVIEW_DETAIL);
@@ -159,7 +189,9 @@ public class ReviewController extends ReviewPrint{
 	 * >>식당 보기
 	 * @return
 	 */
-	private View see_menu_review_by_menuReview() {
+
+	public View see_menu_review_by_menu() {
+
 		MenuReviewVo menuReview = (MenuReviewVo) Controller.sessionStorage.get("selected_menuReview");
 		List<MenuReviewVo> menuReviewList = menuReviewService.see_menu_review_by_menu(menuReview.getMenu_no());
 		Controller.init_page(10, 1, "식당 보기", "selected_menuReview" , View.RES_DETAIL);
@@ -172,7 +204,7 @@ public class ReviewController extends ReviewPrint{
 	 * >> 이 메뉴 리뷰 더 보기 (해당 메뉴 리뷰 모아보기)
 	 * @return
 	 */
-	private View see_menu_review_by_res_n_writer() {
+	public View see_menu_review_by_res_n_writer() {
 		List<MenuReviewVo> menuReviewList = (List<MenuReviewVo>) Controller.sessionStorage.get("menu_review");
 		Controller.init_page(10, 1, "이 메뉴 리뷰 더보기", "selected_menuReview" , View.SEE_MENU_REVIEW_BY_MENU);
 		Controller.sessionStorage.put("list_for_paging", menuReviewList);

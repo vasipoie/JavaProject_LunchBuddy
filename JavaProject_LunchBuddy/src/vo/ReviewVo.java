@@ -33,5 +33,11 @@ public class ReviewVo {
 		}
 		return stars;
 	}
+	
+	public String adminRev() {
+		return "[" + res_name + "]  " + stars(rev_star) + " (" + rev_star + ")\n" +
+				mem_nick + ")  " + rev_cont+"\n"+
+				"게시여부 : "+rev_postyn;
+	}
 	 
 }
