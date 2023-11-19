@@ -3,6 +3,8 @@ package print;
 import java.util.List;
 
 import util.ScanUtil;
+import vo.MenuVo;
+import vo.RestaurantVo;
 
 public class Print {
 
@@ -82,15 +84,18 @@ public class Print {
 //		System.out.println();
 		printBar();
 		System.out.println("\t   1. 식당 검색     \t\t\t 2. 최근 리뷰");
-		System.out.println("\t   3. 리뷰, 식당 등록\t\t 4. 점메추");
+		System.out.println("\t   3. 리뷰, 식당 등록\t\t 4. 랜덤 메뉴 추천");
 		System.out.println("\t   5. 점심 친구 구하기\t\t 6. 마이페이지");
 		printBar();
 	}
 
 	public void printAdd() {
 		printBar();
-		System.out.println("1. 리뷰 등록");
-		System.out.println("2. 식당 등록");
+		System.out.println("\t\t\t\t  리뷰, 식당 등록");
+		printLn(6);
+		System.out.println("\t\t\t\t   1. 리뷰 등록");
+		System.out.println("\t\t\t\t   2. 식당 등록");
+		printLn(6);
 		printBar();
 	}
 
@@ -114,6 +119,28 @@ public class Print {
 		printLn(6);
 		printBar();
 		pause();
+	}
+	
+	public void print_menu_recommanded(MenuVo selected_menu, RestaurantVo res, List<MenuVo> menuList_by_res) {
+		printBar();
+		System.out.println("\t\t\t\t메뉴 추천");
+		System.out.println();
+		System.out.println("\t\t\t랜덤으로 추천된 메뉴입니다.");
+		System.out.println();
+		System.out.println("\t\t[ "+res.getRes_name() + " ] "
+				+selected_menu.getMenu_name()+" "
+				+selected_menu.getMenu_price()+"원");
+		System.out.println();
+		printBar();
+		System.out.println("\t\t[ "+res.getRes_name()+" ]의 다른 메뉴");
+		for(int i =0; i<4; i++) {
+			MenuVo menu = menuList_by_res.get(i);
+			System.out.println("\t\t "+menu.getMenu_name()+"  "+menu.getMenu_price()+"원");
+		}
+		printBar();
+		System.out.println("\t\t1. 이 식당 정보 보기     2. 이 메뉴 리뷰 보기");
+		System.out.println("\t\t0. 다시 추천 받기       9. 뒤로가기");
+		printBar();
 	}
 	
 }

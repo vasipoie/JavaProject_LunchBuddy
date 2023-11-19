@@ -3,12 +3,13 @@ package service;
 import java.util.List;
 
 import dao.MenuDao;
+import vo.MenuVo;
 
 public class MenuService {
 
 	private static MenuService singleTon = null;
 	
-	private MenuService(){};
+	public MenuService(){};
 	
 	public static MenuService getInstance() {
 		if(singleTon == null) {
@@ -23,4 +24,17 @@ public class MenuService {
 	public void menuAdd(List<Object> menuAdd) {
 		menuDao.menuAdd(menuAdd);
 	}
+
+	public int count_menu() {
+		return menuDao.count_menu();
+	}
+
+	public List<MenuVo> get_all_menu_list() {
+		return menuDao.get_all_menu_list();
+	}
+
+	public List<MenuVo> menuList_by_res(String res_no) {
+		return menuDao.menuList_by_res(res_no);
+	}
+
 }
