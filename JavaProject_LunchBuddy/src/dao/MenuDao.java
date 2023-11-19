@@ -51,4 +51,11 @@ public class MenuDao {
 		return ConvertUtils.convertToList(jdbc.selectList(sql), MenuVo.class);
 	}
 
+	public MenuVo get_menu_by_menuNo(String menuNo) {
+		String sql = "select * from menu \n"
+				+ "where (menu_postyn='Y' or menu_postyn='y')\n"
+				+ "and menu_no = '"+menuNo+"'";
+		return ConvertUtils.convertToVo(jdbc.selectOne(sql), MenuVo.class);
+	}
+
 }

@@ -1,14 +1,11 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import print.BFPrint;
 import print.Print;
+import print.ReviewPrint;
 import service.MemberService;
 import service.MenuService;
 import service.RestaurantService;
@@ -16,10 +13,8 @@ import service.Service;
 import util.ScanUtil;
 import util.View;
 import vo.AdminVo;
-import vo.MemberVo;
 import vo.MenuVo;
 import vo.RestaurantVo;
-import vo.ReviewVo;
 
 public class Controller extends Print {
 
@@ -39,9 +34,8 @@ public class Controller extends Print {
 	RestaurantService restaurantService = new RestaurantService();
 	
 	public static void main(String[] args) {
-//		new Controller().start();
-		new Controller().test();
-		// 자바 브랜치 생성 테스트
+		new Controller().start();
+//		new Controller().test();
 	}
 	
 	public void test() {
@@ -51,16 +45,17 @@ public class Controller extends Print {
 //		MemberVo member = memberService.log_in(param);
 //		sessionStorage.put("log_in_member", member);
 //		
+		MenuVo menu = menuService.get_menu_by_menuNo("01001M001");
+		new ReviewPrint().print_add_menureview(menu,"어쩌구 칼국수","내용",false);
+		
 //		RestaurantVo res = restaurantService.getRes_by_resNo("02003");
-//		sessionStorage.put("selected_res_for_bf", res);
-//		
-////		printAdd();
-//		View view = bfController.bfcontroller(View.BF_MAKE);
-//		new BFPrint().print_make_bf("문밀원","와랄라","홀롤로",3,"23.11.27",false);
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(new Date());
-//		new BFPrint().printDate(cal);
-		new BFPrint().print_already_part();
+//		sessionStorage.put("resDetailResName", res);
+////		
+////		View view = bfController.bfcontroller(View.BF_MAKE);
+//		View view = resController.restController(View.RES_DETAIL);
+		
+//		new RestaurantPrint().printResSearchSelect();
+		
 	}
 
 	public void start() {
@@ -78,30 +73,12 @@ public class Controller extends Print {
 			case ADMIN_HOME:
 				view = ac.adminHome();
 				break;
-//			case RES_SEARCH_SELECT: // 식당 검색 전 선택
-//				view = resc.resSearchSelect();
-//				break;
-//			case RES_SEARCH_RESNAME:// 식당 이름으로 검색
-//				view = resc.resSearchResName();
-//				break;
-//			case RES_SEARCH_CATEGORY:// 메뉴 카테고리로 검색
-//				view = resc.resSearchCategory();
-//				break;
 			case SEARCH:
 //				view = search();
 				break;
-//			case RECENT_REVIEW:
-//				view = revc.reviewController(view);
-//				break;
 			case ADD:
 				view = add();
 				break;
-//			case RES_ADD:
-//				view = resc.resAdd();
-//				break;
-//			case RES_ADD_ONE:
-//				view = resc.resAddOne();
-//				break;
 			case RECOMMAND_MENU:
 				view = recommand_menu();
 				break;

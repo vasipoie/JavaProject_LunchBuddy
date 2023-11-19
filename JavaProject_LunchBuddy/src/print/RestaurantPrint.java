@@ -10,11 +10,23 @@ public class RestaurantPrint extends Print{
 
 	public void printResSearchSelect() {
 		printBar();
-		System.out.println("식당 검색");
+		System.out.println("\t\t\t\t식당 검색");
+		printLn(4);
+		System.out.println("\t\t\t1. 식당 이름으로 검색");
+		System.out.println("\t\t\t2. 식당 카테고리로 검색");
+		printLn(2);
+		System.out.println("\t\t\t9. 홈");
+		System.out.println("\t\t\t0. 뒤로 가기");
+		printLn(4);
 		printBar();
-		System.out.println("1. 식당 이름으로 검색");
-		System.out.println("2. 식당 카테고리로 검색");
-		System.out.println("9. 홈");
+	}
+	
+	public void print_resSearchResName() {
+		printBar();
+		System.out.println("\t\t\t\t식당 검색");
+		printLn(6);
+		System.out.println("\t\t\t식당 이름을 검색하세요 : ");
+		printLn(7);
 		printBar();
 	}
 	
@@ -32,15 +44,21 @@ public class RestaurantPrint extends Print{
 	//메뉴카테고리로 검색 할 때 선택 할 카테고리 출력
 	public void printCategory() {
 		printBar();
-		System.out.println("1. 한식");
-		System.out.println("2. 양식");
-		System.out.println("3. 아시아음식");
-		System.out.println("4. 일식");
-		System.out.println("5. 중식");
-		System.out.println("6. 분식");
-		System.out.println("7. 카페");
-		System.out.println("8. 뷔페");
-		System.out.println("9. 기타");
+		System.out.println("\t\t\t\t카테고리 별 식당 검색");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("\t\t\t\t1. 한식");
+		System.out.println("\t\t\t\t2. 양식");
+		System.out.println("\t\t\t\t3. 아시아음식");
+		System.out.println("\t\t\t\t4. 일식");
+		System.out.println("\t\t\t\t5. 중식");
+		System.out.println("\t\t\t\t6. 분식");
+		System.out.println("\t\t\t\t7. 카페");
+		System.out.println("\t\t\t\t8. 뷔페");
+		System.out.println("\t\t\t\t9. 기타");
+		System.out.println();
+		System.out.println();
 		printBar();
 	}
 	
@@ -174,13 +192,19 @@ public class RestaurantPrint extends Print{
 //	}
 	
 	public void printResDetail(RestaurantVo rest) {
-		System.out.println("식당 상세 보기");
 		printBar();
-		System.out.println("["+rest.getRes_name()+"] "+ new ReviewPrint().stars(rest.getRev_star()));
-		System.out.println(cateName(rest) + "\t" + rest.getRes_walk()+"min");
-		System.out.println(rest.getRes_phone());
-		System.out.println(rest.getRes_add());
-		System.out.println(rest.getMenu_name()+" - "+rest.getMenu_price()+"원");
+		System.out.println("\t\t\t\t식당 상세 보기");
+		printBar();
+		System.out.println();
+		System.out.println("\t\t["+rest.getRes_name()+"] "+ new ReviewPrint().stars(rest.getRev_star()));
+		System.out.println("\t\t"+cateName(rest) + "\t" + rest.getRes_walk()+"min");
+		System.out.println("\t\t"+rest.getRes_phone());
+		System.out.println("\t\t"+rest.getRes_add());
+		System.out.println("\t\t"+rest.getMenu_name()+" - "+rest.getMenu_price()+"원");
+		printLn(4);
+		printBar();
+		System.out.println("\t\t1.리뷰 보기   2.메뉴 더보기  3. 리뷰 등록");
+		System.out.println("\t\t9.홈  0.뒤로가기");
 		printBar();
 	}
 	

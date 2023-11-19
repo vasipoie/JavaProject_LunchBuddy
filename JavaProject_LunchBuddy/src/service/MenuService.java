@@ -36,5 +36,9 @@ public class MenuService {
 	public List<MenuVo> menuList_by_res(String res_no) {
 		return menuDao.menuList_by_res(res_no);
 	}
+	public MenuVo get_menu_by_menuNo(String menuNo) {
+		return menuDao.get_menu_by_menuNo(menuNo);
+	}
+	
 
 }

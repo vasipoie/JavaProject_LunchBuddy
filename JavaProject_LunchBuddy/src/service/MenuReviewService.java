@@ -27,6 +27,10 @@ public class MenuReviewService {
 	public List<MenuReviewVo> see_menu_review_by_menu(String menu_no) {
 		return dao.see_menu_review_by_menu(menu_no);
 	}
+
+	public void add_menureview(String menu_no, String cont, String mem_no) {
+		dao.add_menureview(menu_no, cont, mem_no);
+	}
 	
 	
 }
