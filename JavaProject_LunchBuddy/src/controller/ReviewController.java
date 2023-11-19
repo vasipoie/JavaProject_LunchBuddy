@@ -74,15 +74,6 @@ public class ReviewController extends ReviewPrint{
 	}
 
 
-	private View see_menu_review_by_menu() {
-		MenuVo menu = (MenuVo) Controller.sessionStorage.get("selected_menu");
-		List<MenuReviewVo> menuReviewList = menuReviewService.see_menu_review_by_menu(menu.getMenu_no());
-		
-		Controller.sessionStorage.put( "list_for_paging", menuReviewList);
-		Controller.init_page(10, 1, "식당 상세보기", "selected_menureview_for_res", View.RES_BY_MENUREVIEW);
-		Controller.removeHistory();
-		return View.LIST_PAGING;
-	}
 
 	private View see_review_by_res() {
 		String res_no = (String) Controller.sessionStorage.get("selected_rest_no");
@@ -101,10 +92,10 @@ public class ReviewController extends ReviewPrint{
 		if(login_member==null) return View.LOG_IN;
 		
 		//테스트용
-		RestaurantVo restaurant = new RestaurantService().resAddOnePrint("01");
+//		RestaurantVo restaurant = new RestaurantService().resAddOnePrint("01");
 		//
 //		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
-		if(restaurant==null) return View.RES_SEARCH_RESNAME;
+//		if(restaurant==null) return View.RES_SEARCH_RESNAME;
 		
     
 		RestaurantVo restaurant = (RestaurantVo) Controller.sessionStorage.get("selected_restaurant");
@@ -190,13 +181,24 @@ public class ReviewController extends ReviewPrint{
 	 * @return
 	 */
 
-	public View see_menu_review_by_menu() {
+	public View see_menu_review_by_menuReview() {
 
 		MenuReviewVo menuReview = (MenuReviewVo) Controller.sessionStorage.get("selected_menuReview");
 		List<MenuReviewVo> menuReviewList = menuReviewService.see_menu_review_by_menu(menuReview.getMenu_no());
 		Controller.init_page(10, 1, "식당 보기", "selected_menuReview" , View.RES_DETAIL);
 		Controller.sessionStorage.put("list_for_paging", menuReviewList);
-		return new Controller().list_paging();
+		Controller.removeHistory();
+		return View.LIST_PAGING;
+	}
+	
+	private View see_menu_review_by_menu() {
+		MenuVo menu = (MenuVo) Controller.sessionStorage.get("selected_menu");
+		List<MenuReviewVo> menuReviewList = menuReviewService.see_menu_review_by_menu(menu.getMenu_no());
+		
+		Controller.sessionStorage.put( "list_for_paging", menuReviewList);
+		Controller.init_page(10, 1, "식당 상세보기", "selected_menureview_for_res", View.RES_BY_MENUREVIEW);
+		Controller.removeHistory();
+		return View.LIST_PAGING;
 	}
 
 	/**
