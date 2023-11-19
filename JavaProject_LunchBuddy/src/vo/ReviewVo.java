@@ -19,7 +19,8 @@ public class ReviewVo {
 	@Override
 	public String toString() {
 		return "[" + res_name + "]  " + stars(rev_star) + " (" + rev_star + ")\n\t\t" +
-				mem_nick + ")  " + rev_cont;
+				mem_nick + ")  " + rev_cont +"\n" +
+				"게시여부 : "+rev_postyn;
 	}	 
 	 
 

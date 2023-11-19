@@ -6,6 +6,7 @@ import java.util.Map;
 import util.ConvertUtils;
 import util.JDBCUtil;
 import vo.AdminVo;
+import vo.MemberVo;
 import vo.RestaurantVo;
 import vo.ReviewVo;
 
@@ -39,6 +40,7 @@ public class AdminDao {
 					+ "    ,menu m\r\n"
 					+ "where res.res_no = m.res_no(+)\r\n"
 					+ "and res.res_postyn ='Y'\r\n"
+					+ "and m.menu_no like '%001'\r\n"
 					+ "order by res.res_date desc";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
 	}
@@ -136,17 +138,25 @@ public class AdminDao {
 					 "order by rev_date desc";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
 	}
+	
+	//관리자 리뷰 게시하기(Y)
+	public void adminReviewPostY(String rev_no) {
+		String sql = "update review\r\n"
+				+ "set rev_postyn = 'Y'\r\n"
+				+ "where rev_no = '"+rev_no+"'";
+		jdbc.update(sql);
+	}
 
-	//관리자 리뷰 블라인드 처리
+	//관리자 리뷰 블라인드 처리(N)
 	public void adminReviewBlind(String rev_no) {
 		String sql = "update review\r\n"
-					+ "set rev_postyn = 'N'\r\n"
-					+ "where rev_no = '"+rev_no+"'";
+				+ "set rev_postyn = 'N'\r\n"
+				+ "where rev_no = '"+rev_no+"'";
 		jdbc.update(sql);
 	}
 	
-	//관리자 리뷰 블라인드 처리 확인
-	public ReviewVo adminRevBlindCheck(String rev_no) {
+	//관리자 리뷰 게시여부 수정확인(Y/N)
+	public ReviewVo adminRevPostYNCheck(String rev_no) {
 		String sql = "select (select res_name from restaurant where res_no = a.res_no) res_name, rev_star\r\n"
 				+ "        , (select mem_nick from member where mem_no = a.mem_no) mem_nick\r\n"
 				+ "		, rev_cont, rev_no, rev_postyn, to_char(rev_date,'yy.mm.dd hh24:mi') rev_date\r\n"
@@ -156,6 +166,19 @@ public class AdminDao {
 				+ "order by rev_date desc";
 		return ConvertUtils.convertToVo(jdbc.selectOne(sql), ReviewVo.class);
 	}
+	
+	
+	//관리자 리뷰 블라인드 처리 확인
+//	public ReviewVo adminRevBlindCheck(String rev_no) {
+//		String sql = "select (select res_name from restaurant where res_no = a.res_no) res_name, rev_star\r\n"
+//				+ "        , (select mem_nick from member where mem_no = a.mem_no) mem_nick\r\n"
+//				+ "		, rev_cont, rev_no, rev_postyn, to_char(rev_date,'yy.mm.dd hh24:mi') rev_date\r\n"
+//				+ "		, a.res_no, a.mem_no\r\n"
+//				+ "from review a\r\n"
+//				+ "where a.rev_no = '"+rev_no+"'\r\n"
+//				+ "order by rev_date desc";
+//		return ConvertUtils.convertToVo(jdbc.selectOne(sql), ReviewVo.class);
+//	}
 
 	//관리자 리뷰검색-식당이름
 	public List<ReviewVo> adminReviewSearchResname(String resName) {
@@ -175,17 +198,41 @@ public class AdminDao {
 	//관리자 리뷰검색-닉네임
 	public List<ReviewVo> adminReviewSearchNickname(String nickName) {
 		String sql = "select rev.res_no, res.res_name, rev.rev_star, \r\n"
-					+ "       mem.mem_nick, mem.mem_no, rev.rev_cont, \r\n"
-					+ "       rev.rev_no, rev.rev_postyn, rev.rev_date\r\n"
-					+ "from restaurant res\r\n"
-					+ "    ,review rev\r\n"
-					+ "    ,member mem\r\n"
-					+ "where res.res_no(+) = rev.res_no\r\n"
-					+ "and rev.mem_no = mem.mem_no(+)\r\n"
-					+ "and mem.mem_nick= "+nickName;
+				+ "       mem.mem_nick, mem.mem_no, rev.rev_cont, \r\n"
+				+ "       rev.rev_no, rev.rev_postyn, \r\n"
+				+ "       to_char(rev.rev_date,'yy.mm.dd hh24:mi') rev_date\r\n"
+				+ "from restaurant res\r\n"
+				+ "    ,review rev\r\n"
+				+ "    ,member mem\r\n"
+				+ "where res.res_no(+) = rev.res_no\r\n"
+				+ "and rev.mem_no = mem.mem_no(+)\r\n"
+				+ "and mem.mem_nick like '%"+nickName+"%'";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
 	}
 
+	//관리자 회원관리(리스트)
+	public List<MemberVo> adminMemberList() {
+		String sql = "select * from member";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), MemberVo.class);
+	}
+
+	//관리자 탈퇴회원조회(리스트)
+	public List<MemberVo> adminMemberDelList() {
+		String sql = "select * from member where mem_delyn='Y'";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), MemberVo.class);
+	}
+	
+	//관리자 등록된 식당->미등록으로 변경
+	public void adminResPostN(String res_no) {
+		String sql = "UPDATE restaurant\r\n"
+				+ "\"SET res_postyn = 'Y'\r\n"
+				+ "\"where res_no=\"+res_no";
+		jdbc.update(sql);
+	}
+
+	
+
+	
 	
 
 
