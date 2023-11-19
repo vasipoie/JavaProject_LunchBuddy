@@ -4,6 +4,7 @@ import java.util.List;
 
 import controller.Controller;
 import vo.MenuReviewVo;
+import vo.MenuVo;
 import vo.ReviewVo;
 
 public class ReviewPrint extends Print {
@@ -22,6 +23,28 @@ public class ReviewPrint extends Print {
 			System.out.println();
 			System.out.println("\t\t\t1.등록하기        0.뒤로가기");
 		}
+		printBar();
+	}
+	
+	public void print_add_menureview(MenuVo menu, String res, String cont, boolean b){
+		printBar();
+		System.out.println("\t\t\t\t메뉴 리뷰 등록");
+		printLn(3);
+		System.out.println("\t\t[ "+res+" ]");
+		System.out.println();
+		System.out.println("\t\t"+menu.getMenu_name() +"   "+menu.getMenu_price());
+		System.out.println();
+		System.out.println();
+		System.out.println("\t\t나의 리뷰 : "+cont);
+		if(b) {
+			printLn(5);
+		}else {
+			printLn(2);
+			System.out.println("\t\t\t\t등록하시겠습니까?");
+			System.out.println();
+			System.out.println("\t\t\t  1. 등록하기    2. 돌아가기");
+		}
+		System.out.println();
 		printBar();
 	}
 

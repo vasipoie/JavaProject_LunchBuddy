@@ -28,77 +28,77 @@ public class Controller extends Print {
    BFController bfController = new BFController();
    RestaurantController resController = new RestaurantController();
 
-   Service service = Service.getInstance();
-   MemberService memberService = new MemberService();
-   MenuService menuService = new MenuService();
-   RestaurantService restaurantService = new RestaurantService();
-   
-   public static void main(String[] args) {
-      new Controller().start();
-//      new Controller().test();
-   }
-   
-   public void test() {
-//      List<Object> param = new ArrayList();
-//      param.add("nahye");
-//      param.add("nahye1234");
-//      MemberVo member = memberService.log_in(param);
-//      sessionStorage.put("log_in_member", member);
-//      
-//      MenuVo menu = menuService.get_menu_by_menuNo("01001M001");
-//      new ReviewPrint().print_add_menureview(menu,"어쩌구 칼국수","내용",false);
-      
-//      RestaurantVo res = restaurantService.getRes_by_resNo("02003");
-//      sessionStorage.put("resDetailResName", res);
-////      
-////      View view = bfController.bfcontroller(View.BF_MAKE);
-//      View view = resController.restController(View.RES_DETAIL);
-      
-//      new RestaurantPrint().printResSearchSelect();
-      
-   }
+	Service service = Service.getInstance();
+	MemberService memberService = new MemberService();
+	MenuService menuService = new MenuService();
+	RestaurantService restaurantService = new RestaurantService();
+	
+	public static void main(String[] args) {
+		new Controller().start();
+//		new Controller().test();
+	}
+	
+	public void test() {
+//		List<Object> param = new ArrayList();
+//		param.add("nahye");
+//		param.add("nahye1234");
+//		MemberVo member = memberService.log_in(param);
+//		sessionStorage.put("log_in_member", member);
+//		
+		MenuVo menu = menuService.get_menu_by_menuNo("01001M001");
+		new ReviewPrint().print_add_menureview(menu,"어쩌구 칼국수","내용",false);
+		
+//		RestaurantVo res = restaurantService.getRes_by_resNo("02003");
+//		sessionStorage.put("resDetailResName", res);
+////		
+////		View view = bfController.bfcontroller(View.BF_MAKE);
+//		View view = resController.restController(View.RES_DETAIL);
+		
+//		new RestaurantPrint().printResSearchSelect();
+		
+	}
 
-   public void start() {
-      View view = View.HOME;
-      while (true) {
-         System.out.println("main controller, view = " + view);
-         newPage(view);
-         switch (view) {
-         case HOME:
-            view = home();
-            break;
-         case ADMIN_LOGIN:
-            view = ac.adminLogin();
-            break;
-         case ADMIN_HOME:
-            view = ac.adminHome();
-            break;
-         case SEARCH:
-//            view = search();
-            break;
-         case ADD:
-            view = add();
-            break;
-         case RECOMMAND_MENU:
-            view = recommand_menu();
-            break;
-         case MEMBER:
-            view = memberController.memberController(view);
-            break;
-         case LIST_PAGING:
-            view = list_paging();
-            break;
-         default:
-            removeHistory();
-            System.out.println("main controller out");
-            view = memberController.memberController(view);
-            view = revc.reviewController(view);
-            view = bfController.bfcontroller(view);
-            view = resController.restController(view);
-            view = ac.adminController(view);
-         }
-      }
-   }
+	public void start() {
+		View view = View.HOME;
+		while (true) {
+			System.out.println("main controller, view = " + view);
+			newPage(view);
+			switch (view) {
+			case HOME:
+				view = home();
+				break;
+			case ADMIN_LOGIN:
+				view = ac.adminLogin();
+				break;
+			case ADMIN_HOME:
+				view = ac.adminHome();
+				break;
+			case SEARCH:
+//				view = search();
+				break;
+			case ADD:
+				view = add();
+				break;
+			case RECOMMAND_MENU:
+				view = recommand_menu();
+				break;
+			case MEMBER:
+				view = memberController.memberController(view);
+				break;
+			case LIST_PAGING:
+				view = list_paging();
+				break;
+			default:
+				removeHistory();
+				System.out.println("main controller out");
+				view = memberController.memberController(view);
+				view = revc.reviewController(view);
+				view = bfController.bfcontroller(view);
+				view = resController.restController(view);
+				view = ac.adminController(view);
+			}
+		}
+	}
 
    /**
     * 랜덤 메뉴 추천 메소드

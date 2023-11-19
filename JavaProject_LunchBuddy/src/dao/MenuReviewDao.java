@@ -37,6 +37,11 @@ public class MenuReviewDao {
 		String sql = sql_ + "where menu_no = '"+menu_no+"'";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), MenuReviewVo.class);
 	}
+
+	public void add_menureview(String menu_no, String cont, String mem_no) {
+		String sql = "";
+		jdbc.update(sql);
+	}
 	
 	
 	
