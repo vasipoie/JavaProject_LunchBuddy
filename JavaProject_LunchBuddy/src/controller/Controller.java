@@ -41,6 +41,7 @@ public class Controller extends Print {
 	public static void main(String[] args) {
 //		new Controller().start();
 		new Controller().test();
+		// 자바 브랜치 생성 테스트
 	}
 	
 	public void test() {
