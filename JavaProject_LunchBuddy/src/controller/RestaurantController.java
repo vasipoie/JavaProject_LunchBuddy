@@ -89,6 +89,9 @@ public class RestaurantController extends RestaurantPrint{
 				System.out.println("전화번호를 입력해주세요");
 				newPhone = ScanUtil.nextLine("전화번호 : ");
 			}
+			if(newPhone.contains("-")||newPhone.contains(".")) {
+				newPhone = newPhone.replaceAll("[-.]", "");
+			}
 			if(!newPhone.matches("^[0-9]*$")) {
 				System.out.println("숫자만 입력가능합니다");
 				newPhone = ScanUtil.nextLine("전화번호 : ");
@@ -147,17 +150,24 @@ public class RestaurantController extends RestaurantPrint{
 
 	//식당 등록요청 전에 사용자가 입력한 등록 출력 -> 1.등록요청 2.수정 3.등록취소
 	public View resAddOne() {
-		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		if(mb==null) {
-			int select = ScanUtil.nextInt("1.로그인 2.회원가입 |메뉴선택 : ");
-			printBar();
-			switch(select) {
-			case 1:
-				return View.LOG_IN;
-			case 2:
-				return View.JOIN;
-			}
-		}
+		//뒤로가기 고치면 다시 해제
+//		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+//		if(login_member==null) {
+//			page_need_login();
+//			return View.LOG_IN;
+//		}
+		
+//		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
+//		if(mb==null) {
+//			int select = ScanUtil.nextInt("1.로그인 2.회원가입 |메뉴선택 : ");
+//			printBar();
+//			switch(select) {
+//			case 1:
+//				return View.LOG_IN;
+//			case 2:
+//				return View.JOIN;
+//			}
+//		}
 		
 		//restAdd : 카테고리no,카테고리no,식당이름,주소,번호,예약,카테고리no
 		List<Object> restAdd = (List<Object>) sessionStorage.get("restAdd");
@@ -167,8 +177,7 @@ public class RestaurantController extends RestaurantPrint{
 		printResInsertBefore(restAdd,chk);
 		printSelectResInsertBefore();
 		
-		//아래수정!!!!!!!!!!!!!!!
-		int select = ScanUtil.nextInt("이야아아아아 메뉴를 선택하세요 ");
+		int select = ScanUtil.nextInt("메뉴를 선택하세요 ");
 		switch (select) {
 		case 1:
 			resService.resAdd(restAdd);
@@ -212,111 +221,107 @@ public class RestaurantController extends RestaurantPrint{
 
 	//식당 등록
 	public View resAdd() {
-		page_need_login();
-		//로그인 -> 로그인 되어있으면 잠시후 로그인페이지로 이동합니다 안나오게?
-		MemberVo mb = (MemberVo) sessionStorage.get("log_in_member");
-		if(mb==null) {
-			int select = ScanUtil.nextInt("1.로그인 2.회원가입 |메뉴선택 : ");
-			printBar();
-			switch(select) {
-			case 1:
-				return View.LOG_IN;
-			case 2:
-				return View.JOIN;
-			}
-		}
+		//오류!!!!!!!!!!!!! 로그인 했는데 계속 로그인 입력창이 나옴->뒤로가기문제인듯
+//		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+//		if(login_member==null) {
+//			page_need_login();
+//			return View.LOG_IN;
+//		}		
 		printResAddExample();
 		//카테고리
 		printResAddCategory();
-//		String cateNo;
-//		int cate = ScanUtil.nextIntC("카테고리 번호 : ");
-//		switch(cate) {
-//		case 1 : cateNo = "01";	break;
-//		case 2 : cateNo = "02";	break;
-//		case 3 : cateNo = "03";	break;
-//		case 4 : cateNo = "04";	break;
-//		case 5 : cateNo = "05";	break;
-//		case 6 : cateNo = "06";	break;
-//		case 7 : cateNo = "07";	break;
-//		case 8 : cateNo = "08";	break;
-//		case 9 : cateNo = "09";	break;
-//		default : 
-//			System.out.println("잘못 입력했습니다. 다시 입력해주세요");
-//			return View.RES_ADD;
-//		}
-//		//식당이름
-//		String resName = ScanUtil.nextLine("식당 이름 : ");
-//		if(resName.isEmpty()) {
-//			System.out.println("식당 이름을 입력해주세요");
-//			resName = ScanUtil.nextLine("식당 이름 : ");
-//		}
-//		//주소
-//		String address = ScanUtil.nextLine("주소 : ");
-//		if(address.isEmpty()) {
-//			System.out.println("주소를 입력해주세요");
-//			address = ScanUtil.nextLine("주소 : ");
-//		}
-//		//전화번호
-//		String phone = ScanUtil.nextLine("전화번호 : ");
-//		if(phone.isEmpty()) {
-//			System.out.println("전화번호를 입력해주세요");
-//			phone = ScanUtil.nextLine("전화번호 : ");
-//		}
-//		if(phone.contains("-")||phone.contains(".")) {
-//			phone = phone.replaceAll("[-.]", "");
-//		}
-//		if(!phone.matches("^[0-9]*$")) {
-//			System.out.println("숫자만 입력가능합니다");
-//			phone = ScanUtil.nextLine("전화번호 : ");
-//		}
-//		//예약가능여부
-//		System.out.println("예약가능여부는 숫자만 입력가능합니다");
-//		String bookyn = "";
-//		while(true) {
-//			int book = ScanUtil.nextIntB("예약가능여부(1.가능/2.불가능/3.미확인) : ");
-//			if(book == 1) {
-//				bookyn = "가능";
-//			}
-//			if(book == 2 ) {
-//				bookyn = "불가능";
-//			}
-//			if(book == 3) {
-//				bookyn = "미확인";
-//			}
-//			else {
-//				System.out.println("숫자 1,2,3 중 한 개를 입력해주세요");
-//				continue;
-//			}
-//			break;
-//		}
-//		//대표메뉴
-//		String sigMenu = ScanUtil.nextLine("대표메뉴 : ");
-//		if(sigMenu.isEmpty()) {
-//			System.out.println("대표메뉴를 입력해주세요");
-//			sigMenu = ScanUtil.nextLine("대표메뉴 : ");
-//		}
-//		if(sigMenu.contains("&")) {
-//			sigMenu = sigMenu.replace("&", "+");
-//		}
-//		//가격
-//		System.out.println("가격은 숫자만 입력가능합니다");
-//		String price = ScanUtil.nextLine("가격 : ");
-//		if(price.isEmpty()) {
-//			System.out.println("가격을 입력해주세요");
-//			price = ScanUtil.nextLine("가격 : ");
-//		}
-//		if(!price.matches("^[0-9]*$")) {
-//			System.out.println("가격은 숫자만 입력가능합니다");
-//			price = ScanUtil.nextLine("가격 : ");
-//		}
+		String cateNo;
+		int cate = ScanUtil.nextIntC("카테고리 번호 : ");
+		switch(cate) {
+		case 1 : cateNo = "01";	break;
+		case 2 : cateNo = "02";	break;
+		case 3 : cateNo = "03";	break;
+		case 4 : cateNo = "04";	break;
+		case 5 : cateNo = "05";	break;
+		case 6 : cateNo = "06";	break;
+		case 7 : cateNo = "07";	break;
+		case 8 : cateNo = "08";	break;
+		case 9 : cateNo = "09";	break;
+		default : 
+			System.out.println("잘못 입력했습니다. 다시 입력해주세요");
+			return View.RES_ADD;
+		}
+		//식당이름
+		String resName = ScanUtil.nextLine("식당 이름 : ");
+		if(resName.isEmpty()) {
+			System.out.println("식당 이름을 입력해주세요");
+			resName = ScanUtil.nextLine("식당 이름 : ");
+		}
+		if(resName.contains("&")) {
+			resName = resName.replace("&", "+");
+		}
+		//주소
+		String address = ScanUtil.nextLine("주소 : ");
+		if(address.isEmpty()) {
+			System.out.println("주소를 입력해주세요");
+			address = ScanUtil.nextLine("주소 : ");
+		}
+		//전화번호
+		String phone = ScanUtil.nextLine("전화번호 : ");
+		if(phone.isEmpty()) {
+			System.out.println("전화번호를 입력해주세요");
+			phone = ScanUtil.nextLine("전화번호 : ");
+		}
+		if(phone.contains("-")||phone.contains(".")) {
+			phone = phone.replaceAll("[-.]", "");
+		}
+		if(!phone.matches("^[0-9]*$")) {
+			System.out.println("숫자만 입력가능합니다");
+			phone = ScanUtil.nextLine("전화번호 : ");
+		}
+		//예약가능여부
+		System.out.println("예약가능여부는 숫자만 입력가능합니다");
+		String bookyn = "";
+		while(true) {
+			int book = ScanUtil.nextIntB("예약가능여부(1.가능/2.불가능/3.미확인) : ");
+			if(book == 1) {
+				bookyn = "가능";
+			}
+			else if(book == 2 ) {
+				bookyn = "불가능";
+			}
+			else if(book == 3) {
+				bookyn = "미확인";
+			}
+			else {
+				System.out.println("숫자 1,2,3 중 한 개를 입력해주세요");
+				continue;
+			}
+			break;
+		}
+		//대표메뉴
+		String sigMenu = ScanUtil.nextLine("대표메뉴 : ");
+		if(sigMenu.isEmpty()) {
+			System.out.println("대표메뉴를 입력해주세요");
+			sigMenu = ScanUtil.nextLine("대표메뉴 : ");
+		}
+		if(sigMenu.contains("&")) {
+			sigMenu = sigMenu.replace("&", "+");
+		}
+		//가격
+		System.out.println("가격은 숫자만 입력가능합니다");
+		String price = ScanUtil.nextLine("가격 : ");
+		if(price.isEmpty()) {
+			System.out.println("가격을 입력해주세요");
+			price = ScanUtil.nextLine("가격 : ");
+		}
+		if(!price.matches("^[0-9]*$")) {
+			System.out.println("가격은 숫자만 입력가능합니다");
+			price = ScanUtil.nextLine("가격 : ");
+		}
 		
-		String cateNo = "01";
-		String resName = "옹기마을";
-		String address = "대전 중구 계룡로816번길 16";
-		String phone = "0425263332";
-		String bookyn = "가능";
-		String sigMenu = "부대찌개";
-		String price = "8000";
+//		String cateNo = "01";
+//		String resName = "옹기마을";
+//		String address = "대전 중구 계룡로816번길 16";
+//		String phone = "0425263332";
+//		String bookyn = "가능";
+//		String sigMenu = "부대찌개";
+//		String price = "8000";
 		
 		//insert전 회원확인용
 		List<Object> chk = new ArrayList<Object>();
@@ -351,14 +356,19 @@ public class RestaurantController extends RestaurantPrint{
 		print_select_for_restDetail();
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
-		case 1 :
-			Controller.sessionStorage.put("selected_res_no", cate.getRes_no());
+		case 1 : //리뷰보기
+			sessionStorage.put("selected_rest_no", cate.getRes_no());
 			return View.SEE_REVIEW_BY_RES;
-		case 2 :
-			Controller.sessionStorage.put("selected_review", cate);
+		case 2 : //메뉴더보기
+			sessionStorage.put("", cate);//수정필!!!!
 			return View.SEE_REVIEW_BY_WRITER;
-		case 3 : 
-			Controller.sessionStorage.put("menu_review", cate);
+		case 3 : //리뷰등록
+			MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
+			if(login_member==null) {
+				page_need_login();
+				return View.LOG_IN;
+			}
+			sessionStorage.put("selected_category", cate);
 			return View.ADD_REVIEW;
 		case 9 : return View.HOME;
 		case 0 : return Controller.goBack();
@@ -392,20 +402,24 @@ public class RestaurantController extends RestaurantPrint{
 
 	//식당 이름으로 검색할 때 상세보기
 	public View resDetail() {
-		RestaurantVo rest = (RestaurantVo) Controller.sessionStorage.get("resDetailResName");
+		RestaurantVo rest = (RestaurantVo) sessionStorage.get("resDetailResName");
 		printResDetail(rest);
-//		List<RestaurantVo> restaurant = resService.getResDetail(rest.getRes_no());
 		print_select_for_restDetail();
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
-		case 1 :
-			Controller.sessionStorage.put("selected_rest_no", rest.getRes_no());
+		case 1 ://리뷰보기
+			sessionStorage.put("selected_rest_no", rest.getRes_no());
 			return View.SEE_REVIEW_BY_RES;
-		case 2 :
-			Controller.sessionStorage.put("", rest);
+		case 2 ://메뉴더보기
+			sessionStorage.put("", rest);//수정필요!!!
 			return View.SEE_REVIEW_BY_WRITER;
-		case 3 : 
-			Controller.sessionStorage.put("menu_review", rest);
+		case 3 : //리뷰등록
+			MemberVo login_member = (MemberVo) sessionStorage.get("log_in_member");
+			if(login_member==null) {
+				page_need_login();
+				return View.LOG_IN;
+			}
+			sessionStorage.put("selected_restaurant", rest);
 			return View.ADD_REVIEW;
 		case 9 : return View.HOME;
 		case 0 : return Controller.goBack();
@@ -417,14 +431,13 @@ public class RestaurantController extends RestaurantPrint{
 	
 	//식당 이름으로 검색
 	public View resSearchResName() {
-		String name = ScanUtil.nextLine("식당 이름을 검색하세요 : ");
+		String name = ScanUtil.nextLine("식당이름을 검색하세요 : ");
 		List<RestaurantVo> rsrn = resService.resSearchResName(name);
 		if(rsrn==null) {
 			System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
 			return View.RES_SEARCH_RESNAME;
 		}
 		printBar();
-//		sessionStorage.put("resSearchResName", rsrn);
 		Controller.init_page(5,2,"식당 상세 보기", "resDetailResName",View.RES_DETAIL);
 		sessionStorage.put("list_for_paging", rsrn);
 		return View.LIST_PAGING;
@@ -439,6 +452,8 @@ public class RestaurantController extends RestaurantPrint{
 			return View.RES_SEARCH_RESNAME;//식당이름으로 검색
 		case 2:
 			return View.RES_SEARCH_CATEGORY;//식당카테고리로 검색
+		case 9:
+			return View.HOME;
 		default:
 			return View.RES_SEARCH_SELECT;
 		}

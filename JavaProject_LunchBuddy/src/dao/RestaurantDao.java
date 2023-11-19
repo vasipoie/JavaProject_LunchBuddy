@@ -47,7 +47,7 @@ public class RestaurantDao {
 				       "from review r right outer join restaurant re\r\n" + 
 				         "on r.res_no = re.res_no\r\n" + 
 				       "group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn \r\n" + 
-				                ", re.res_walk, re.res_postyn, re.cat_no, re.column1, re.column2)\r\n" + 
+				                ", re.res_walk, re.res_postyn, re.cat_no, re.res_date, re.column2)\r\n" + 
 				      "select rownum, data.*\r\n" + 
 				             ", menu.menu_name, menu.menu_price\r\n" + 
 				      "from data, menu\r\n" + 
@@ -65,7 +65,7 @@ public class RestaurantDao {
 					  "from review r right outer join restaurant re\r\n" + 
 					    "on r.res_no = re.res_no\r\n" + 
 					  "group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn \r\n" + 
-							   ",re.res_walk, re.res_postyn, re.cat_no, re.column1, re.column2)\r\n" + 
+							   ",re.res_walk, re.res_postyn, re.cat_no, re.res_date, re.column2)\r\n" + 
 					 "select rownum, data.*\r\n" + 
 					        ",menu.menu_name, menu.menu_price\r\n" + 
 					 "from data, menu\r\n" + 

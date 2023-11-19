@@ -28,7 +28,7 @@ public class ReviewDao {
 	}
 
 	public List<ReviewVo> recent_review() {
-		String sql = sql_ + "order by rev_date desc";
+		String sql = sql_ + "where a.rev_postyn = 'Y' order by rev_date desc";
 		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
 	}
 

@@ -10,7 +10,9 @@ import service.MemberService;
 import service.Service;
 import util.ScanUtil;
 import util.View;
+import vo.AdminVo;
 import vo.MemberVo;
+import vo.ReviewVo;
 
 public class Controller extends Print {
 
@@ -55,33 +57,30 @@ public class Controller extends Print {
 			case ADMIN_HOME:
 				view = ac.adminHome();
 				break;
-			case RES_SEARCH_SELECT: // 식당 검색 전 선택
-				view = resc.resSearchSelect();
-				break;
-			case RES_SEARCH_RESNAME:// 식당 이름으로 검색
-				view = resc.resSearchResName();
-				break;
-			case RES_SEARCH_CATEGORY:// 메뉴 카테고리로 검색
-				view = resc.resSearchCategory();
-				break;
+//			case RES_SEARCH_SELECT: // 식당 검색 전 선택
+//				view = resc.resSearchSelect();
+//				break;
+//			case RES_SEARCH_RESNAME:// 식당 이름으로 검색
+//				view = resc.resSearchResName();
+//				break;
+//			case RES_SEARCH_CATEGORY:// 메뉴 카테고리로 검색
+//				view = resc.resSearchCategory();
+//				break;
 			case SEARCH:
 //				view = search();
 				break;
-			case RECENT_REVIEW:
-				view = revc.reviewController(view);
-				break;
+//			case RECENT_REVIEW:
+//				view = revc.reviewController(view);
+//				break;
 			case ADD:
 				view = add();
 				break;
-			case ADD_REVIEW:
-//				view = add_review();
-				break;
-			case RES_ADD:
-				view = resc.resAdd();
-				break;
-			case RES_ADD_ONE:
-				view = resc.resAddOne();
-				break;
+//			case RES_ADD:
+//				view = resc.resAdd();
+//				break;
+//			case RES_ADD_ONE:
+//				view = resc.resAddOne();
+//				break;
 			case RECOMMAND_MENU:
 //				view = recommand_menu();
 				break;
@@ -172,6 +171,10 @@ public class Controller extends Print {
 		int page = (int) sessionStorage.get("pageno");
 		View view = (View) sessionStorage.get("after_page");
 		int lastNo = list.size();
+		
+		List<Object> revDetail = (List<Object>) Controller.sessionStorage.get("adminRevStart");
+		AdminVo adLog = (AdminVo) sessionStorage.get("admin");
+		
 		while (true) {
 			System.out.println(page + "페이지");
 			printBar();
@@ -203,8 +206,14 @@ public class Controller extends Print {
 				else System.out.println();
 			}
 			
+			if(revDetail!=null) {
+				System.out.println("4.리뷰 블라인드       5.리뷰 검색");
+			}
 			
-			System.out.println("9.홈              0.뒤로가기");
+			if(adLog!=null) {
+				System.out.println("9.관리자 홈          0.뒤로가기");
+			}
+			else System.out.println("9.홈              0.뒤로가기");
 			printBar();
 			int select = ScanUtil.nextInt(" 선택 >> ");
 			switch (select) {
@@ -231,7 +240,22 @@ public class Controller extends Print {
 					sessionStorage.put("pageno", ++page);
 					return View.LIST_PAGING;
 				}
-			case 9 : return View.HOME;
+			case 4://관리자-리뷰관리
+				if(list.size()==0) {
+					removeHistory();
+					return View.LIST_PAGING;
+				}else {
+					int selected_no = ScanUtil.nextInt(" 번호 >> ") - 1;
+					sessionStorage.put(returnName, list.get(selected_no));
+					return View.ADMIN_REVIEW_BLIND;
+				}
+			case 5://관리자-리뷰관리-리뷰검색
+				return View.ADMIN_REVIEW_SEARCH;
+			case 9 : 
+				if(adLog!=null) {
+					return View.ADMIN_HOME;
+				}
+				return View.HOME;
 			case 0 : return goBack();
 			default:
 				removeHistory();

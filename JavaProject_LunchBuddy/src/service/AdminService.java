@@ -7,6 +7,7 @@ import controller.Controller;
 import dao.AdminDao;
 import vo.AdminVo;
 import vo.RestaurantVo;
+import vo.ReviewVo;
 
 
 public class AdminService {
@@ -80,6 +81,31 @@ public class AdminService {
 	//미등록식당 등록완료
 	public void adminResUpload(String res_no) {
 		adminDao.adminResUpload(res_no);
+	}
+
+	//관리자 리뷰관리
+	public List<ReviewVo> adminReviewList() {
+		return adminDao.adminReviewList();
+	}
+
+	//관리자 리뷰 블라인드처리
+	public void adminReviewBlind(String rev_no) {
+		adminDao.adminReviewBlind(rev_no);
+	}
+
+	//관리자 리뷰검색-식당이름
+	public List<ReviewVo> adminReviewSearchResname(String resName) {
+		return adminDao.adminReviewSearchResname(resName);
+	}
+
+	//관리자 리뷰검색-닉네임
+	public List<ReviewVo> adminReviewSearchNickname(String nickName) {
+		return adminDao.adminReviewSearchNickname(nickName);
+	}
+
+	//관리자 리뷰 블라인드 처리 확인
+	public ReviewVo adminRevBlindCheck(String rev_no) {
+		return adminDao.adminRevBlindCheck(rev_no);
 	}
 
 	
