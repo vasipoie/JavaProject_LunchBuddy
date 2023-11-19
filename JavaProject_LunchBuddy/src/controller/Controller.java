@@ -39,8 +39,8 @@ public class Controller extends Print {
 	RestaurantService restaurantService = new RestaurantService();
 	
 	public static void main(String[] args) {
-//		new Controller().start();
-		new Controller().test();
+		new Controller().start();
+//		new Controller().test();
 	}
 	
 	public void test() {
@@ -264,6 +264,7 @@ public class Controller extends Print {
 			
 			if(revDetail!=null) {
 				System.out.println("4.게시여부 수정       5.리뷰 검색");
+				sessionStorage.put("adminRevStart", null);
 			}
 
 			if(adLog!=null) {

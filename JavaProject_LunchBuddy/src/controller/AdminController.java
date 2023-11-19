@@ -9,6 +9,7 @@ import service.AdminService;
 import util.ScanUtil;
 import util.View;
 import vo.AdminVo;
+import vo.MemberVo;
 import vo.RestaurantVo;
 import vo.ReviewVo;
 
@@ -51,8 +52,20 @@ public class AdminController extends AdminPrint {
 			case ADMIN_REVIEW_SEARCH_NICKNAME: //닉네임으로 리뷰검색
 				view = adminReviewSearchNickname();
 				break;
-			case ADMIN_MEMBER_MANAGE:
-				view = adminHome();
+			case ADMIN_MEMBER_MANAGE:	//관리자 회원관리
+				view = adminMemberManage();	
+				break;
+			case ADMIN_MEMBER_LIST:	//관리자 회원 리스트
+				view = adminMemberList();
+				break;
+			case ADMIN_MEMBER_DETAIL:	//관리자 회원 상세보기
+				view = adminMemberDetail();
+				break;
+			case ADMIN_MEMBER_DEL:	//관리자 탈퇴회원조회
+				view = adminMemberDel();
+				break;
+			case ADMIN_MEMBER_DEL_DETAIL:	//관리자 탈퇴회원 상세보기
+				view = adminMemberDelDetail();
 				break;
 			case ADMIN_RES_MANAGE:	//관리자 식당관리
 				view = adminResManage();
@@ -218,8 +231,8 @@ public class AdminController extends AdminPrint {
 				return View.ADMIN_MODIFY_STANDBY_RES_DETAIL;
 			case 2://아니오
 				System.out.println("수정을 취소합니다");
-				System.out.println("이전 페이지로 이동합니다");//확인필
-				return View.RES_ADD_ONE;//수정!!!!!!!!
+				System.out.println("이전 페이지로 이동합니다");
+				return Controller.goBack();//View.RES_ADD_ONE;//수정!!!!!!!!
 			default:
 				return View.ADMIN_STANDBY_RES_DETAIL;
 			}
@@ -353,7 +366,7 @@ public class AdminController extends AdminPrint {
 		case 9:
 			return View.ADMIN_HOME;
 		case 0:
-			return View.ADMIN_REGI_RES_DETAIL;
+			return Controller.goBack();
 		default:
 			adminModifyStandbyResDetail();
 		}
@@ -390,12 +403,25 @@ public class AdminController extends AdminPrint {
 				return View.ADMIN_HOME;
 			case 2:
 				printDelCancle();
-				return Controller.goBack();//확인필
+				return Controller.goBack();//!!뒤로가기하면 상세보기가 아닌 그 전 페이징이 나옴
 			default://삭제하시겠습니까?로 이동하고싶음!!!!ㅠㅠ
 				return View.ADMIN_REGI_RES_DETAIL;
 			}
+		case 3 ://미등록으로 변경
+			int chk = ScanUtil.nextInt("미등록 식당으로 변경하시겠습니까? 1.예 2.아니오 |메뉴선택 : ");
+			switch(chk) {
+			case 1:
+				adminService.adminResPostN(regiRes.getRes_no());
+				printAdminResPostN();
+				return View.ADMIN_HOME;
+			case 2:
+				printAdminResPostNCancle();
+				return Controller.goBack();
+			default:
+				return View.ADMIN_REGI_RES_DETAIL;
+			}
 		case 9 : return View.ADMIN_HOME;
-		case 0 : return View.ADMIN_REGI_RES_MANAGE;//return Controller.goBack();//안먹힘
+		case 0 : return Controller.goBack();
 		default:
 			Controller.removeHistory();
 			return View.ADMIN_REGI_RES_DETAIL;
@@ -420,9 +446,70 @@ public class AdminController extends AdminPrint {
 		case 2:
 			return View.ADMIN_STANDBY_RES_MANAGE;
 		case 0:
-			return View.ADMIN_HOME;
+			return Controller.goBack();
 		default :
 			return View.ADMIN_RES_MANAGE;
+		}
+	}
+	
+	//관리자 탈퇴회원상세보기
+	public View adminMemberDelDetail() {
+		MemberVo memDelDetail = (MemberVo) Controller.sessionStorage.get("adminMemberDelList");
+		printAdminMemberDetail(memDelDetail);
+		int select = ScanUtil.nextInt("선택 >> ");
+		switch (select) {
+		case 9 : return View.ADMIN_HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.ADMIN_MEMBER_DEL_DETAIL;
+		}
+	}
+	
+	//관리자 탈퇴회원조회
+	public View adminMemberDel() {
+		List<MemberVo> adminMemberDelList = adminService.adminMemberDelList();
+		Controller.init_page(5, 2, "회원상세보기", "adminMemberDelDetail", View.ADMIN_MEMBER_DEL_DETAIL);
+		sessionStorage.put("list_for_paging", adminMemberDelList);
+		return View.LIST_PAGING;
+	}
+	
+	//관리자 회원상세보기
+	public View adminMemberDetail() {
+		MemberVo memDetail = (MemberVo) Controller.sessionStorage.get("adminMemberDetail");
+		
+		printAdminMemberDetail(memDetail);
+		
+		int select = ScanUtil.nextInt("선택 >> ");
+		switch (select) {
+		case 9 : return View.ADMIN_HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.ADMIN_MEMBER_DETAIL;
+		}
+	}
+	
+	//관리자 회원 리스트
+	public View adminMemberList() {
+		List<MemberVo> adminMemberList = adminService.adminMemberList();
+		Controller.init_page(5, 2, "회원상세보기", "adminMemberDetail", View.ADMIN_MEMBER_DETAIL);
+		sessionStorage.put("list_for_paging", adminMemberList);
+		return View.LIST_PAGING;
+	}
+	
+	//관리자 회원관리(리스트)
+	public View adminMemberManage() {
+		printAdminMemberManage();
+		int select = ScanUtil.nextInt("선택 >> ");
+		switch (select) {
+		case 1 : return View.ADMIN_MEMBER_LIST;
+		case 2 : return View.ADMIN_MEMBER_DEL;
+//		case 9 : return View.ADMIN_HOME;
+		case 0 : return Controller.goBack();
+		default:
+			Controller.removeHistory();
+			return View.ADMIN_MEMBER_MANAGE;
 		}
 	}
 
@@ -509,7 +596,7 @@ public class AdminController extends AdminPrint {
 			}
 		case 2:
 			printChkCancle();
-			return Controller.goBack();//확인필!!
+			return Controller.goBack();
 		default:
 			return View.ADMIN_REVIEW_POSTYN_MODIFY;
 		}
@@ -527,7 +614,7 @@ public class AdminController extends AdminPrint {
 		case 1 ://게시여부 수정
 			return View.ADMIN_REVIEW_POSTYN_MODIFY;
 		case 9 : return View.ADMIN_HOME;
-		case 0 : return Controller.goBack();//안먹힘!!
+		case 0 : return Controller.goBack();
 		default:
 			Controller.removeHistory();
 			return View.ADMIN_REVIEW_DETAIL;

@@ -1,5 +1,6 @@
 package print;
 
+import vo.MemberVo;
 import vo.RestaurantVo;
 import vo.ReviewVo;
 
@@ -9,7 +10,7 @@ public class AdminPrint extends Print{
 		System.out.println("Admin Home");
 		printBar();
 		System.out.println("1. 리뷰 관리");
-//		System.out.println("2. 회원 관리");
+		System.out.println("2. 회원 관리");
 		System.out.println("3. 식당 관리");
 		System.out.println("0. 로그아웃");
 		printBar();
@@ -59,6 +60,34 @@ public class AdminPrint extends Print{
 		printBar();
 	}
 	
+	public void printAdminMemberManage() {
+		printBar();
+		System.out.println("회원 관리");
+		printLn(3);
+		System.out.println("1.회원 리스트");
+		System.out.println("2.탈퇴 회원 조회");
+//		System.out.println("9.관리자 홈");
+		System.out.println("0.뒤로가기");
+		printBar();
+	}
+	
+	public void printAdminMemberDetail(MemberVo memDetail) {
+		printBar();
+		System.out.println("\t\t\t\t    회원 상세 보기\t\t\t\t");
+		printLn(3);
+		System.out.println("\t\t\t• id \t: " + memDetail.getMem_id());
+		System.out.println("\t\t\t• pw \t: " + memDetail.getMem_pw());
+		System.out.println("\t\t\t• 이름 \t: " + memDetail.getMem_name());
+		System.out.println("\t\t\t• 전화번호 : " + memDetail.getMem_phone());
+		System.out.println("\t\t\t• 닉네임 \t: " + memDetail.getMem_nick());
+		System.out.println("\t\t\t• 본인 확인 질문: " + memDetail.getMem_idque());
+		System.out.println("\t\t\t• 답변 \t: " + memDetail.getMem_idans());
+		System.out.println("\t\t\t• 탈퇴여부 : " + memDetail.getMem_delyn());
+		printLn(4);
+		System.out.println("\t\t      9. 홈                 0. 뒤로가기");
+		printBar();
+	}
+	
 	public void printAdminResManage() {
 		printBar();
 		System.out.println("식당 관리");
@@ -83,7 +112,7 @@ public class AdminPrint extends Print{
 	}
 	
 	public void printSelectForRegiResDetail() {
-		System.out.println("1.식당정보 수정   2.식당 삭제");
+		System.out.println("1.식당정보 수정   2.식당 삭제   3.미등록으로 변경");
 		System.out.println("9.관리자 홈      0.뒤로가기");
 		printBar();
 	}
@@ -171,6 +200,20 @@ public class AdminPrint extends Print{
 	public void printChkCancle() {
 		printBar();
 		System.out.println("게시여부 수정을 취소합니다");
+		System.out.println("이전 페이지로 이동합니다");
+		printBar();
+	}
+	
+	public void printAdminResPostN() {
+		printBar();
+		System.out.println("미등록 식당으로 변경되었습니다");
+		System.out.println("관리자 홈으로 이동합니다");
+		printBar();
+	}
+	
+	public void printAdminResPostNCancle() {
+		printBar();
+		System.out.println("변경을 취소합니다");
 		System.out.println("이전 페이지로 이동합니다");
 		printBar();
 	}
