@@ -20,8 +20,8 @@ public class BFService {
 		return singleTon;
 	}
 
-	public BFVo bf_make(List<Object> param) {
-		return dao.bf_make(param);
+	public BFVo bf_make(List<Object> param, String bfDate) {
+		return dao.bf_make(param,bfDate);
 	}
 
 	public BFVo getBF_just_wrote() {
