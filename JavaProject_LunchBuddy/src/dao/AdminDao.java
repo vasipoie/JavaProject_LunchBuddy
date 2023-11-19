@@ -7,6 +7,7 @@ import util.ConvertUtils;
 import util.JDBCUtil;
 import vo.AdminVo;
 import vo.RestaurantVo;
+import vo.ReviewVo;
 
 public class AdminDao {
 	private static AdminDao singleTon = null;
@@ -50,9 +51,6 @@ public class AdminDao {
 					+ "where RES_NO = "+res_no;
 		jdbc.update(sql);
 	}
-	
-	
-	
 
 	//관리자 미등록 식당 리스트
 	public List<RestaurantVo> adminStandbyResList() {
@@ -127,6 +125,68 @@ public class AdminDao {
 					+ "where res_no="+res_no;
 		jdbc.update(sql);
 	}
+
+	//관리자 리뷰관리(리스트)
+	public List<ReviewVo> adminReviewList() {
+		String sql = "select (select res_name from restaurant where res_no = a.res_no) res_name, rev_star\r\n" + 
+					 "        , (select mem_nick from member where mem_no = a.mem_no) mem_nick\r\n" + 
+					 "        , rev_cont, rev_no, rev_postyn, to_char(rev_date,'yy.mm.dd hh24:mi') rev_date\r\n" + 
+					 "        , a.res_no, a.mem_no\r\n" + 
+					 "from review a\r\n"+
+					 "order by rev_date desc";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
+	}
+
+	//관리자 리뷰 블라인드 처리
+	public void adminReviewBlind(String rev_no) {
+		String sql = "update review\r\n"
+					+ "set rev_postyn = 'N'\r\n"
+					+ "where rev_no = '"+rev_no+"'";
+		jdbc.update(sql);
+	}
+	
+	//관리자 리뷰 블라인드 처리 확인
+	public ReviewVo adminRevBlindCheck(String rev_no) {
+		String sql = "select (select res_name from restaurant where res_no = a.res_no) res_name, rev_star\r\n"
+				+ "        , (select mem_nick from member where mem_no = a.mem_no) mem_nick\r\n"
+				+ "		, rev_cont, rev_no, rev_postyn, to_char(rev_date,'yy.mm.dd hh24:mi') rev_date\r\n"
+				+ "		, a.res_no, a.mem_no\r\n"
+				+ "from review a\r\n"
+				+ "where a.rev_no = '"+rev_no+"'\r\n"
+				+ "order by rev_date desc";
+		return ConvertUtils.convertToVo(jdbc.selectOne(sql), ReviewVo.class);
+	}
+
+	//관리자 리뷰검색-식당이름
+	public List<ReviewVo> adminReviewSearchResname(String resName) {
+		String sql = "select rev.res_no, res.res_name, rev.rev_star, \r\n"
+					+ "       mem.mem_nick, mem.mem_no, rev.rev_cont, \r\n"
+					+ "       rev.rev_no, rev.rev_postyn, \r\n"
+					+ "       to_char(rev.rev_date,'yy.mm.dd hh24:mi') rev_date\r\n"
+					+ "from restaurant res\r\n"
+					+ "    ,review rev\r\n"
+					+ "    ,member mem\r\n"
+					+ "where res.res_no(+) = rev.res_no\r\n"
+					+ "and rev.mem_no = mem.mem_no(+)\r\n"
+					+ "and res.res_name like '%"+resName+"%'";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
+	}
+
+	//관리자 리뷰검색-닉네임
+	public List<ReviewVo> adminReviewSearchNickname(String nickName) {
+		String sql = "select rev.res_no, res.res_name, rev.rev_star, \r\n"
+					+ "       mem.mem_nick, mem.mem_no, rev.rev_cont, \r\n"
+					+ "       rev.rev_no, rev.rev_postyn, rev.rev_date\r\n"
+					+ "from restaurant res\r\n"
+					+ "    ,review rev\r\n"
+					+ "    ,member mem\r\n"
+					+ "where res.res_no(+) = rev.res_no\r\n"
+					+ "and rev.mem_no = mem.mem_no(+)\r\n"
+					+ "and mem.mem_nick= "+nickName;
+		return ConvertUtils.convertToList(jdbc.selectList(sql), ReviewVo.class);
+	}
+
+	
 
 
 

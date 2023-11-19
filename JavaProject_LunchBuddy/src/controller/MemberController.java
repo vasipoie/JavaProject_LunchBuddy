@@ -239,7 +239,7 @@ public class MemberController extends MemberPrint {
 					return view;
 			}
 		case 9:
-			return View.ADD_REVIEW.HOME;
+			return View.HOME;
 		case 0:
 			return Controller.goBack();
 		default:

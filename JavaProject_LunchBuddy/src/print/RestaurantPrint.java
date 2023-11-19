@@ -14,6 +14,7 @@ public class RestaurantPrint extends Print{
 		printBar();
 		System.out.println("1. 식당 이름으로 검색");
 		System.out.println("2. 식당 카테고리로 검색");
+		System.out.println("9. 홈");
 		printBar();
 	}
 	
@@ -94,10 +95,10 @@ public class RestaurantPrint extends Print{
 	
 	//사용자가 입력한 식당등록 insert 전 출력
 	public void printResInsertBefore(List<Object> restAdd, List<Object> chk) {
-		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		printBar();
-		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
-		printBar();
+//		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
+//		printBar();
+//		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
+//		printBar();
 		
 		System.out.println("["+restAdd.get(2)+"] 카테고리 : "+cateName2((String)chk.get(1)));
 		System.out.println("주소 : "+restAdd.get(3)+"   전화번호 : "+restAdd.get(4)+"  예약가능여부 : "+restAdd.get(5));
@@ -116,10 +117,11 @@ public class RestaurantPrint extends Print{
 	//삭제할듯
 	//식당 등록요청 전 사용자가 입력한 등록 출력
 	public void printResAddOne(RestaurantVo resAddOnePrint) {
-		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		printBar();
-		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
-		printBar();
+//		MemberVo mb = (MemberVo) Controller.sessionStorage.get("log_in_member");
+//		printBar();
+//		System.out.println(mb.getMem_nick()+"님이 입력한 식당 등록");
+//		printBar();
+		
 		System.out.println("["+resAddOnePrint.getRes_name()+"] 카테고리 : "+cateName(resAddOnePrint));
 		System.out.println("주소 : "+resAddOnePrint.getRes_add()+" 전화번호 : "+resAddOnePrint.getRes_phone()+"  예약가능여부 : "+resAddOnePrint.getRes_bookyn());
 		System.out.println("대표메뉴 : "+resAddOnePrint.getMenu_name()+" 가격 : "+resAddOnePrint.getMenu_price()+"원");
