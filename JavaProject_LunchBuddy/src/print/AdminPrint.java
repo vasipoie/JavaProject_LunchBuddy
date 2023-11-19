@@ -24,14 +24,28 @@ public class AdminPrint extends Print{
 	}
 	
 	public void printSelectForReviewDetail() {
-		System.out.println("1.리뷰 블라인드");
+		System.out.println("1.게시여부 수정");
 		System.out.println("9.관리자 홈      0.뒤로가기");
 		printBar();
 	}
 	
 	public void printBlindReview() {
 		printBar();
-		System.out.println("리뷰가 블라인드 되었습니다");
+		System.out.println("1.게시여부 Y로 수정하기");
+		System.out.println("2.게시여부 N로 수정하기");
+		printBar();
+	}
+	
+	public void printPostYReview() {
+		printBar();
+		System.out.println("게시여부가 Y로 수정되었습니다");
+		System.out.println("리뷰 상세보기로 이동합니다");
+		printBar();
+	}
+	
+	public void printPostNReview() {
+		printBar();
+		System.out.println("게시여부가 N으로 수정되었습니다");
 		System.out.println("리뷰 상세보기로 이동합니다");
 		printBar();
 	}
@@ -108,6 +122,21 @@ public class AdminPrint extends Print{
 		printBar();
 	}
 	
+	public void printAdminModifyRegiResDetailSelect() {
+		System.out.println("식당 정보 수정");
+		printBar();
+		System.out.println("1.식당이름 수정");
+		System.out.println("2.이동시간 수정");
+		System.out.println("3.예약가능여부 수정");
+		System.out.println("4.주소 수정");
+		System.out.println("5.전화번호 수정");
+		System.out.println("6.대표메뉴 수정");
+		System.out.println("7.가격 수정");
+		System.out.println("9.관리자 홈");
+		System.out.println("0.뒤로가기");//선택한식당상세보기
+		printBar();
+	}
+	
 	public void printAdminRegiRes() {
 		printBar();
 		System.out.println("식당등록이 완료되었습니다");
@@ -139,9 +168,9 @@ public class AdminPrint extends Print{
 		printBar();
 	}
 	
-	public void printBlindCancle() {
+	public void printChkCancle() {
 		printBar();
-		System.out.println("블라인드를 취소합니다");
+		System.out.println("게시여부 수정을 취소합니다");
 		System.out.println("이전 페이지로 이동합니다");
 		printBar();
 	}

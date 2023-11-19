@@ -90,7 +90,7 @@ public class RestaurantController extends RestaurantPrint{
 				newPhone = ScanUtil.nextLine("전화번호 : ");
 			}
 			if(newPhone.contains("-")||newPhone.contains(".")) {
-				newPhone = newPhone.replaceAll("[-.]", "");
+				newPhone = newPhone.replace("-", "").replace(".","");
 			}
 			if(!newPhone.matches("^[0-9]*$")) {
 				System.out.println("숫자만 입력가능합니다");
@@ -268,7 +268,7 @@ public class RestaurantController extends RestaurantPrint{
 			phone = ScanUtil.nextLine("전화번호 : ");
 		}
 		if(phone.contains("-")||phone.contains(".")) {
-			phone = phone.replaceAll("[-.]", "");
+			phone = phone.replace("-", "").replace(".","");
 		}
 		if(!phone.matches("^[0-9]*$")) {
 			System.out.println("숫자만 입력가능합니다");

@@ -207,7 +207,7 @@ public class Controller extends Print {
 			}
 			
 			if(revDetail!=null) {
-				System.out.println("4.리뷰 블라인드       5.리뷰 검색");
+				System.out.println("4.게시여부 수정       5.리뷰 검색");
 			}
 			
 			if(adLog!=null) {
@@ -240,14 +240,14 @@ public class Controller extends Print {
 					sessionStorage.put("pageno", ++page);
 					return View.LIST_PAGING;
 				}
-			case 4://관리자-리뷰관리
+			case 4://관리자-게시여부수정
 				if(list.size()==0) {
 					removeHistory();
 					return View.LIST_PAGING;
 				}else {
 					int selected_no = ScanUtil.nextInt(" 번호 >> ") - 1;
 					sessionStorage.put(returnName, list.get(selected_no));
-					return View.ADMIN_REVIEW_BLIND;
+					return View.ADMIN_REVIEW_POSTYN_MODIFY;
 				}
 			case 5://관리자-리뷰관리-리뷰검색
 				return View.ADMIN_REVIEW_SEARCH;
