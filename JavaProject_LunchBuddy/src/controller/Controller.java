@@ -88,6 +88,9 @@ public class Controller extends Print {
 			case LIST_PAGING:
 				view = list_paging();
 				break;
+			case LIST_PAGING_FOR_ADMIN:
+				view = list_paging_for_admin();
+				break;
 			default:
 				removeHistory();
 				System.out.println("main controller out");
@@ -112,6 +115,10 @@ public class Controller extends Print {
       List<MenuVo> menuList = menuService.get_all_menu_list();
       MenuVo selected_menu = menuList.get(menu_no);
       RestaurantVo res = restaurantService.getRes_by_resNo(selected_menu.getRes_no());
+      if(res.getRes_postyn().equals("N")||res.getRes_postyn().equals("n")) {
+    	  removeHistory();
+    	  return View.RECOMMAND_MENU;
+      }
       List<MenuVo> menuList_by_res = menuService.menuList_by_res(res.getRes_no());
       while(true) {
          print_menu_recommanded(selected_menu, res, menuList_by_res);
@@ -196,6 +203,129 @@ public class Controller extends Print {
     * @return
     */
    public View list_paging() {
+      int page_size = (int) sessionStorage.get("pageSize_for_paging");
+      int object_size = (int) sessionStorage.get("object_size_for_paging");
+      String type = (String) sessionStorage.get("type_for_paging");
+      List<Object> list = (List<Object>) sessionStorage.get("list_for_paging");
+      String returnName = (String) sessionStorage.get("returnName");
+      int page = (int) sessionStorage.get("pageno");
+      View view = (View) sessionStorage.get("after_page");
+      int lastNo = list.size();
+      
+      while (true) {
+         printBar();
+         System.out.println("\t\t\t\t"+page + "페이지");
+         printBar();
+         int topNo = (page - 1) * page_size;
+         int bottomNo = page * page_size;
+         int no = topNo + 1;
+         if(list.size()==0) {
+            System.out.println("\t\t\t   검색 결과가 없습니다.");
+            printLn(9);
+         }else {
+            for (int i = topNo; i < bottomNo; i++) {
+               if (i < lastNo) {
+                  System.out.println("\t\t"+no + ". " + list.get(i));
+                  no++;
+               } else {
+                  for (int j = 0; j < object_size; j++)
+                     System.out.println();
+               }
+            }
+         }
+         printBar();
+         
+         if(list.size()==0) System.out.println();
+         else {
+            if (page == 1)    System.out.print("\t\t            2." + type);
+            else          System.out.print("\t\t1.이전페이지     2." + type);
+            
+            if((page*page_size) < lastNo) System.out.println("   3.다음페이지");
+            else System.out.println();
+         }
+         System.out.println("\t\t\t9.홈              0.뒤로가기");
+         
+         printBar();
+         int select = ScanUtil.nextInt(" 선택 >> ");
+         switch (select) {
+         case 1:
+            if (page == 1)
+               break;
+            else {
+               sessionStorage.put("pageno", --page);
+               return View.LIST_PAGING;
+            }
+         case 2:
+            if(list.size()==0) {
+               removeHistory();
+               return View.LIST_PAGING;
+            }else {
+               int selected_no = ScanUtil.nextInt(" 번호 >> ") - 1;
+               sessionStorage.put(returnName, list.get(selected_no));
+               return view;
+            }
+         case 3:
+            if ((page * page_size) >= lastNo)
+               break;
+            else {
+               sessionStorage.put("pageno", ++page);
+               return View.LIST_PAGING;
+            }
+         case 9 : 
+            return View.HOME;
+         case 0 : return goBack();
+         default:
+            removeHistory();
+            return View.LIST_PAGING;
+         }
+      }
+   }
+
+   /**
+    * 뷰 이동 경로 저장
+    * Controller.pageHistory에 ("순서",뷰)로 저장
+    * @param view
+    */
+   static void newPage(View view) {
+      int page = pageHistory.size();
+      if(pageHistory.get(page)==view) return; //이전 페이지와 같으면 저장 안함
+      System.out.println(page+1+"페이지에"+view+"저장");
+      if (pageHistory.get(page-1) == view)
+         return;
+      pageHistory.put(page + 1, view);
+   }
+
+   /**
+    * 뒤로가기
+    * 직전 뷰 리턴
+    * @return
+    */
+   public static View goBack() {
+      System.out.println("뒤로가기 실행");
+      if (pageHistory.size() == 1)
+         return View.HOME; //첫번째 페이지에서 뒤로가기 호출 시 홈으로 보내기
+      int page = pageHistory.size();
+      pageHistory.remove(page);
+      System.out.println(page+"에서 뒤로가기 실행, "+pageHistory.get(page - 1)+"리턴");
+      return pageHistory.get(page - 1);
+   }
+
+   public static void removeHistory() {
+      System.out.println(Controller.pageHistory.size()+"번째 페이지 삭제");
+      pageHistory.remove(Controller.pageHistory.size());
+   }
+   
+
+   /**
+    * 출력하는 오브젝트는 Controller.sessionStorage.get("selected_object")에 들어있습니다.
+    * Controller.sessionStorage에 다음 항목 넣어주세요 (list_for_paging : 출력할 리스트)
+    * (pageSize_for_paging : 한 페이지에 들어갈 오브젝트 갯수) (object_size_for_paging : 오브젝트 출력
+    * 하나의 줄 수 ) (type_for_paging : 오브젝트 종류 이름) (after_page : 상세보기 눌렀을 때 이동할 뷰)
+    * (pageno : 1넣어주세요~)
+    * 
+    * @return
+    */
+   public View list_paging_for_admin() {
       int page_size = (int) sessionStorage.get("pageSize_for_paging");
       int object_size = (int) sessionStorage.get("object_size_for_paging");
       String type = (String) sessionStorage.get("type_for_paging");
@@ -298,40 +428,6 @@ public class Controller extends Print {
             return View.LIST_PAGING;
          }
       }
-   }
-
-   /**
-    * 뷰 이동 경로 저장
-    * Controller.pageHistory에 ("순서",뷰)로 저장
-    * @param view
-    */
-   static void newPage(View view) {
-      int page = pageHistory.size();
-      if(pageHistory.get(page)==view) return; //이전 페이지와 같으면 저장 안함
-      System.out.println(page+1+"페이지에"+view+"저장");
-      if (pageHistory.get(page-1) == view)
-         return;
-      pageHistory.put(page + 1, view);
-   }
-
-   /**
-    * 뒤로가기
-    * 직전 뷰 리턴
-    * @return
-    */
-   public static View goBack() {
-      System.out.println("뒤로가기 실행");
-      if (pageHistory.size() == 1)
-         return View.HOME; //첫번째 페이지에서 뒤로가기 호출 시 홈으로 보내기
-      int page = pageHistory.size();
-      pageHistory.remove(page);
-      System.out.println(page+"에서 뒤로가기 실행, "+pageHistory.get(page - 1)+"리턴");
-      return pageHistory.get(page - 1);
-   }
-
-   public static void removeHistory() {
-      System.out.println(Controller.pageHistory.size()+"번째 페이지 삭제");
-      pageHistory.remove(Controller.pageHistory.size());
    }
    
 }

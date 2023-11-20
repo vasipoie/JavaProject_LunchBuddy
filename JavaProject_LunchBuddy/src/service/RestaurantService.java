@@ -59,4 +59,8 @@ public class RestaurantService {
 		return resDao.getRes_by_resNo(res_no);
 	}
 
+	public List<RestaurantVo> get_topRes() {
+		return resDao.get_topRes();
+	}
+
 }

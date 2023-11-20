@@ -137,6 +137,23 @@ public class RestaurantDao {
 				+ "    where r. res_no = "+res_no;
 		return ConvertUtils.convertToVo(jdbc.selectOne(sql), RestaurantVo.class);
 	}
+
+	public List<RestaurantVo> get_topRes() {
+		String sql = "with data as\r\n" + 
+				"(select re.*, round(nvl(avg(r.rev_star),0),1) rev_star\r\n" + 
+				"from review r right outer join restaurant re\r\n" + 
+				"on r.res_no = re.res_no\r\n" + 
+				"group by re.res_no, re.res_name, re.res_add, re.res_phone, re.res_bookyn\r\n" + 
+				", re.res_walk, re.res_postyn, re.cat_no, re.res_date, re.column2)\r\n" + 
+				"select rownum, data.*\r\n" + 
+				", menu.menu_name, menu.menu_price\r\n" + 
+				"from data, menu\r\n" + 
+				"where data.res_no = menu.res_no\r\n" + 
+				"and menu.menu_no like '%001'\r\n" + 
+				"and data.res_postyn = 'Y'\r\n" + 
+				"order by rev_star desc";
+		return ConvertUtils.convertToList(jdbc.selectList(sql), RestaurantVo.class);
+	}
 	
 
 //	public RestaurantVo resAdd(List<Object> restAdd) {

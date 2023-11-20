@@ -254,7 +254,7 @@ public class AdminController extends AdminPrint {
 		List<RestaurantVo> adminStandbyResList = adminService.adminStandbyResList();
 		Controller.init_page(5, 2, "식당상세보기", "adminStandbyResDetail", View.ADMIN_STANDBY_RES_DETAIL);
 		sessionStorage.put("list_for_paging", adminStandbyResList);
-		return View.LIST_PAGING;
+		return View.LIST_PAGING_FOR_ADMIN;
 	}
 	
 	//관리자 등록된 식당 수정
@@ -433,7 +433,7 @@ public class AdminController extends AdminPrint {
 		List<RestaurantVo> adminRegiResList = adminService.adminRegiResList();
 		Controller.init_page(5, 2, "식당상세보기", "adminRegiResDetail", View.ADMIN_REGI_RES_DETAIL);
 		sessionStorage.put("list_for_paging", adminRegiResList);
-		return View.LIST_PAGING;
+		return View.LIST_PAGING_FOR_ADMIN;
 	}
 	
 	//관리자 식당관리
@@ -471,7 +471,7 @@ public class AdminController extends AdminPrint {
 		List<MemberVo> adminMemberDelList = adminService.adminMemberDelList();
 		Controller.init_page(5, 2, "회원상세보기", "adminMemberDelDetail", View.ADMIN_MEMBER_DEL_DETAIL);
 		sessionStorage.put("list_for_paging", adminMemberDelList);
-		return View.LIST_PAGING;
+		return View.LIST_PAGING_FOR_ADMIN;
 	}
 	
 	//관리자 회원상세보기
@@ -495,7 +495,7 @@ public class AdminController extends AdminPrint {
 		List<MemberVo> adminMemberList = adminService.adminMemberList();
 		Controller.init_page(5, 2, "회원상세보기", "adminMemberDetail", View.ADMIN_MEMBER_DETAIL);
 		sessionStorage.put("list_for_paging", adminMemberList);
-		return View.LIST_PAGING;
+		return View.LIST_PAGING_FOR_ADMIN;
 	}
 	
 	//관리자 회원관리(리스트)
@@ -525,7 +525,7 @@ public class AdminController extends AdminPrint {
 		printBar();
 		Controller.init_page(5, 2, "리뷰 상세 보기", "adminReviewDetail", View.ADMIN_REVIEW_DETAIL);
 		sessionStorage.put("list_for_paging", reviewNickName);
-		return View.LIST_PAGING;
+		return View.LIST_PAGING_FOR_ADMIN;
 	}
 	
 	//관리자 리뷰 검색 - 식당이름
@@ -627,7 +627,7 @@ public class AdminController extends AdminPrint {
 		sessionStorage.put("adminRevStart", adminReviewList);
 		Controller.init_page(5,3,"리뷰상세보기", "adminReviewDetail", View.ADMIN_REVIEW_DETAIL);
 		sessionStorage.put("list_for_paging", adminReviewList);
-		return View.LIST_PAGING;
+		return View.LIST_PAGING_FOR_ADMIN;
 	}
 	
 

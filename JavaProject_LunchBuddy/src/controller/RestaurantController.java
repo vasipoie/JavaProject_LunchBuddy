@@ -369,8 +369,7 @@ public class RestaurantController extends RestaurantPrint{
 	//메뉴 카테고리로 검색할 때 상세보기
 	public View resDetailCategory() {
 		RestaurantVo cate = (RestaurantVo) sessionStorage.get("resDetailCategory");
-		printCateDetail(cate);
-		print_select_for_restDetail();
+		printResDetail(cate);
 		int select = ScanUtil.nextInt("선택 >> ");
 		switch (select) {
 		case 1 : //리뷰보기
@@ -428,7 +427,7 @@ public class RestaurantController extends RestaurantPrint{
 			sessionStorage.put("selected_rest_no", rest.getRes_no());
 			return View.SEE_REVIEW_BY_RES;
 		case 2 ://메뉴더보기
-			sessionStorage.put("seleceted_rest", rest);//수정필요!!!
+			sessionStorage.put("selected_rest", rest);//수정필요!!!
 			return View.MENULIST_BY_RES;
 		case 3 : //리뷰등록
 			MemberVo login_member = (MemberVo) sessionStorage.get("log_in_member");
@@ -463,7 +462,7 @@ public class RestaurantController extends RestaurantPrint{
 		print_resSearchResName();
 		name = ScanUtil.nextLine("검색 : ");
 		List<RestaurantVo> rsrn = resService.resSearchResName(name);
-		Controller.init_page(5,2,"식당 선택", "selected_res",View.ADD_REVIEW);
+		Controller.init_page(5,2,"식당 선택", "selected_restaurant",View.ADD_REVIEW);
 		sessionStorage.put("list_for_paging", rsrn);
 		return View.LIST_PAGING;
 	}

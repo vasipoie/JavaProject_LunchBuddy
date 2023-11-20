@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="JavaProject_LunchBuddy/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/대덕인재개발원/D_setting/C_Lib/ibatis/ojdbc6.jar"/>
-	<classpathentry kind="lib" path="D:/대덕인재개발원/D_setting/C_Lib/lombok.jar"/>
+	<classpathentry kind="lib" path="D:/D_setting/C_Lib/ibatis/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="D:/D_setting/C_Lib/lombok.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

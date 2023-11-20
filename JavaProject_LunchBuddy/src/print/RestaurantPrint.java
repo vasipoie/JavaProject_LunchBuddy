@@ -3,6 +3,7 @@ package print;
 import java.util.List;
 
 import controller.Controller;
+import service.RestaurantService;
 import vo.MemberVo;
 import vo.RestaurantVo;
 
@@ -198,6 +199,12 @@ public class RestaurantPrint extends Print{
 		printBar();
 	}
 	
-	
+	public void print_rest_for_home(int n) {
+		List<RestaurantVo> resList = new RestaurantService().get_topRes();
+		for(int i=0; i<n; i++) {
+			RestaurantVo rest = resList.get(i);
+			System.out.println("\t\t"+(i+1)+" . "+ rest.getRes_name()+" ("+rest.getRev_star()+")");
+		}
+	}
 	
 }

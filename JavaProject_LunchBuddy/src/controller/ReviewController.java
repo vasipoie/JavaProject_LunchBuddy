@@ -65,7 +65,10 @@ public class ReviewController extends ReviewPrint{
 	}
 	private View add_menureview() {
 		MemberVo login_member = (MemberVo) Controller.sessionStorage.get("log_in_member");
-		if(login_member==null) return View.LOG_IN;
+		if(login_member==null) {
+			page_need_login();
+			return View.LOG_IN;
+		}
 		
 		MenuVo menu = (MenuVo) Controller.sessionStorage.get("selected_menu");
 		String res = restaurantService.getRes_by_resNo(menu.getRes_no()).getRes_name();

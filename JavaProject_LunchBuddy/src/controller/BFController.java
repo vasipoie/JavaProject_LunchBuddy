@@ -175,8 +175,10 @@ public class BFController extends BFPrint{
 		if(cal.HOUR_OF_DAY<13) cal.add(Calendar.DATE, -1);
 		
 		int select = ScanUtil.nextInt("선택 >>");
-		cal.add(Calendar.DATE, select);
+		
+		cal.add(Calendar.DATE, select-7);
 		if(cal.get(Calendar.DAY_OF_WEEK)==1) cal.add(Calendar.DATE, 1);		
+		
 		DateFormat df = new SimpleDateFormat("yyMMdd");
 		bfDate = df.format(cal.getTime());
 		print_make_bf(resName, bfTitle, bfCont, bfNum, bfDate,false);

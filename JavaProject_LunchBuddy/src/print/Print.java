@@ -2,7 +2,6 @@ package print;
 
 import java.util.List;
 
-import util.ScanUtil;
 import vo.MenuVo;
 import vo.RestaurantVo;
 
@@ -77,11 +76,12 @@ public class Print {
 		System.out.println();
 		System.out.println("\t   [ 지금 가장 핫한 식당 ]");
 		//Top 3 식당 뽑기
-		printLn(3);
+		new RestaurantPrint().print_rest_for_home(3);
 		System.out.println();
 		System.out.println("\t   [ 모집 중인 점심 친구 ]");
 		new BFPrint().print_bf_for_home(3);
 //		System.out.println();
+//		printLn(3);
 		printBar();
 		System.out.println("\t   1. 식당 검색     \t\t\t 2. 최근 리뷰");
 		System.out.println("\t   3. 리뷰, 식당 등록\t\t 4. 랜덤 메뉴 추천");
@@ -134,8 +134,10 @@ public class Print {
 		printBar();
 		System.out.println("\t\t[ "+res.getRes_name()+" ]의 다른 메뉴");
 		for(int i =0; i<4; i++) {
-			MenuVo menu = menuList_by_res.get(i);
-			System.out.println("\t\t "+menu.getMenu_name()+"  "+menu.getMenu_price()+"원");
+			if(menuList_by_res.size()>i) {
+				MenuVo menu = menuList_by_res.get(i);
+				System.out.println("\t\t "+menu.getMenu_name()+"  "+menu.getMenu_price()+"원");
+			}else System.out.println();
 		}
 		printBar();
 		System.out.println("\t\t1. 이 식당 정보 보기     2. 이 메뉴 리뷰 보기");
